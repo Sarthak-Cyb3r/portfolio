@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Accounty — placeholder art</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400..700&display=swap">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 800px;
+    height: 500px;
+    background: #08080C;
+    overflow: hidden;
+  }
+
+  .tile {
+    position: relative;
+    isolation: isolate;
+    width: 800px;
+    height: 500px;
+    background-color: #08080C;
+    overflow: hidden;
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hairline blueprint grid, 40px pitch */
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
+  }
+
+  .art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .orb-grain { mix-blend-mode: overlay; opacity: 0.45; }
+
+  /* Faint vignette, above the art so type sits on clean ink */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(118% 128% at 47% 45%,
+      rgba(0,0,0,0) 44%, rgba(0,0,0,0.26) 80%, rgba(0,0,0,0.55) 100%);
+  }
+
+  /* Corner registration ticks */
+  .tick {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(255,255,255,0.22);
+    border-style: solid;
+    border-width: 0;
+  }
+  .tick.tl { top: 26px; left: 26px; border-top-width: 1px; border-left-width: 1px; }
+  .tick.tr { top: 26px; right: 26px; border-top-width: 1px; border-right-width: 1px; }
+  .tick.bl { bottom: 26px; left: 26px; border-bottom-width: 1px; border-left-width: 1px; }
+  .tick.br { bottom: 26px; right: 26px; border-bottom-width: 1px; border-right-width: 1px; }
+
+  .content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 46px 48px 40px;
+    z-index: 3;
+  }
+
+  .kicker {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.62);
+  }
+
+  .title {
+    font-family: "Bricolage Grotesque", "Instrument Sans", system-ui, sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-size: 104px;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    color: #FAFAFC;
+  }
+
+  .status {
+    margin-top: 18px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.86);
+  }
+
+  .footer {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 14px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+  }
+
+  /* Slight film grain over the whole tile */
+  .grain {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    opacity: 0.075;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <div class="tile">
+    <div class="grid"></div>
+    
+  <svg class="art" viewBox="0 0 800 500" fill="none"
+    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+    <linearGradient id="aurora" gradientUnits="userSpaceOnUse"
+      x1="545" y1="90" x2="815" y2="385">
+      <stop offset="0" stop-color="#7C5CFF"/>
+      <stop offset="0.52" stop-color="#38E1FF"/>
+      <stop offset="1" stop-color="#C6FF4A"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"
+      color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="34"/>
+    </filter>
+    <filter id="bloom" x="-40%" y="-40%" width="180%" height="180%"
+      color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="speckle" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="4"
+        seed="9" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="g"/>
+      <!-- fractalNoise also stipples the alpha channel; flatten it so the
+           speckle reads as real grain across the whole orb -->
+      <feComponentTransfer in="g">
+        <feFuncA type="table" tableValues="1 1"/>
+      </feComponentTransfer>
+    </filter>
+      <clipPath id="orbClip">
+        <circle cx="735" cy="230" r="182"/>
+      </clipPath>
+    </defs>
+    <circle cx="735" cy="230" r="182" fill="url(#aurora)"
+      filter="url(#glow)" opacity="0.5"/>
+    <circle cx="735" cy="230" r="182" fill="url(#aurora)"/>
+    <g clip-path="url(#orbClip)" class="orb-grain">
+      <rect x="553" y="48"
+        width="364" height="364" filter="url(#speckle)"/>
+    </g>
+    <circle cx="735" cy="230" r="182"
+      stroke="rgba(255,255,255,0.22)" stroke-width="1.5" fill="none"/>
+  </svg>
+    <div class="vignette"></div>
+    <span class="tick tl"></span>
+    <span class="tick tr"></span>
+    <span class="tick bl"></span>
+    <span class="tick br"></span>
+
+    <div class="content">
+      <div class="kicker">PROJECT / ACCOUNTY</div>
+
+      <div>
+        <h1 class="title">Accounty</h1>
+        <p class="status">Visual — coming soon</p>
+      </div>
+
+      <div class="footer">
+        <span>Placeholder visual · abstract brand tile · not a screenshot</span>
+        <span>Coming soon</span>
+      </div>
+    </div>
+
+    <svg class="grain" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <filter id="filmgrain" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4"
+          seed="4" stitchTiles="stitch" result="n"/>
+        <feColorMatrix in="n" type="saturate" values="0"/>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#filmgrain)"/>
+    </svg>
+  </div>
+</body>
+</html>
