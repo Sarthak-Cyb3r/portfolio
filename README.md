@@ -145,6 +145,18 @@ portfolio/
 
 ---
 
+## 🤖 AI-Assisted Changes
+
+Assisted by **`opencode/mimo-v2.6-flash-free`** (opencode CLI).
+
+| Commit | Change |
+|---|---|
+| `5ab5c9e` | Added the Softify case study with an honest **CI build pending** iOS download state — no `.ipa` link while `ios_release.yml` was still red, per the no-fabricated-download-links rule. |
+| `482299e` | Flipped iOS to a real download once `Softify-iOS-Universal.ipa` (10,938,031 bytes) landed on the Softify `v1.0.0` release; updated the progress note and roadmap to match. |
+| — | `tsc --noEmit`, `eslint`, and `next build` (11/11 routes) verified clean; deployed to production and re-pointed all three aliases. |
+
+---
+
 ## 📬 Contact & Connect
 
 - **Email**: [lakh125yu@gmail.com](mailto:lakh125yu@gmail.com)
