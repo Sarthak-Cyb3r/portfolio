@@ -10,13 +10,13 @@ import { useId } from "react";
 import { PlatformTabs } from "@/components/downloads/platform-tabs";
 import { StatusBadge } from "@/components/ui/bits";
 import { Button } from "@/components/ui/button";
-import type { Project } from "@/data/projects";
+import type { DownloadKey, Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
 /** Fallback target when a project has no published repository. */
 const GITHUB_PROFILE = "https://github.com/Sarthak-Cyb3r";
 
-type Availability = "ready" | "planned" | "missing";
+type Availability = "ready" | "planned" | "pending" | "missing";
 
 const availabilityCopy: Record<
   Availability,
@@ -24,8 +24,16 @@ const availabilityCopy: Record<
 > = {
   ready: { word: "Ready", dot: "bg-ok" },
   planned: { word: "In development", dot: "bg-warn" },
+  pending: { word: "CI build pending", dot: "bg-link" },
   missing: { word: "Not available", dot: "bg-faint" },
 };
+
+/** ready → published · pending → building in CI · missing → not started. */
+function platformState(project: Project, key: DownloadKey): Availability {
+  if (project.downloads[key]) return "ready";
+  if (project.downloads.pending?.includes(key)) return "pending";
+  return "missing";
+}
 
 /**
  * Data-driven branching — nothing about a specific project is hardcoded here:
@@ -128,8 +136,9 @@ function DownloadPanel({ project }: { project: Project }) {
   const headingId = useId();
 
   const rows: Array<{ label: string; state: Availability }> = [
-    { label: "Linux / Debian", state: project.downloads.deb ? "ready" : "missing" },
-    { label: "Android", state: project.downloads.apk ? "ready" : "missing" },
+    { label: "Linux / Debian", state: platformState(project, "deb") },
+    { label: "Android", state: platformState(project, "apk") },
+    { label: "iOS / iPadOS", state: platformState(project, "ipa") },
     {
       label: "Windows",
       state: project.downloads.windows ? "ready" : "planned",

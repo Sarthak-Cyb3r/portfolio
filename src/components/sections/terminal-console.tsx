@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/ui/bits";
 import { projects, stats } from "@/data/projects";
 import { site } from "@/data/site";
 import { sound } from "@/lib/sound";
+import { formatBytes } from "@/lib/utils";
 
 interface CommandOutput {
   command: string;
@@ -18,6 +19,7 @@ const PRESET_COMMANDS = [
   "projects",
   "test studystack",
   "download ludo",
+  "download softify",
   "bench",
   "matrix",
   "skills",
@@ -138,7 +140,7 @@ export function TerminalConsole() {
               <div><span className="text-accent-2 font-mono">projects</span> — List all 4 projects with live status</div>
               <div><span className="text-accent-2 font-mono">test studystack</span> — Run automated test suite</div>
               <div><span className="text-accent-2 font-mono">download ludo</span> — Direct links for Linux &amp; Android</div>
-              <div><span className="text-accent-2 font-mono">download softify</span> — Universal Android APK for Softify</div>
+              <div><span className="text-accent-2 font-mono">download softify</span> — Android APK, iOS IPA status</div>
               <div><span className="text-accent-2 font-mono">bench</span> — Run client-side micro-benchmark</div>
               <div><span className="text-accent-2 font-mono">matrix</span> — Digital cyberpunk matrix stream</div>
               <div><span className="text-accent-2 font-mono">skills</span> — Technical capability breakdown</div>
@@ -200,13 +202,18 @@ export function TerminalConsole() {
                     {p.slug === "ludo-vercel"
                       ? "Web / Electron / APK"
                       : p.slug === "softify"
-                      ? "Android (Flutter)"
+                      ? "Android & iOS (Flutter)"
                       : "Node / SQLite"}
                   </span>
                   <span>
-                    {p.downloads.apk || p.downloads.deb
-                      ? [p.downloads.deb && "Linux", p.downloads.apk && "Android"].filter(Boolean).join(" & ")
-                      : "In Development"}
+                    {[
+                      p.downloads.deb && "Linux",
+                      p.downloads.apk && "Android",
+                      p.downloads.ipa && "iOS",
+                      p.downloads.pending?.includes("ipa") && "iOS (CI)",
+                    ]
+                      .filter(Boolean)
+                      .join(" & ") || "In Development"}
                   </span>
                 </div>
               ))}
@@ -227,7 +234,12 @@ export function TerminalConsole() {
             <p className="text-ok-soft text-ok font-semibold">Test Suites: 14 passed, 14 total (4.21s)</p>
           </div>
         );
-      case "download softify":
+      case "download softify": {
+        const softify = projects.find((p) => p.slug === "softify");
+        const ipa = softify?.downloads.ipa;
+        const ipaPending =
+          !ipa && (softify?.downloads.pending?.includes("ipa") ?? false);
+
         result = (
           <div className="space-y-2 text-xs">
             <p className="text-text font-semibold">Official Softify Build Artifacts:</p>
@@ -241,10 +253,30 @@ export function TerminalConsole() {
               >
                 <span>📱 Softify Universal .apk (65.4 MB) — v1.0.0</span>
               </a>
+              {ipa ? (
+                <a
+                  href={ipa.file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => sound.playChime()}
+                  className="inline-flex items-center gap-1.5 rounded-md bg-accent-2/20 border border-accent-2/40 px-3 py-1.5 text-accent-2 font-mono hover:bg-accent-2/30"
+                >
+                  <span>🍎 Softify iOS .ipa ({formatBytes(ipa.sizeBytes)}) — v{ipa.version}</span>
+                </a>
+              ) : null}
             </div>
+            {ipaPending ? (
+              <p className="text-muted">
+                🍎 iOS (.ipa) —{" "}
+                <span className="text-warn font-semibold">CI build pending</span>
+                . The sideloadable package posts to the v1.0.0 release as soon as
+                the iOS workflow goes green.
+              </p>
+            ) : null}
           </div>
         );
         break;
+      }
 
       case "download ludo":
       case "download":

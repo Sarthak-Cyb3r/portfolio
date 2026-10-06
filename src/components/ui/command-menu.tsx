@@ -185,7 +185,7 @@ export function CommandMenu() {
       id: "proj-softify",
       category: "Projects",
       title: "Softify",
-      subtitle: "Ad-free 320kbps Android music player & streaming engine",
+      subtitle: "Ad-free 320kbps Android & iOS music player & streaming engine",
       badge: "v1.0 APK",
       icon: <Headphones size={18} className="text-accent-3" />,
       action: () => {
@@ -257,6 +257,20 @@ export function CommandMenu() {
           "_blank",
           "noopener,noreferrer"
         );
+        setOpen(false);
+      },
+    },
+    {
+      id: "act-softify-ipa",
+      category: "Actions",
+      title: "Softify iOS IPA — CI build pending",
+      subtitle: "Sideloadable .ipa posts to the v1.0.0 release when CI goes green",
+      badge: ".ipa",
+      icon: <DownloadSimple size={18} className="text-link" />,
+      action: () => {
+        // No dead link: the .ipa is not on the release yet, so this lands on the
+        // case study where the pending state is explained.
+        router.push("/projects/softify");
         setOpen(false);
       },
     },

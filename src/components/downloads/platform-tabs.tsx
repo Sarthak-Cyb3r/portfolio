@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AppleLogo,
   Check,
   DeviceMobile,
   DownloadSimple,
@@ -19,14 +20,12 @@ import {
   useState,
   type KeyboardEvent,
 } from "react";
-import type { Project, ProjectDownloads } from "@/data/projects";
+import type { DownloadArtifact, DownloadKey, Project } from "@/data/projects";
 import type { Platform } from "@/lib/os-detect";
 import { detectPlatform } from "@/lib/os-detect";
 import { cn, formatBytes } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-
-type DownloadKey = keyof ProjectDownloads;
 
 interface Confirmation {
   file: string;
@@ -48,6 +47,10 @@ interface TabDef {
   noteTone: "muted" | "warn";
   /** Label for the disabled control. */
   unavailableLabel: string;
+  /** Copy for the "artifact is being built by CI right now" state. */
+  pendingNote: (projectName: string) => string;
+  /** Label for the disabled control while a build is pending. */
+  pendingLabel: string;
 }
 
 const TABS: TabDef[] = [
@@ -61,6 +64,9 @@ const TABS: TabDef[] = [
     note: (projectName) => `No .deb package for ${projectName} has been published yet.`,
     noteTone: "muted",
     unavailableLabel: "Not available yet",
+    pendingNote: (projectName) =>
+      `The Linux build for ${projectName} is still running in CI.`,
+    pendingLabel: "CI build pending",
   },
   {
     platform: "android",
@@ -74,6 +80,25 @@ const TABS: TabDef[] = [
     note: (projectName) => `No .apk for ${projectName} has been published yet.`,
     noteTone: "muted",
     unavailableLabel: "Not available yet",
+    pendingNote: (projectName) =>
+      `The Android build for ${projectName} is still running in CI.`,
+    pendingLabel: "CI build pending",
+  },
+  {
+    platform: "ios",
+    key: "ipa",
+    label: "iOS / iPadOS (.ipa)",
+    buttonLabel: "Download for iOS",
+    Icon: AppleLogo,
+    hint: () => ({
+      text: "Install using AltStore, Sideloadly, TrollStore or SideStore on iOS 15.0+.",
+    }),
+    note: (projectName) => `No .ipa package for ${projectName} has been published yet.`,
+    noteTone: "muted",
+    unavailableLabel: "Not available yet",
+    pendingNote: (projectName) =>
+      `The iOS build for ${projectName} is compiling in CI right now — the .ipa appears on the GitHub release as soon as that run goes green.`,
+    pendingLabel: "CI build pending",
   },
   {
     platform: "windows",
@@ -86,6 +111,9 @@ const TABS: TabDef[] = [
       "Windows builds are still in development across the board — nothing to download yet.",
     noteTone: "warn",
     unavailableLabel: "Windows build in development",
+    pendingNote: () =>
+      "The Windows build is still running in CI — nothing to download yet.",
+    pendingLabel: "CI build pending",
   },
 ];
 
@@ -105,13 +133,25 @@ const disabledCta = cn(
 
 const INDICATOR_PREFIX = "platform-tab-indicator";
 
+/** `downloads` is keyed by platform, so one lookup covers every tab. */
+const artifactFor = (project: Project, key: DownloadKey) =>
+  project.downloads[key];
+
 export function PlatformTabs({ project }: { project: Project }) {
   const baseId = useId();
   const tabId = (index: number) => `${baseId}-tab-${TABS[index].platform}`;
   const panelId = `${baseId}-panel`;
 
   /** Deterministic first paint (SSR + hydration); defaults to first available artifact */
-  const defaultIndex = project.downloads.deb ? 0 : project.downloads.apk ? 1 : project.downloads.windows ? 2 : 0;
+  const defaultIndex = project.downloads.deb
+    ? 0
+    : project.downloads.apk
+    ? 1
+    : project.downloads.ipa
+    ? 2
+    : project.downloads.windows
+    ? 3
+    : 0;
   const [active, setActive] = useState(defaultIndex);
   const [confirmed, setConfirmed] = useState<Confirmation | null>(null);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -124,14 +164,19 @@ export function PlatformTabs({ project }: { project: Project }) {
 
     // Defer the correction one microtask: the server HTML and the first client
     // paint both show the default tab (no hydration mismatch), then the real OS
-    // is applied before the browser paints — and only when it actually differs and has an artifact.
+    // is applied before the browser paints — when it differs and that platform
+    // has an artifact *or* a build on the way (so an iPhone visitor still lands
+    // on the honest iOS state instead of someone else's platform).
     queueMicrotask(() => {
       const detected = detectPlatform();
       if (!detected) return;
       const index = TABS.findIndex((tab) => tab.platform === detected);
       if (index >= 0) {
         const key = TABS[index].key;
-        if (project.downloads[key]) {
+        if (
+          project.downloads[key] ||
+          project.downloads.pending?.includes(key)
+        ) {
           setActive(index);
         }
       }
@@ -184,7 +229,9 @@ export function PlatformTabs({ project }: { project: Project }) {
   };
 
   const current = TABS[active];
-  const artifact = project.downloads[current.key];
+  const artifact = artifactFor(project, current.key);
+  const pending =
+    !artifact && (project.downloads.pending?.includes(current.key) ?? false);
 
   return (
     <div className="mt-5">
@@ -196,6 +243,7 @@ export function PlatformTabs({ project }: { project: Project }) {
         {TABS.map((tab, index) => {
           const isActive = index === active;
           const TabIcon = tab.Icon;
+          const isPending = project.downloads.pending?.includes(tab.key);
           return (
             <button
               key={tab.platform}
@@ -231,6 +279,13 @@ export function PlatformTabs({ project }: { project: Project }) {
                 className="relative h-4 w-4 shrink-0"
               />
               <span className="relative">{tab.label}</span>
+              {/* Never colour alone: the dot always ships with screen-reader text. */}
+              {isPending && !artifactFor(project, tab.key) ? (
+                <span aria-hidden="true" className="relative flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-warn" />
+                  <span className="sr-only"> — CI build pending</span>
+                </span>
+              ) : null}
             </button>
           );
         })}
@@ -258,7 +313,11 @@ export function PlatformTabs({ project }: { project: Project }) {
               onActivate={() => startDownload(artifact.fileName)}
             />
           ) : (
-            <Unavailable tab={current} projectName={project.name} />
+            <Unavailable
+              tab={current}
+              projectName={project.name}
+              pending={pending}
+            />
           )}
         </motion.div>
       </div>
@@ -273,7 +332,7 @@ function Downloadable({
   confirmed,
   onActivate,
 }: {
-  artifact: NonNullable<ProjectDownloads[DownloadKey]>;
+  artifact: DownloadArtifact;
   tab: TabDef;
   projectName: string;
   confirmed: Confirmation | null;
@@ -382,35 +441,45 @@ function Downloadable({
 function Unavailable({
   tab,
   projectName,
+  pending,
 }: {
   tab: TabDef;
   projectName: string;
+  pending: boolean;
 }) {
-  const warn = tab.noteTone === "warn";
+  // Three honest states: shipping (handled above), building in CI, not started.
+  const tone = pending ? "pending" : tab.noteTone === "warn" ? "warn" : "muted";
+  const text = pending
+    ? tab.pendingNote(projectName)
+    : tab.note(projectName);
+  const label = pending ? tab.pendingLabel : tab.unavailableLabel;
+
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
       <p
         className={cn(
           "flex max-w-md items-start gap-2 rounded-xl border px-3.5 py-2.5 text-xs leading-relaxed",
-          warn
-            ? "border-warn/40 bg-warn-soft text-warn"
-            : "border-line bg-surface text-muted",
+          tone === "pending" && "border-link/40 bg-link/10 text-link",
+          tone === "warn" && "border-warn/40 bg-warn-soft text-warn",
+          tone === "muted" && "border-line bg-surface text-muted",
         )}
       >
         <span
           aria-hidden="true"
           className={cn(
             "mt-0.5 shrink-0",
-            warn ? "text-warn" : "text-faint",
+            tone === "pending" && "text-link",
+            tone === "warn" && "text-warn",
+            tone === "muted" && "text-faint",
           )}
         >
-          {warn ? (
-            <Warning weight="bold" className="h-4 w-4" />
-          ) : (
+          {tone === "muted" ? (
             <Info weight="bold" className="h-4 w-4" />
+          ) : (
+            <Warning weight="bold" className="h-4 w-4" />
           )}
         </span>
-        <span>{tab.note(projectName)}</span>
+        <span>{text}</span>
       </p>
 
       <button
@@ -419,7 +488,7 @@ function Unavailable({
         aria-disabled="true"
         className={cn(disabledCta, "shrink-0")}
       >
-        {tab.unavailableLabel}
+        {label}
       </button>
     </div>
   );

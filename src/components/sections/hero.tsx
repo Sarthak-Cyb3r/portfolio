@@ -60,7 +60,7 @@ export function Hero() {
               >
                 <span className="flex h-2 w-2 rounded-full bg-accent-3 animate-pulse" />
                 <span className="font-mono text-xs text-text font-medium">
-                  New: Softify v1.0 (Android APK)
+                  New: Softify v1.0 · Android APK live · iOS in CI
                 </span>
                 <span className="font-mono text-[0.65rem] text-muted group-hover:text-accent-3 flex items-center gap-0.5">
                   Get App <ArrowRight size={11} weight="bold" />
@@ -127,7 +127,7 @@ export function Hero() {
               </div>
               <div className="flex items-center justify-between pt-0.5">
                 <span className="text-text truncate max-w-[280px]">
-                  feat(softify): Flutter 320kbps audio + Android APK
+                  feat(softify): iOS support + Dynamic Island &amp; AirPods
                 </span>
                 <span className="text-accent-3 font-semibold shrink-0">v1.0.0</span>
               </div>

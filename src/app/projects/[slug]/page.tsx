@@ -89,7 +89,12 @@ export default async function ProjectPage({ params }: Props) {
         <div className="flex flex-wrap items-center gap-3">
           <StatusBadge status={project.status} />
           <span className="font-mono text-xs text-faint">
-            Target: {project.slug === "softify" ? "Android (API 26+) · Flutter" : project.slug === "ludo-vercel" ? "Linux · Android · Web" : "Linux / Docker · Web"}
+            Target:{" "}
+            {project.slug === "softify"
+              ? "Android (API 26+) · iOS 15+ · Flutter"
+              : project.slug === "ludo-vercel"
+                ? "Linux · Android · Web"
+                : "Linux / Docker · Web"}
           </span>
         </div>
 

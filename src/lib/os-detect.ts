@@ -4,11 +4,11 @@
  * - Safe to call during SSR (returns `null` — the server has no navigator).
  * - Safe to call in a `useEffect` (the first paint stays deterministic so the
  *   server HTML and the client's first render match exactly).
- * - Never guesses: a visitor on an OS we ship nothing for (macOS / iOS) gets
- *   `null` rather than a download they cannot use.
+ * - Never guesses: a visitor on an OS we ship nothing for (macOS / watchOS)
+ *   gets `null` rather than a download they cannot use.
  */
 
-export type Platform = "linux" | "android" | "windows";
+export type Platform = "linux" | "android" | "windows" | "ios";
 
 /** User-Agent Client Hints — not yet part of TypeScript's DOM lib. */
 interface UserAgentDataLike {
@@ -24,15 +24,16 @@ interface NavigatorLike {
 
 type ParseResult =
   | { state: "match"; platform: Platform }
-  /** OS recognised, but we ship no build for it (macOS, iOS, …). */
+  /** OS recognised, but we ship no build for it (macOS, …). */
   | { state: "unsupported" }
   | { state: "unknown" };
 
 /**
  * Order matters:
  * 1. `android` first because Android UAs also contain "Linux".
- * 2. macOS/iOS before `win` because "darwin" contains "win".
- * 3. `linux` last so desktop Linux, X11 and Chrome OS resolve correctly.
+ * 2. `ios` next for iPhone / iPad / iPod devices.
+ * 3. macOS before `win` because "darwin" contains "win".
+ * 4. `linux` last so desktop Linux, X11 and Chrome OS resolve correctly.
  */
 function parsePlatform(raw: string | undefined | null): ParseResult {
   if (!raw) return { state: "unknown" };
@@ -40,7 +41,11 @@ function parsePlatform(raw: string | undefined | null): ParseResult {
 
   if (value.includes("android")) return { state: "match", platform: "android" };
 
-  if (/(mac|darwin|iphone|ipad|ios\b|watch)/.test(value)) {
+  if (/(iphone|ipad|ipod|ios\b)/.test(value)) {
+    return { state: "match", platform: "ios" };
+  }
+
+  if (/(mac|darwin|watch)/.test(value)) {
     return { state: "unsupported" };
   }
 

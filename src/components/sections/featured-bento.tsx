@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   CheckCircle,
+  CircleDashed,
   DownloadSimple,
   Eye,
   GameController,
@@ -28,6 +29,10 @@ export function FeaturedBento() {
   const studystack = getProject("studystack")!;
   const softify = getProject("softify")!;
   const accounty = getProject("accounty")!;
+  // The iOS artifact only counts as shipped once the release actually carries it.
+  const softifyIpaPending =
+    !softify.downloads.ipa &&
+    (softify.downloads.pending?.includes("ipa") ?? false);
 
   // -------------------------------------------------------------
   // LUDO STATE: Interactive board preview & 3D dice roller
@@ -460,7 +465,7 @@ export function FeaturedBento() {
                   <h3 className="font-display text-xl sm:text-2xl text-text font-bold">
                     {softify.name}
                   </h3>
-                  <p className="font-mono text-xs text-muted">Flutter Android · 320kbps Audio</p>
+                  <p className="font-mono text-xs text-muted">Flutter Android &amp; iOS · 320kbps Audio</p>
                 </div>
               </div>
               <StatusBadge status={softify.status} />
@@ -516,9 +521,19 @@ export function FeaturedBento() {
 
             <div className="flex items-center justify-between pt-2">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-ok flex items-center gap-1.5">
-                  <CheckCircle size={14} weight="fill" />
-                  Universal APK Shipped
+                <span
+                  className={`font-mono text-xs flex items-center gap-1.5 ${
+                    softifyIpaPending ? "text-warn" : "text-ok"
+                  }`}
+                >
+                  {softifyIpaPending ? (
+                    <CircleDashed size={14} weight="fill" />
+                  ) : (
+                    <CheckCircle size={14} weight="fill" />
+                  )}
+                  {softifyIpaPending
+                    ? "Android APK shipped · iOS IPA in CI"
+                    : "Android APK + iOS IPA Shipped"}
                 </span>
                 {softify.repoUrl && (
                   <a
@@ -536,7 +551,7 @@ export function FeaturedBento() {
                 onClick={() => sound.playClick(1000)}
                 className="inline-flex items-center gap-1.5 text-xs font-medium text-link hover:text-text transition-colors"
               >
-                Case study &amp; APK
+                Case study &amp; Downloads
                 <ArrowRight size={13} weight="bold" />
               </Link>
             </div>

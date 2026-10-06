@@ -11,10 +11,19 @@ export interface DownloadArtifact {
   fileName: string;
 }
 
+export type DownloadKey = "deb" | "apk" | "ipa" | "windows";
+
 export interface ProjectDownloads {
   deb?: DownloadArtifact;
   apk?: DownloadArtifact;
+  ipa?: DownloadArtifact;
   windows?: DownloadArtifact;
+  /**
+   * Platforms whose artifact is being built right now (e.g. a red CI run).
+   * Renders a disabled "CI build pending" control instead of a link that 404s.
+   * Removing the key once the file is published is all it takes to go live.
+   */
+  pending?: DownloadKey[];
 }
 
 export interface Project {
@@ -145,10 +154,14 @@ export const projects: Project[] = [
     slug: "softify",
     name: "Softify",
     tagline:
-      "Ad-free, paywall-free Android music streaming app built with Flutter. 320kbps studio masters, synced lyrics, Spotify importer, and offline playback.",
+      "Ad-free, paywall-free Android & iOS music streaming app built with Flutter. 320kbps studio masters, synced lyrics, Spotify importer, and offline playback.",
     description:
-      "Softify brings the premium music listening experience back to the listener. It delivers unrestricted, high-fidelity music streaming, instant search, synchronized lyrics, custom playlists, and offline downloads without subscriptions, audio or visual advertisements, or account paywalls. Built from the ground up using Flutter and strict Clean Architecture, Softify operates entirely client-side with zero central backend infrastructure, zero API key requirements, and zero telemetry tracking.",
+      "Softify brings the premium music listening experience back to the listener across Android and iOS. It delivers unrestricted, high-fidelity music streaming, instant search, synchronized lyrics, custom playlists, and offline downloads without subscriptions, audio or visual advertisements, or account paywalls. Built from the ground up using Flutter and strict Clean Architecture, Softify operates entirely client-side with native Lock Screen & Dynamic Island controls, AirPods stem gestures, Apple CarPlay integration, and zero telemetry tracking.",
     features: [
+      "Native iOS & Android integration — Lock Screen & Dynamic Island (MPRemoteCommandCenter) with live scrubber",
+      "AirPods & Bluetooth controls — Hardware stem squeeze / tap gesture handling and volume sync",
+      "Apple CarPlay & background audio streaming",
+      "iOS Sideloading support — AltStore, Sideloadly, TrollStore, and SideStore (.ipa package)",
       "320 kbps Studio Master Streaming with automated stream failover",
       "Smart Search Deduplication — eliminates noisy compilation duplicates",
       "Synced Karaoke Lyrics — real-time LRCLIB synchronization with tap-to-seek",
@@ -162,22 +175,25 @@ export const projects: Project[] = [
     stack: [
       "Flutter 3.19+",
       "Dart 3.3+",
+      "iOS 15+ (Swift & Obj-C)",
+      "Android SDK (API 26+)",
       "Clean Architecture",
       "Riverpod",
       "Drift (SQLite)",
-      "Just Audio & Audio Service",
+      "Just Audio & MPRemoteCommandCenter",
       "LRCLIB API",
-      "Android SDK (API 26+)",
     ],
     status: "completed",
     progressNote:
-      "v1.0.0 released with 49/49 passing automated tests and universal Android APK build.",
+      "v1.0.0 released with the Universal Android APK (.apk). The iOS sideloadable package (.ipa) is building in CI and lands on the release the moment that run goes green.",
     roadmap: [
       "✓ 320kbps studio master stream resolver with automated fallback",
       "✓ Synced lyrics integration via LRCLIB with interactive seek",
       "✓ 1-click Spotify public playlist importer and library sync",
       "✓ Embedded iTunes MP4 atom tagger for offline downloads",
       "✓ Autoplay radio engines with mood & genre isolation",
+      "✓ iOS platform support: Dynamic Island, AirPods stem click gestures & CarPlay",
+      "Sideloadable iOS package (.ipa) for AltStore, Sideloadly & TrollStore — publishing from CI",
       "Android Auto integration and landscape tablet UI layouts",
       "Desktop Linux and Windows player shells",
     ],
@@ -199,6 +215,11 @@ export const projects: Project[] = [
         version: "1.0.0",
         fileName: "Softify-v1.0.0-Universal.apk",
       },
+      // iOS stays out of the artifact map until the release actually carries it:
+      // the `ios_release.yml` run failed, so `Softify-iOS-Universal.ipa` is not on
+      // v1.0.0 yet. Publish a real `ipa: { file, sizeBytes, version, fileName }`
+      // (and drop "ipa" from `pending`) the moment CI goes green.
+      pending: ["ipa"],
     },
   },
   {
