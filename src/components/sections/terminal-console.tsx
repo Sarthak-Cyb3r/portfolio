@@ -138,6 +138,7 @@ export function TerminalConsole() {
               <div><span className="text-accent-2 font-mono">projects</span> — List all 4 projects with live status</div>
               <div><span className="text-accent-2 font-mono">test studystack</span> — Run automated test suite</div>
               <div><span className="text-accent-2 font-mono">download ludo</span> — Direct links for Linux &amp; Android</div>
+              <div><span className="text-accent-2 font-mono">download softify</span> — Universal Android APK for Softify</div>
               <div><span className="text-accent-2 font-mono">bench</span> — Run client-side micro-benchmark</div>
               <div><span className="text-accent-2 font-mono">matrix</span> — Digital cyberpunk matrix stream</div>
               <div><span className="text-accent-2 font-mono">skills</span> — Technical capability breakdown</div>
@@ -152,7 +153,7 @@ export function TerminalConsole() {
       case "whoami":
         result = (
           <div className="space-y-2 text-xs text-muted">
-            <p className="text-text font-semibold">Sarthak · 16 Years Old · Vibe Coder</p>
+            <p className="text-text font-semibold">Sarthak · 16 Years Old · 11th Grader @ Chinmaya Vidyalaya · Vibe Coder</p>
             <p>
               Self-taught developer building apps, games, and high-performance tools.
               Believes in shipping real binaries (.deb, .apk) rather than static prototypes.
@@ -195,8 +196,18 @@ export function TerminalConsole() {
                   <span className={p.status === "completed" ? "text-ok" : "text-warn"}>
                     {p.status}
                   </span>
-                  <span>{p.slug === "ludo-vercel" ? "Web / Electron / APK" : "Node / SQLite"}</span>
-                  <span>{p.status === "completed" ? "Linux & Android" : "In Development"}</span>
+                  <span>
+                    {p.slug === "ludo-vercel"
+                      ? "Web / Electron / APK"
+                      : p.slug === "softify"
+                      ? "Android (Flutter)"
+                      : "Node / SQLite"}
+                  </span>
+                  <span>
+                    {p.downloads.apk || p.downloads.deb
+                      ? [p.downloads.deb && "Linux", p.downloads.apk && "Android"].filter(Boolean).join(" & ")
+                      : "In Development"}
+                  </span>
                 </div>
               ))}
             </div>
@@ -214,6 +225,23 @@ export function TerminalConsole() {
             <p className="text-muted">✔ Ratio-interval task prioritization algorithm: PASSED</p>
             <p className="text-muted">✔ Password reset token verification: PASSED</p>
             <p className="text-ok-soft text-ok font-semibold">Test Suites: 14 passed, 14 total (4.21s)</p>
+          </div>
+        );
+      case "download softify":
+        result = (
+          <div className="space-y-2 text-xs">
+            <p className="text-text font-semibold">Official Softify Build Artifacts:</p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.0/Softify-v1.0.0-Universal.apk"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => sound.playChime()}
+                className="inline-flex items-center gap-1.5 rounded-md bg-accent-3/20 border border-accent-3/40 px-3 py-1.5 text-accent-3 font-mono hover:bg-accent-3/30"
+              >
+                <span>📱 Softify Universal .apk (65.4 MB) — v1.0.0</span>
+              </a>
+            </div>
           </div>
         );
         break;

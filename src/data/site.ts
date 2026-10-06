@@ -3,11 +3,14 @@ export const githubUsername = "Sarthak-Cyb3r";
 export const site = {
   name: "Sarthak",
   handle: `@${githubUsername}`,
-  role: "Vibe coder",
+  role: "Vibe Coder & 11th Grader",
   headline: "Sarthak: 16, vibe coder building apps, games & tools",
   subline:
-    "Self-taught, still in school, shipping things I actually want to use — a multiplayer game, a study planner, a music player and a finance tracker. Everything here is real code, real builds, real downloads.",
+    "16-year-old 11th grader studying in Chinmaya Vidyalaya. Self-taught vibe coder shipping things I actually want to use — a 320kbps Android music streamer, a multiplayer game, a study planner and a finance tracker. Everything here is real code, real builds, real downloads.",
   age: 16,
+  grade: "11th Grade",
+  school: "Chinmaya Vidyalaya",
+  education: "11th grader studying in Chinmaya Vidyalaya",
   githubUrl: `https://github.com/${githubUsername}`,
   githubApiRepos: `https://api.github.com/users/${githubUsername}`,
   email: "lakh125yu@gmail.com",

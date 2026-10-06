@@ -49,15 +49,15 @@ export function About() {
 
           <Reveal delay={0.2} className="mt-6 space-y-4 text-base leading-relaxed text-muted">
             <p>
-              I&apos;m Sarthak — a 16-year-old student and self-taught developer
+              I&apos;m Sarthak — a 16-year-old 11th grader studying in Chinmaya Vidyalaya and a self-taught developer
               who believes software should be fast, honest, and immediately usable.
               I spend my free hours in the terminal, experimenting with real-time
-              protocols, native runtimes (Electron &amp; Capacitor), and modern web stacks.
+              protocols, native mobile &amp; desktop runtimes (Flutter, Electron &amp; Capacitor), and modern fullstack architectures.
             </p>
             <p>
               When I build, I don&apos;t just generate code and hope for the best.
               I test edge cases, package native binaries, and measure performance.
-              Whether it&apos;s a multiplayer game like Ludo or an academic planner like
+              Whether it&apos;s an ad-free 320kbps music streaming app like Softify, a multiplayer game like Ludo, or an academic planner like
               StudyStack, the goal is always a rock-solid artifact.
             </p>
           </Reveal>

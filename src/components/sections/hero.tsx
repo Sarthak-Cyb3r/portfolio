@@ -54,18 +54,23 @@ export function Hero() {
           <Reveal delay={0.05}>
             <div className="flex flex-wrap items-center gap-2">
               <Link
-                href="/projects/ludo-vercel"
+                href="/projects/softify"
                 onClick={() => sound.playClick(1200)}
-                className="group inline-flex items-center gap-2.5 rounded-full border border-accent-2/30 bg-surface-2/80 px-3.5 py-1.5 backdrop-blur-md transition-all duration-300 hover:border-accent-2 hover:bg-surface-2 shadow-sm"
+                className="group inline-flex items-center gap-2 rounded-full border border-accent-3/40 bg-surface-2/80 px-3.5 py-1.5 backdrop-blur-md transition-all duration-300 hover:border-accent-3 hover:bg-surface-2 shadow-sm"
               >
-                <span className="flex h-2 w-2 rounded-full bg-ok animate-pulse" />
+                <span className="flex h-2 w-2 rounded-full bg-accent-3 animate-pulse" />
                 <span className="font-mono text-xs text-text font-medium">
-                  Shipped: Ludo v1.0 (Debian + APK)
+                  New: Softify v1.0 (Android APK)
                 </span>
-                <span className="font-mono text-[0.65rem] text-muted group-hover:text-accent-2 flex items-center gap-0.5">
-                  Install <ArrowRight size={11} weight="bold" />
+                <span className="font-mono text-[0.65rem] text-muted group-hover:text-accent-3 flex items-center gap-0.5">
+                  Get App <ArrowRight size={11} weight="bold" />
                 </span>
               </Link>
+
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/80 px-3 py-1 font-mono text-xs text-accent-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-2" />
+                <span>11th Grader @ Chinmaya Vidyalaya</span>
+              </span>
 
               <a
                 href={`mailto:${site.email}`}
@@ -122,7 +127,7 @@ export function Hero() {
               </div>
               <div className="flex items-center justify-between pt-0.5">
                 <span className="text-text truncate max-w-[280px]">
-                  feat(ludo): 6-player board + .deb artifact
+                  feat(softify): Flutter 320kbps audio + Android APK
                 </span>
                 <span className="text-accent-3 font-semibold shrink-0">v1.0.0</span>
               </div>

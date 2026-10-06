@@ -460,14 +460,14 @@ export function FeaturedBento() {
                   <h3 className="font-display text-xl sm:text-2xl text-text font-bold">
                     {softify.name}
                   </h3>
-                  <p className="font-mono text-xs text-muted">Free &amp; Ad-Free Audio</p>
+                  <p className="font-mono text-xs text-muted">Flutter Android · 320kbps Audio</p>
                 </div>
               </div>
-              <StatusBadge status="in-development" />
+              <StatusBadge status={softify.status} />
             </div>
 
             <p className="text-sm text-muted leading-relaxed mb-5">
-              {softify.tagline} Designed with fluid playback controls and a zero-interruption streaming architecture.
+              {softify.tagline}
             </p>
 
             {/* Interactive Audio Player & Equalizer */}
@@ -515,13 +515,28 @@ export function FeaturedBento() {
             </div>
 
             <div className="flex items-center justify-between pt-2">
-              <span className="font-mono text-xs text-faint">In Development</span>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs text-ok flex items-center gap-1.5">
+                  <CheckCircle size={14} weight="fill" />
+                  Universal APK Shipped
+                </span>
+                {softify.repoUrl && (
+                  <a
+                    href={softify.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[0.6875rem] text-muted hover:text-text border border-line rounded px-2 py-0.5 transition-colors"
+                  >
+                    GitHub
+                  </a>
+                )}
+              </div>
               <Link
                 href={`/projects/${softify.slug}`}
                 onClick={() => sound.playClick(1000)}
                 className="inline-flex items-center gap-1.5 text-xs font-medium text-link hover:text-text transition-colors"
               >
-                View status
+                Case study &amp; APK
                 <ArrowRight size={13} weight="bold" />
               </Link>
             </div>

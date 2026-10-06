@@ -31,12 +31,12 @@ const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
 });
 
-const url = "https://sarthak.vercel.app";
+const url = "https://sarthak-cyb3r.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
   title: {
-    default: `${site.name} — 16, vibe coder building apps, games & tools`,
+    default: `${site.name} — 16, 11th grader at Chinmaya Vidyalaya & vibe coder`,
     template: `%s — ${site.name}`,
   },
   description: site.subline,
@@ -44,10 +44,13 @@ export const metadata: Metadata = {
     "Sarthak",
     "vibe coder",
     "teen developer",
+    "Chinmaya Vidyalaya",
     "portfolio",
+    "Softify",
+    "Flutter",
+    "Android",
     "Ludo",
     "StudyStack",
-    "Softify",
     "Accounty",
   ],
   authors: [{ name: site.name, url: site.githubUrl }],
@@ -56,13 +59,13 @@ export const metadata: Metadata = {
     type: "website",
     url,
     siteName: `${site.name} — Portfolio`,
-    title: `${site.name} — 16, vibe coder building apps, games & tools`,
+    title: `${site.name} — 16, 11th grader at Chinmaya Vidyalaya & vibe coder`,
     description: site.subline,
     images: [{ url: "/og.png", width: 1200, height: 630, alt: site.headline }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — 16, vibe coder building apps, games & tools`,
+    title: `${site.name} — 16, 11th grader at Chinmaya Vidyalaya & vibe coder`,
     description: site.subline,
     images: ["/og.png"],
   },

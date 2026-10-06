@@ -44,7 +44,7 @@ export function Gallery({
             height={1000}
             sizes="(min-width: 1024px) 72rem, 100vw"
             loading={index === 0 ? "eager" : "lazy"}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain bg-[#08080C]"
           />
           <span
             aria-hidden

@@ -89,7 +89,7 @@ export default async function ProjectPage({ params }: Props) {
         <div className="flex flex-wrap items-center gap-3">
           <StatusBadge status={project.status} />
           <span className="font-mono text-xs text-faint">
-            Target: Linux · Android · Web
+            Target: {project.slug === "softify" ? "Android (API 26+) · Flutter" : project.slug === "ludo-vercel" ? "Linux · Android · Web" : "Linux / Docker · Web"}
           </span>
         </div>
 
@@ -107,7 +107,7 @@ export default async function ProjectPage({ params }: Props) {
             {project.liveUrl ? (
               <Button href={project.liveUrl} external>
                 <ArrowUpRight size={16} aria-hidden />
-                Open live site
+                {project.slug === "softify" ? "v1.0.0 GitHub Release" : "Open live site"}
               </Button>
             ) : null}
             {project.repoUrl ? (
@@ -125,6 +125,14 @@ export default async function ProjectPage({ params }: Props) {
             <CopySnippet
               command={`sudo dpkg -i ludo-with-friends-1.0.0-amd64.deb`}
               label="Linux Install"
+            />
+          </div>
+        )}
+        {project.slug === "softify" && project.downloads.apk && (
+          <div className="mt-6">
+            <CopySnippet
+              command={`adb install Softify-v1.0.0-Universal.apk`}
+              label="Android ADB Install"
             />
           </div>
         )}

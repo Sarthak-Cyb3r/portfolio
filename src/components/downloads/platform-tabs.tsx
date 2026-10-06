@@ -110,8 +110,9 @@ export function PlatformTabs({ project }: { project: Project }) {
   const tabId = (index: number) => `${baseId}-tab-${TABS[index].platform}`;
   const panelId = `${baseId}-panel`;
 
-  /** Deterministic first paint (SSR + hydration); corrected once, after mount. */
-  const [active, setActive] = useState(0);
+  /** Deterministic first paint (SSR + hydration); defaults to first available artifact */
+  const defaultIndex = project.downloads.deb ? 0 : project.downloads.apk ? 1 : project.downloads.windows ? 2 : 0;
+  const [active, setActive] = useState(defaultIndex);
   const [confirmed, setConfirmed] = useState<Confirmation | null>(null);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const initialised = useRef(false);
@@ -123,14 +124,19 @@ export function PlatformTabs({ project }: { project: Project }) {
 
     // Defer the correction one microtask: the server HTML and the first client
     // paint both show the default tab (no hydration mismatch), then the real OS
-    // is applied before the browser paints — and only when it actually differs.
+    // is applied before the browser paints — and only when it actually differs and has an artifact.
     queueMicrotask(() => {
       const detected = detectPlatform();
       if (!detected) return;
       const index = TABS.findIndex((tab) => tab.platform === detected);
-      if (index > 0) setActive(index);
+      if (index >= 0) {
+        const key = TABS[index].key;
+        if (project.downloads[key]) {
+          setActive(index);
+        }
+      }
     });
-  }, []);
+  }, [project.downloads]);
 
   /** Auto-hide the inline confirmation ~4s after a download starts. */
   useEffect(() => {
@@ -296,7 +302,9 @@ function Downloadable({
           {/* Real anchor: the download must never be intercepted. */}
           <a
             href={artifact.file}
-            download
+            download={artifact.file.startsWith("http") ? undefined : artifact.fileName}
+            target={artifact.file.startsWith("http") ? "_blank" : undefined}
+            rel={artifact.file.startsWith("http") ? "noopener noreferrer" : undefined}
             onClick={onActivate}
             className={primaryCta}
           >

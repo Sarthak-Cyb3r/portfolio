@@ -1,6 +1,6 @@
 # Sarthak — SaaS Portfolio & Engineering Showcase
 
-> **16-year-old builder & vibe coder** crafting high-performance SaaS applications, real-time multiplayer systems, desktop engines, and developer tools.
+> **16-year-old 11th grader studying at Chinmaya Vidyalaya & vibe coder** crafting high-performance SaaS applications, real-time multiplayer systems, mobile audio engines, and developer tools.
 
 [![Live on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://sarthak-cyb3r.vercel.app)
 [![Next.js 15](https://img.shields.io/badge/Next.js-15%20(App%20Router)-000000?style=for-the-badge&logo=next.js)](https://nextjs.org)
@@ -51,13 +51,14 @@
 - Deep-dive product breakdowns with architecture diagrams, live demo links, and tech breakdowns:
   - **Ludo with Friends** — Real-time multiplayer board game with Firebase subcollections, Electron desktop shell, Capacitor Android app, and PWA offline support.
   - **Studystack** — JEE 2028 analytics tracker, revision schedule engine, and test performance diagnostics.
-  - **Softify** — Curated catalog and launcher for modern utility tools.
+  - **Softify** — Ad-free, paywall-free Android music streaming app built with Flutter. 320kbps studio masters, synced lyrics, Spotify importer, and offline playback ([GitHub Repo](https://github.com/Sarthak-Cyb3r/softify)).
   - **Accounty** — Double-entry personal ledger and finance tracker.
 
 ### 7. Hosted Real Binaries
-- Direct downloads hosted right from the public edge network:
-  - **Android APK**: `ludo-with-friends.apk` (4.7 MB)
-  - **Linux Debian Package**: `ludo-with-friends-1.0.0-amd64.deb` (94 MB)
+- Direct downloads hosted and available:
+  - **Softify Android APK**: [Softify-v1.0.0-Universal.apk](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v1.0.0) (65.4 MB)
+  - **Ludo Android APK**: `ludo-with-friends.apk` (4.7 MB)
+  - **Ludo Linux Debian Package**: `ludo-with-friends-1.0.0-amd64.deb` (94 MB)
 
 ---
 

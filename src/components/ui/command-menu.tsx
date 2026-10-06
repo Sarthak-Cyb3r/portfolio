@@ -185,8 +185,8 @@ export function CommandMenu() {
       id: "proj-softify",
       category: "Projects",
       title: "Softify",
-      subtitle: "Ad-free zero-latency music player & streaming engine",
-      badge: "In Dev",
+      subtitle: "Ad-free 320kbps Android music player & streaming engine",
+      badge: "v1.0 APK",
       icon: <Headphones size={18} className="text-accent-3" />,
       action: () => {
         router.push("/projects/softify");
@@ -240,6 +240,23 @@ export function CommandMenu() {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        setOpen(false);
+      },
+    },
+    {
+      id: "act-softify-apk",
+      category: "Actions",
+      title: "Download Softify Android APK",
+      subtitle: "Softify-v1.0.0-Universal.apk (65.4 MB)",
+      badge: ".apk",
+      icon: <DownloadSimple size={18} className="text-accent-3" />,
+      action: () => {
+        sound.playChime();
+        window.open(
+          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.0/Softify-v1.0.0-Universal.apk",
+          "_blank",
+          "noopener,noreferrer"
+        );
         setOpen(false);
       },
     },
