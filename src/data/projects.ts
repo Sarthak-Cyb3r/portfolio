@@ -185,7 +185,7 @@ export const projects: Project[] = [
     ],
     status: "completed",
     progressNote:
-      "v1.0.0 released with the Universal Android APK (.apk). The iOS sideloadable package (.ipa) is building in CI and lands on the release the moment that run goes green.",
+      "v1.0.0 released with the Universal Android APK (.apk) and the sideloadable iOS package (.ipa) for AltStore, Sideloadly, TrollStore, and SideStore.",
     roadmap: [
       "✓ 320kbps studio master stream resolver with automated fallback",
       "✓ Synced lyrics integration via LRCLIB with interactive seek",
@@ -193,7 +193,7 @@ export const projects: Project[] = [
       "✓ Embedded iTunes MP4 atom tagger for offline downloads",
       "✓ Autoplay radio engines with mood & genre isolation",
       "✓ iOS platform support: Dynamic Island, AirPods stem click gestures & CarPlay",
-      "Sideloadable iOS package (.ipa) for AltStore, Sideloadly & TrollStore — publishing from CI",
+      "✓ Sideloadable iOS package (.ipa) for AltStore, Sideloadly & TrollStore",
       "Android Auto integration and landscape tablet UI layouts",
       "Desktop Linux and Windows player shells",
     ],
@@ -215,11 +215,12 @@ export const projects: Project[] = [
         version: "1.0.0",
         fileName: "Softify-v1.0.0-Universal.apk",
       },
-      // iOS stays out of the artifact map until the release actually carries it:
-      // the `ios_release.yml` run failed, so `Softify-iOS-Universal.ipa` is not on
-      // v1.0.0 yet. Publish a real `ipa: { file, sizeBytes, version, fileName }`
-      // (and drop "ipa" from `pending`) the moment CI goes green.
-      pending: ["ipa"],
+      ipa: {
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.0/Softify-iOS-Universal.ipa",
+        sizeBytes: 10938031,
+        version: "1.0.0",
+        fileName: "Softify-iOS-Universal.ipa",
+      },
     },
   },
   {
