@@ -51,13 +51,13 @@
 - Deep-dive product breakdowns with architecture diagrams, live demo links, and tech breakdowns:
   - **Ludo with Friends** — Real-time multiplayer board game with Firebase subcollections, Electron desktop shell, Capacitor Android app, and PWA offline support.
   - **Studystack** — JEE 2028 analytics tracker, revision schedule engine, and test performance diagnostics.
-  - **Softify** — Ad-free, paywall-free Android & iOS music streaming app built with Flutter. 320kbps studio masters, synced lyrics, Spotify importer, offline playback, Dynamic Island & AirPods controls ([GitHub Repo](https://github.com/Sarthak-Cyb3r/softify)).
+  - **Softify** — Ad-free, paywall-free Android & iOS music streaming app built with Flutter. 320kbps studio masters, synced lyrics, dual-engine standby pre-buffering (<10ms track transitions), Spotify importer, offline playback, Dynamic Island & AirPods controls ([GitHub Repo](https://github.com/Sarthak-Cyb3r/softify)).
   - **Accounty** — Double-entry personal ledger and finance tracker.
 
 ### 7. Hosted Real Binaries
 - Direct downloads hosted and available:
-  - **Softify Android APK**: [Softify-v1.0.0-Universal.apk](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v1.0.0) (65.4 MB)
-  - **Softify iOS IPA**: sideloadable build (AltStore / Sideloadly / TrollStore, iOS 15+) — published from CI to the same `v1.0.0` release. Until that run is green the site shows a disabled **CI build pending** control instead of a dead link.
+  - **Softify Android APK**: [Softify-v1.0.1-Universal.apk](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v1.0.1) (65.4 MB, v1.0.1)
+  - **Softify iOS IPA**: [Softify-iOS-Universal.ipa](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v1.0.1) (10.4 MB, v1.0.1) — sideloadable build for AltStore, Sideloadly & TrollStore (iOS 15.0+)
   - **Ludo Android APK**: `ludo-with-friends.apk` (4.7 MB)
   - **Ludo Linux Debian Package**: `ludo-with-friends-1.0.0-amd64.deb` (94 MB)
 

@@ -20,6 +20,7 @@ const PRESET_COMMANDS = [
   "test studystack",
   "download ludo",
   "download softify",
+  "release-notes",
   "bench",
   "matrix",
   "skills",
@@ -140,7 +141,8 @@ export function TerminalConsole() {
               <div><span className="text-accent-2 font-mono">projects</span> — List all 4 projects with live status</div>
               <div><span className="text-accent-2 font-mono">test studystack</span> — Run automated test suite</div>
               <div><span className="text-accent-2 font-mono">download ludo</span> — Direct links for Linux &amp; Android</div>
-              <div><span className="text-accent-2 font-mono">download softify</span> — Android APK, iOS IPA status</div>
+              <div><span className="text-accent-2 font-mono">download softify</span> — Android APK &amp; iOS IPA links</div>
+              <div><span className="text-accent-2 font-mono">release-notes</span> — Softify v1.0.1 changes &amp; fixes</div>
               <div><span className="text-accent-2 font-mono">bench</span> — Run client-side micro-benchmark</div>
               <div><span className="text-accent-2 font-mono">matrix</span> — Digital cyberpunk matrix stream</div>
               <div><span className="text-accent-2 font-mono">skills</span> — Technical capability breakdown</div>
@@ -236,22 +238,23 @@ export function TerminalConsole() {
         );
       case "download softify": {
         const softify = projects.find((p) => p.slug === "softify");
+        const apk = softify?.downloads.apk;
         const ipa = softify?.downloads.ipa;
         const ipaPending =
           !ipa && (softify?.downloads.pending?.includes("ipa") ?? false);
 
         result = (
           <div className="space-y-2 text-xs">
-            <p className="text-text font-semibold">Official Softify Build Artifacts:</p>
+            <p className="text-text font-semibold">Official Softify v1.0.1 Build Artifacts:</p>
             <div className="flex flex-wrap gap-2">
               <a
-                href="https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.0/Softify-v1.0.0-Universal.apk"
+                href={apk?.file ?? "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-v1.0.1-Universal.apk"}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sound.playChime()}
                 className="inline-flex items-center gap-1.5 rounded-md bg-accent-3/20 border border-accent-3/40 px-3 py-1.5 text-accent-3 font-mono hover:bg-accent-3/30"
               >
-                <span>📱 Softify Universal .apk (65.4 MB) — v1.0.0</span>
+                <span>📱 Softify Universal .apk ({apk ? formatBytes(apk.sizeBytes) : "65.4 MB"}) — v{apk?.version ?? "1.0.1"}</span>
               </a>
               {ipa ? (
                 <a
@@ -269,10 +272,46 @@ export function TerminalConsole() {
               <p className="text-muted">
                 🍎 iOS (.ipa) —{" "}
                 <span className="text-warn font-semibold">CI build pending</span>
-                . The sideloadable package posts to the v1.0.0 release as soon as
-                the iOS workflow goes green.
+                . The sideloadable package posts to the release as soon as the iOS workflow goes green.
               </p>
             ) : null}
+          </div>
+        );
+        break;
+      }
+
+      case "release-notes":
+      case "softify notes":
+      case "changelog": {
+        const softify = projects.find((p) => p.slug === "softify");
+        const note = softify?.releaseNotes?.[0];
+        result = (
+          <div className="space-y-2 text-xs font-mono">
+            <div className="flex items-center justify-between border-b border-line pb-1.5">
+              <span className="text-accent-3 font-semibold">
+                Softify {note?.tag ?? "v1.0.1"} — Release Notes
+              </span>
+              <span className="text-faint">{note?.date ?? "Oct 7, 2026"}</span>
+            </div>
+            <p className="text-muted">{note?.summary}</p>
+            <div className="space-y-1.5 pt-1">
+              {note?.changes.map((c) => (
+                <div key={c.title} className="rounded bg-surface p-2 border border-line/60">
+                  <div className="flex items-center justify-between text-text font-semibold">
+                    <span>{c.title}</span>
+                    {c.badge && <span className="text-[0.65rem] text-accent-2">[{c.badge}]</span>}
+                  </div>
+                  {c.problem && <p className="text-warn text-[0.7rem] mt-0.5">Problem: {c.problem}</p>}
+                  <p className="text-ok text-[0.7rem] mt-0.5">Fix: {c.fix}</p>
+                </div>
+              ))}
+            </div>
+            <div className="pt-1 flex flex-wrap items-center gap-2 text-accent-2">
+              <span>Artifacts ready:</span>
+              <span className="text-text">Softify-v1.0.1-Universal.apk (65.4 MB)</span>
+              <span>·</span>
+              <span className="text-text">Softify-iOS-Universal.ipa (10.4 MB)</span>
+            </div>
           </div>
         );
         break;

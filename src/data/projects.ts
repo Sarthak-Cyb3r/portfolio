@@ -26,6 +26,29 @@ export interface ProjectDownloads {
   pending?: DownloadKey[];
 }
 
+export interface ReleaseChange {
+  title: string;
+  badge?: string;
+  problem?: string;
+  fix: string;
+  details?: string[];
+}
+
+export interface ReleaseNote {
+  version: string;
+  tag: string;
+  date: string;
+  title: string;
+  summary: string;
+  changes: ReleaseChange[];
+  assets?: {
+    name: string;
+    size: string;
+    platform: string;
+    url: string;
+  }[];
+}
+
 export interface Project {
   slug: string;
   name: string;
@@ -43,6 +66,7 @@ export interface Project {
   repoUrl?: string;
   screenshots: string[];
   downloads: ProjectDownloads;
+  releaseNotes?: ReleaseNote[];
 }
 
 export const projects: Project[] = [
@@ -158,6 +182,7 @@ export const projects: Project[] = [
     description:
       "Softify brings the premium music listening experience back to the listener across Android and iOS. It delivers unrestricted, high-fidelity music streaming, instant search, synchronized lyrics, custom playlists, and offline downloads without subscriptions, audio or visual advertisements, or account paywalls. Built from the ground up using Flutter and strict Clean Architecture, Softify operates entirely client-side with native Lock Screen & Dynamic Island controls, AirPods stem gestures, Apple CarPlay integration, and zero telemetry tracking.",
     features: [
+      "Dual-Engine Standby Pre-Buffering — near-instant song transitions (<10ms perceived latency)",
       "Native iOS & Android integration — Lock Screen & Dynamic Island (MPRemoteCommandCenter) with live scrubber",
       "AirPods & Bluetooth controls — Hardware stem squeeze / tap gesture handling and volume sync",
       "Apple CarPlay & background audio streaming",
@@ -167,10 +192,10 @@ export const projects: Project[] = [
       "Synced Karaoke Lyrics — real-time LRCLIB synchronization with tap-to-seek",
       "Automix & Continuous Autoplay with genre and language isolation",
       "1-Click Spotify Playlist Importer — zero-key public playlist migration",
-      "Offline Downloads Manager with embedded iTunes MP4 atom metadata",
+      "Offline Downloads Manager with ISO-BMFF MP4 atom chunk offset shifting and legacy auto-repair",
       "Client-Side Privacy — zero central servers, zero accounts, zero telemetry",
       "Local Drift SQLite library cache for playlists, favorites, and history",
-      "49/49 automated unit and integration tests passing (100% coverage)",
+      "54/54 automated unit and integration tests passing (100% coverage)",
     ],
     stack: [
       "Flutter 3.19+",
@@ -185,8 +210,10 @@ export const projects: Project[] = [
     ],
     status: "completed",
     progressNote:
-      "v1.0.0 released with the Universal Android APK (.apk) and the sideloadable iOS package (.ipa) for AltStore, Sideloadly, TrollStore, and SideStore.",
+      "v1.0.1 released with the Universal Android APK (.apk) and sideloadable iOS package (.ipa) for AltStore, Sideloadly & TrollStore. Fixes track transition latency (<10ms) and offline audio decoding silence.",
     roadmap: [
+      "✓ Dual-Engine standby pre-buffering (<10ms track transitions)",
+      "✓ ISO-BMFF MP4 atom tagger & legacy offline audio auto-repair",
       "✓ 320kbps studio master stream resolver with automated fallback",
       "✓ Synced lyrics integration via LRCLIB with interactive seek",
       "✓ 1-click Spotify public playlist importer and library sync",
@@ -198,7 +225,7 @@ export const projects: Project[] = [
       "Desktop Linux and Windows player shells",
     ],
     cover: "/projects/softify/cover.png",
-    liveUrl: "https://github.com/Sarthak-Cyb3r/softify/releases/tag/v1.0.0",
+    liveUrl: "https://github.com/Sarthak-Cyb3r/softify/releases/tag/v1.0.1",
     repoUrl: "https://github.com/Sarthak-Cyb3r/softify",
     screenshots: [
       "/projects/softify/cover.png",
@@ -210,18 +237,93 @@ export const projects: Project[] = [
     ],
     downloads: {
       apk: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.0/Softify-v1.0.0-Universal.apk",
-        sizeBytes: 68582607,
-        version: "1.0.0",
-        fileName: "Softify-v1.0.0-Universal.apk",
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-v1.0.1-Universal.apk",
+        sizeBytes: 68615379,
+        version: "1.0.1",
+        fileName: "Softify-v1.0.1-Universal.apk",
       },
       ipa: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.0/Softify-iOS-Universal.ipa",
-        sizeBytes: 10938031,
-        version: "1.0.0",
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-iOS-Universal.ipa",
+        sizeBytes: 10952446,
+        version: "1.0.1",
         fileName: "Softify-iOS-Universal.ipa",
       },
     },
+    releaseNotes: [
+      {
+        version: "1.0.1",
+        tag: "v1.0.1",
+        date: "October 7, 2026",
+        title: "Softify v1.0.1 — Critical Bug Fixes & Sideloadable iOS Release",
+        summary:
+          "This release addresses two critical playback bugs reported in v1.0.0, restoring offline music playback and making song transitions virtually instant (<10ms), while publishing the official sideloadable iOS IPA.",
+        changes: [
+          {
+            title: "Near-Instant Song Transitions (< 10ms Perception)",
+            badge: "Playback Engine",
+            problem:
+              "Transitions between songs previously suffered from noticeable dead silence (1.5s – 3.5s) due to synchronous stream resolution, player teardown, and fresh network buffering on every track advance.",
+            fix:
+              "Implemented Dual-Engine Standby Pre-Buffering Architecture in JustAudioPlayerAdapter. While track N plays, track N+1 is pre-resolved and pre-buffered in the background on a standby audio engine sitting paused at ProcessingState.ready. Swapping engines on skip/finish is instantaneous with zero perceived latency.",
+            details: [
+              "Non-critical database logging (e.g. play history recording) is handled asynchronously without blocking transition pipelines.",
+              "Continuous queue listener ensures standby engine preloads the next song ~15 seconds before the current track finishes.",
+            ],
+          },
+          {
+            title: "Downloaded Songs Silence & Playback Failure Repair",
+            badge: "Offline Storage",
+            problem:
+              "Songs downloaded for offline listening appeared to download successfully, but produced complete silence when played back.",
+            fix:
+              "Re-architected M4aAtomTagger to recursively traverse the MP4 atom tree (moov -> trak -> mdia -> minf -> stbl) and dynamically shift all stco (32-bit) and co64 (64-bit) chunk offsets by the exact metadata size delta.",
+            details: [
+              "On-The-Fly Legacy Repair: existing offline tracks downloaded on v1.0.0 are automatically detected and healed upon access in BackgroundDownloadRepository.",
+              "Robust fallback: if local file playback ever fails, SoftifyAudioHandler seamlessly falls back to real-time CDN streaming.",
+            ],
+          },
+          {
+            title: "Official Sideloadable iOS Release (.ipa)",
+            badge: "iOS Distribution",
+            problem:
+              "iOS users required a pre-packaged sideloadable IPA compatible with AltStore, Sideloadly, TrollStore, and SideStore.",
+            fix:
+              "Configured automated GitHub Actions workflow to build runner archive, package Runner.app into standard Payload directory, and publish Softify-iOS-Universal.ipa directly to release assets.",
+            details: [
+              "Full iOS 15.0+ compatibility across iPhone and iPad.",
+              "Lock Screen & Dynamic Island (MPRemoteCommandCenter) with live scrubber.",
+              "AirPods stem click gestures & Apple CarPlay support.",
+            ],
+          },
+          {
+            title: "In-App OTA Updater & Release Build Optimizations",
+            badge: "Tooling & CI",
+            problem:
+              "Manual APK verification was required to discover new releases, and CI release builds took excessive memory.",
+            fix:
+              "Connected GitHubReleaseUpdateChecker to Sarthak-Cyb3r/softify for seamless one-tap background APK updating, and bypassed memory-heavy lint tasks in Gradle release builds.",
+            details: [
+              "One-tap update checking from inside Settings screen.",
+              "GitHub Actions release write permissions enabled.",
+            ],
+          },
+        ],
+        assets: [
+          {
+            name: "Softify-v1.0.1-Universal.apk",
+            size: "65.4 MB",
+            platform: "Android 8.0+",
+            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-v1.0.1-Universal.apk",
+          },
+          {
+            name: "Softify-iOS-Universal.ipa",
+            size: "10.4 MB",
+            platform: "iOS 15.0+",
+            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-iOS-Universal.ipa",
+          },
+        ],
+      },
+    ],
   },
   {
     slug: "accounty",

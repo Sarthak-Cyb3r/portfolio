@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import {
+  AppleLogo,
   ArrowRight,
   Code,
   Compass,
@@ -13,6 +14,7 @@ import {
   GraduationCap,
   Headphones,
   MagnifyingGlass,
+  Sparkle,
   SpeakerHigh,
   SpeakerSlash,
   Sun,
@@ -247,13 +249,13 @@ export function CommandMenu() {
       id: "act-softify-apk",
       category: "Actions",
       title: "Download Softify Android APK",
-      subtitle: "Softify-v1.0.0-Universal.apk (65.4 MB)",
+      subtitle: "Softify-v1.0.1-Universal.apk (65.4 MB) — v1.0.1",
       badge: ".apk",
       icon: <DownloadSimple size={18} className="text-accent-3" />,
       action: () => {
         sound.playChime();
         window.open(
-          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.0/Softify-v1.0.0-Universal.apk",
+          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-v1.0.1-Universal.apk",
           "_blank",
           "noopener,noreferrer"
         );
@@ -263,14 +265,30 @@ export function CommandMenu() {
     {
       id: "act-softify-ipa",
       category: "Actions",
-      title: "Softify iOS IPA — CI build pending",
-      subtitle: "Sideloadable .ipa posts to the v1.0.0 release when CI goes green",
+      title: "Download Softify iOS IPA (.ipa)",
+      subtitle: "Softify-iOS-Universal.ipa (10.4 MB) — v1.0.1 (AltStore / Sideloadly)",
       badge: ".ipa",
-      icon: <DownloadSimple size={18} className="text-link" />,
+      icon: <AppleLogo size={18} className="text-accent-2" />,
       action: () => {
-        // No dead link: the .ipa is not on the release yet, so this lands on the
-        // case study where the pending state is explained.
-        router.push("/projects/softify");
+        sound.playChime();
+        window.open(
+          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-iOS-Universal.ipa",
+          "_blank",
+          "noopener,noreferrer"
+        );
+        setOpen(false);
+      },
+    },
+    {
+      id: "act-softify-notes",
+      category: "Actions",
+      title: "Softify v1.0.1 Release Notes",
+      subtitle: "Near-instant song transitions (<10ms), offline audio repair & iOS IPA",
+      badge: "v1.0.1",
+      icon: <Sparkle size={18} className="text-accent-3" />,
+      action: () => {
+        sound.playClick(1100);
+        router.push("/projects/softify#release-notes");
         setOpen(false);
       },
     },

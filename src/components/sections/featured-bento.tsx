@@ -12,6 +12,7 @@ import {
   Headphones,
   Pause,
   Play,
+  Sparkle,
   TrendUp,
 } from "@phosphor-icons/react";
 import Image from "next/image";
@@ -465,7 +466,7 @@ export function FeaturedBento() {
                   <h3 className="font-display text-xl sm:text-2xl text-text font-bold">
                     {softify.name}
                   </h3>
-                  <p className="font-mono text-xs text-muted">Flutter Android &amp; iOS · 320kbps Audio</p>
+                  <p className="font-mono text-xs text-muted">Flutter Android &amp; iOS · v1.0.1 Shipped</p>
                 </div>
               </div>
               <StatusBadge status={softify.status} />
@@ -519,7 +520,7 @@ export function FeaturedBento() {
               </span>
             </div>
 
-            <div className="flex items-center justify-between pt-2">
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
               <div className="flex items-center gap-2">
                 <span
                   className={`font-mono text-xs flex items-center gap-1.5 ${
@@ -533,7 +534,7 @@ export function FeaturedBento() {
                   )}
                   {softifyIpaPending
                     ? "Android APK shipped · iOS IPA in CI"
-                    : "Android APK + iOS IPA Shipped"}
+                    : "Android APK + iOS IPA Live (v1.0.1)"}
                 </span>
                 {softify.repoUrl && (
                   <a
@@ -546,14 +547,24 @@ export function FeaturedBento() {
                   </a>
                 )}
               </div>
-              <Link
-                href={`/projects/${softify.slug}`}
-                onClick={() => sound.playClick(1000)}
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-link hover:text-text transition-colors"
-              >
-                Case study &amp; Downloads
-                <ArrowRight size={13} weight="bold" />
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href={`/projects/${softify.slug}#release-notes`}
+                  onClick={() => sound.playClick(1100)}
+                  className="inline-flex items-center gap-1 font-mono text-[0.6875rem] text-accent-3 hover:underline"
+                >
+                  <Sparkle size={12} weight="fill" />
+                  v1.0.1 Notes
+                </Link>
+                <Link
+                  href={`/projects/${softify.slug}`}
+                  onClick={() => sound.playClick(1000)}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-link hover:text-text transition-colors"
+                >
+                  Case study &amp; Downloads
+                  <ArrowRight size={13} weight="bold" />
+                </Link>
+              </div>
             </div>
           </SpotlightCard>
         </div>
