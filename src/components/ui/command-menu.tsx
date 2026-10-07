@@ -249,13 +249,13 @@ export function CommandMenu() {
       id: "act-softify-apk",
       category: "Actions",
       title: "Download Softify Android APK",
-      subtitle: "Softify-v1.0.1-Universal.apk (65.4 MB) — v1.0.1",
+      subtitle: "Softify-v2.0.0-Universal.apk (66.5 MB) — v2.0.0",
       badge: ".apk",
       icon: <DownloadSimple size={18} className="text-accent-3" />,
       action: () => {
         sound.playChime();
         window.open(
-          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-v1.0.1-Universal.apk",
+          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk",
           "_blank",
           "noopener,noreferrer"
         );
@@ -266,13 +266,13 @@ export function CommandMenu() {
       id: "act-softify-ipa",
       category: "Actions",
       title: "Download Softify iOS IPA (.ipa)",
-      subtitle: "Softify-iOS-Universal.ipa (10.4 MB) — v1.0.1 (AltStore / Sideloadly)",
+      subtitle: "Softify-iOS-Universal.ipa (10.6 MB) — v2.0.0 (AltStore / Sideloadly)",
       badge: ".ipa",
       icon: <AppleLogo size={18} className="text-accent-2" />,
       action: () => {
         sound.playChime();
         window.open(
-          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-iOS-Universal.ipa",
+          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-iOS-Universal.ipa",
           "_blank",
           "noopener,noreferrer"
         );
@@ -282,9 +282,9 @@ export function CommandMenu() {
     {
       id: "act-softify-notes",
       category: "Actions",
-      title: "Softify v1.0.1 Release Notes",
-      subtitle: "Near-instant song transitions (<10ms), offline audio repair & iOS IPA",
-      badge: "v1.0.1",
+      title: "Softify v2.0.0 Release Notes",
+      subtitle: "On-device recommendations, FTS5 search & 128-dim vector embeddings",
+      badge: "v2.0.0",
       icon: <Sparkle size={18} className="text-accent-3" />,
       action: () => {
         sound.playClick(1100);

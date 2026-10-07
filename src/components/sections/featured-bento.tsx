@@ -466,7 +466,7 @@ export function FeaturedBento() {
                   <h3 className="font-display text-xl sm:text-2xl text-text font-bold">
                     {softify.name}
                   </h3>
-                  <p className="font-mono text-xs text-muted">Flutter Android &amp; iOS · v1.0.1 Shipped</p>
+                  <p className="font-mono text-xs text-muted">Flutter Android &amp; iOS · v2.0.0 Intelligence Engine</p>
                 </div>
               </div>
               <StatusBadge status={softify.status} />
@@ -534,7 +534,7 @@ export function FeaturedBento() {
                   )}
                   {softifyIpaPending
                     ? "Android APK shipped · iOS IPA in CI"
-                    : "Android APK + iOS IPA Live (v1.0.1)"}
+                    : "Android APK + iOS IPA Live (v2.0.0)"}
                 </span>
                 {softify.repoUrl && (
                   <a
@@ -554,7 +554,7 @@ export function FeaturedBento() {
                   className="inline-flex items-center gap-1 font-mono text-[0.6875rem] text-accent-3 hover:underline"
                 >
                   <Sparkle size={12} weight="fill" />
-                  v1.0.1 Notes
+                  v2.0.0 Notes
                 </Link>
                 <Link
                   href={`/projects/${softify.slug}`}

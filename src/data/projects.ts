@@ -178,54 +178,67 @@ export const projects: Project[] = [
     slug: "softify",
     name: "Softify",
     tagline:
-      "Ad-free, paywall-free Android & iOS music streaming app built with Flutter. 320kbps studio masters, synced lyrics, Spotify importer, and offline playback.",
+      "Ad-free, paywall-free Android & iOS music streaming app with on-device search & recommendations intelligence engine. 320kbps studio masters, synced lyrics, and zero telemetry.",
     description:
-      "Softify brings the premium music listening experience back to the listener across Android and iOS. It delivers unrestricted, high-fidelity music streaming, instant search, synchronized lyrics, custom playlists, and offline downloads without subscriptions, audio or visual advertisements, or account paywalls. Built from the ground up using Flutter and strict Clean Architecture, Softify operates entirely client-side with native Lock Screen & Dynamic Island controls, AirPods stem gestures, Apple CarPlay integration, and zero telemetry tracking.",
+      "Softify brings the premium music listening experience back to the listener across Android and iOS. Powered by a 100% on-device search and recommendation intelligence engine, Softify delivers instant local-first search, dual-band taste decay modeling, skip-sensitive algotorial shelves, vector semantic search, synchronized lyrics, custom playlists, and offline downloads without subscriptions, audio or visual advertisements, or account paywalls. Built from the ground up using Flutter and strict Clean Architecture, Softify operates entirely client-side with native Lock Screen & Dynamic Island controls, AirPods stem gestures, Apple CarPlay integration, and zero telemetry tracking.",
     features: [
-      "Dual-Engine Standby Pre-Buffering — near-instant song transitions (<10ms perceived latency)",
+      "On-Device Recommendation & Search Intelligence Engine — 100% client-side, zero cloud telemetry",
+      "Instant Local-First Search (<100ms) — SQLite FTS5 full-text search with Damerau-Levenshtein typo tolerance & domain aliases",
+      "Linear Search Re-Ranker — Combines BM25, listen counts, and recency with a +10.0 exact-title boost invariant",
+      "Dual-Band Taste Decay Modeling — 4-hour fast mood band (W_fast) + 14-day slow long-term band (W_slow)",
+      "Session Sentence Co-Occurrence Graph — Off-thread PPMI calculation treating consecutive plays as natural language sentences",
+      "Pointwise Logistic Regression Ranker — On-device SGD classifier with >50% penalty on 3 consecutive skips",
+      "Algotorial Home Shelves — Heavy Rotation, Forgotten Favorites, and Discover Weekly with 10% familiar anchor ratio",
+      "Dual-Engine Standby Pre-Buffering — Near-instant song transitions (<10ms perceived latency)",
+      "Automix Tail Reordering — Respects untouched Track N and N+1 player pre-buffer invariant",
+      "Contextual Bandit & Calibration — Epsilon-greedy novelty exploration with KL-divergence genre distribution calibration",
+      "MMR Diversity Controller — Hard maxPerArtist=2 cap per shelf with 30-day artist snoozing & Incognito taste mode",
+      "On-Device Semantic Vector Search — 128-dimensional subword trigram float32 embeddings with zero-network cosine similarity",
       "Native iOS & Android integration — Lock Screen & Dynamic Island (MPRemoteCommandCenter) with live scrubber",
       "AirPods & Bluetooth controls — Hardware stem squeeze / tap gesture handling and volume sync",
       "Apple CarPlay & background audio streaming",
       "iOS Sideloading support — AltStore, Sideloadly, TrollStore, and SideStore (.ipa package)",
       "320 kbps Studio Master Streaming with automated stream failover",
-      "Smart Search Deduplication — eliminates noisy compilation duplicates",
-      "Synced Karaoke Lyrics — real-time LRCLIB synchronization with tap-to-seek",
-      "Automix & Continuous Autoplay with genre and language isolation",
-      "1-Click Spotify Playlist Importer — zero-key public playlist migration",
+      "Synced Karaoke Lyrics — Real-time LRCLIB synchronization with tap-to-seek",
+      "1-Click Spotify Playlist Importer — Zero-key public playlist migration",
       "Offline Downloads Manager with ISO-BMFF MP4 atom chunk offset shifting and legacy auto-repair",
-      "Client-Side Privacy — zero central servers, zero accounts, zero telemetry",
-      "Local Drift SQLite library cache for playlists, favorites, and history",
-      "54/54 automated unit and integration tests passing (100% coverage)",
+      "Client-Side Privacy — Zero central servers, zero accounts, zero telemetry",
+      "170/170 automated unit and integration tests passing (100% coverage, 0 lint issues)",
     ],
     stack: [
       "Flutter 3.19+",
       "Dart 3.3+",
-      "iOS 15+ (Swift & Obj-C)",
-      "Android SDK (API 26+)",
+      "Drift (SQLite FTS5)",
+      "On-Device ML / SGD",
+      "Vector Embeddings",
       "Clean Architecture",
       "Riverpod",
-      "Drift (SQLite)",
+      "iOS 15+ (Swift & Obj-C)",
+      "Android SDK (API 26+)",
       "Just Audio & MPRemoteCommandCenter",
       "LRCLIB API",
     ],
     status: "completed",
     progressNote:
-      "v1.0.1 released with the Universal Android APK (.apk) and sideloadable iOS package (.ipa) for AltStore, Sideloadly & TrollStore. Fixes track transition latency (<10ms) and offline audio decoding silence.",
+      "v2.0.0 released with On-Device Search & Recommendation Intelligence Engine, Universal Android APK (.apk), and sideloadable iOS package (.ipa). Features FTS5 instant search, dual-band taste decay, and 128-dim vector embeddings with 170 passing tests.",
     roadmap: [
+      "✓ On-Device Search & Recommendation Intelligence Engine (Drift / SQLite FTS5)",
+      "✓ Dual-band taste decay (4h fast / 14d slow) & session co-occurrence PPMI graph",
+      "✓ Pointwise logistic regression ranker & Algotorial Home Shelves",
+      "✓ Contextual bandit novelty exploration with KL-divergence calibration",
+      "✓ 128-dim subword trigram vector embeddings & zero-network similarity search",
       "✓ Dual-Engine standby pre-buffering (<10ms track transitions)",
       "✓ ISO-BMFF MP4 atom tagger & legacy offline audio auto-repair",
       "✓ 320kbps studio master stream resolver with automated fallback",
       "✓ Synced lyrics integration via LRCLIB with interactive seek",
       "✓ 1-click Spotify public playlist importer and library sync",
-      "✓ Embedded iTunes MP4 atom tagger for offline downloads",
-      "✓ Autoplay radio engines with mood & genre isolation",
       "✓ iOS platform support: Dynamic Island, AirPods stem click gestures & CarPlay",
       "✓ Sideloadable iOS package (.ipa) for AltStore, Sideloadly & TrollStore",
       "Android Auto integration and landscape tablet UI layouts",
       "Desktop Linux and Windows player shells",
     ],
     cover: "/projects/softify/cover.png",
-    liveUrl: "https://github.com/Sarthak-Cyb3r/softify/releases/tag/v1.0.1",
+    liveUrl: "https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0",
     repoUrl: "https://github.com/Sarthak-Cyb3r/softify",
     screenshots: [
       "/projects/softify/cover.png",
@@ -237,19 +250,116 @@ export const projects: Project[] = [
     ],
     downloads: {
       apk: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-v1.0.1-Universal.apk",
-        sizeBytes: 68615379,
-        version: "1.0.1",
-        fileName: "Softify-v1.0.1-Universal.apk",
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk",
+        sizeBytes: 69714441,
+        version: "2.0.0",
+        fileName: "Softify-v2.0.0-Universal.apk",
       },
       ipa: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-iOS-Universal.ipa",
-        sizeBytes: 10952446,
-        version: "1.0.1",
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-iOS-Universal.ipa",
+        sizeBytes: 11086504,
+        version: "2.0.0",
         fileName: "Softify-iOS-Universal.ipa",
       },
     },
     releaseNotes: [
+      {
+        version: "2.0.0",
+        tag: "v2.0.0",
+        date: "October 7, 2026",
+        title: "Softify v2.0.0 — On-Device Search & Recommendations Intelligence Engine",
+        summary:
+          "Softify v2.0.0 is a milestone release introducing a state-of-the-art, 100% client-side, zero-telemetry search and recommendation intelligence system built directly on top of SQLite/Drift tables with zero cloud machine learning dependencies and 170 passing tests.",
+        changes: [
+          {
+            title: "Local-First Instant Search & FTS5 Retrieval",
+            badge: "Search Engine",
+            problem:
+              "Network-only search caused input lag, failed completely without connectivity, and had zero typo tolerance for artist names or track aliases.",
+            fix:
+              "Sub-100ms debounced instant search backed by SQLite FTS5 full-text indexing, Damerau-Levenshtein typo tolerance, and domain alias normalization. Merges local results before network tracks stream in.",
+            details: [
+              "Diacritic stripping and tokenized prefix search across your entire library, history, and playlists.",
+              "Linear search re-ranker combining BM25, listen counts, and recency with a strict +10.0 exact-match boost invariant.",
+            ],
+          },
+          {
+            title: "Dual-Band Taste Decay & Co-occurrence Sentence Graph",
+            badge: "Taste Profiling",
+            problem:
+              "Conventional recommendation models either erase long-term preferences prematurely or become trapped in repetitive listening bubbles.",
+            fix:
+              "Dual-Band Exponential Half-Life Modeling: W_fast (4-hour half-life) captures immediate mood and session vibes, while W_slow (14-day half-life) protects enduring favorite genres. Consecutive plays (≤60s gap) form sentence graphs to compute Positive Pointwise Mutual Information (PPMI).",
+            details: [
+              "Runs off-thread in background isolates to keep the UI strictly at 60/120 FPS.",
+              "PPMI co-occurrence weights naturally chain musically compatible songs without cloud training.",
+            ],
+          },
+          {
+            title: "Pointwise Logistic Regression & Algotorial Shelves",
+            badge: "Ranking & Discovery",
+            problem:
+              "Static playlists ignore negative interaction signals and fail to dynamically surface forgotten music.",
+            fix:
+              "On-Device SGD Classifier estimating stream probabilities σ(z) = 1 / (1 + e^-z) locally, coupled with an aggressive skip sensitivity rule penalizing tracks/artists >50% after 3 consecutive skips.",
+            details: [
+              "Heavy Rotation shelf: High-affinity tracks blended across fast and slow interest bands.",
+              "Forgotten Favorites shelf: Deep catalog favorites not played in >30 days.",
+              "Discover Weekly shelf: Fresh musical discoveries with a strict ~10% familiar anchor ratio (1 anchor per 10 recommendations).",
+            ],
+          },
+          {
+            title: "Dynamic Queue Reordering & Pre-Buffer Invariant",
+            badge: "Playback Pipeline",
+            problem:
+              "Dynamic queue adjustments can interrupt or corrupt the active player standby engine.",
+            fix:
+              "Player Pre-Buffer Invariant: The dual-engine pipeline strictly guarantees Track N and Track N+1 are never reordered, mutated, or canceled once buffered. Re-ranking occurs exclusively on the unbuffered tail (≥ N+2).",
+            details: [
+              "Contextual Epsilon-Greedy Bandit exploring novelty arms (0.0 to 0.5) to avoid listening fatigue.",
+              "KL Divergence Distribution Calibrator aligning recommendation slate genres with historical listening distributions.",
+            ],
+          },
+          {
+            title: "Maximal Marginal Relevance, Diversity & Privacy Agency",
+            badge: "Discovery Controls",
+            problem:
+              "Algorithmic recommendations often monopolize feeds with a single artist and lack privacy for shared listening.",
+            fix:
+              "Maximal Marginal Relevance (MMR) enforcing hard maxPerArtist = 2 caps per shelf, 30-day 1-tap artist snoozing, incognito taste mode, and 1-line transparent recommendation explanations.",
+            details: [
+              "Incognito Taste Mode: Toggle in Settings to pause all profile learning during party or shared speaker sessions.",
+              "Cold-Start Seeding: Instant taste initialization from imported Spotify playlists or onboarding genre picker.",
+            ],
+          },
+          {
+            title: "On-Device Semantic Vector Search (128-Dim)",
+            badge: "Vector AI",
+            problem:
+              "Traditional lexical keyword matching fails when searching for subgenres, moods, or loosely recalled track vibes.",
+            fix:
+              "128-dimensional Float32 embeddings generated via subword character trigrams and word hashing, with zero-network cosine similarity computed directly over SQLite (<1 MB binary overhead).",
+            details: [
+              "On-Device Team-Draft Interleaving with 10% holdback slot to measure real user preference without telemetry.",
+              "Automated Latency Guardrail runner ensuring p75 < 100ms over 54 golden query benchmarks.",
+            ],
+          },
+        ],
+        assets: [
+          {
+            name: "Softify-v2.0.0-Universal.apk",
+            size: "66.5 MB",
+            platform: "Android 8.0+",
+            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk",
+          },
+          {
+            name: "Softify-iOS-Universal.ipa",
+            size: "10.6 MB",
+            platform: "iOS 15.0+",
+            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-iOS-Universal.ipa",
+          },
+        ],
+      },
       {
         version: "1.0.1",
         tag: "v1.0.1",

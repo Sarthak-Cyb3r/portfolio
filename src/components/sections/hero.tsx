@@ -60,7 +60,7 @@ export function Hero() {
               >
                 <span className="flex h-2 w-2 rounded-full bg-accent-3 animate-pulse" />
                 <span className="font-mono text-xs text-text font-medium">
-                  New: Softify v1.0.1 · Android APK &amp; iOS IPA Live
+                  New: Softify v2.0.0 · On-Device Intelligence Engine Live
                 </span>
                 <span className="font-mono text-[0.65rem] text-muted group-hover:text-accent-3 flex items-center gap-0.5">
                   Get App <ArrowRight size={11} weight="bold" />
@@ -127,9 +127,9 @@ export function Hero() {
               </div>
               <div className="flex items-center justify-between pt-0.5">
                 <span className="text-text truncate max-w-[280px]">
-                  feat(softify): v1.0.1 instant transitions &amp; iOS IPA
+                  feat(softify): v2.0.0 on-device recommendation &amp; search engine
                 </span>
-                <span className="text-accent-3 font-semibold shrink-0">v1.0.1</span>
+                <span className="text-accent-3 font-semibold shrink-0">v2.0.0</span>
               </div>
             </div>
           </Reveal>

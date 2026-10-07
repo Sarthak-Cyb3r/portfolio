@@ -142,7 +142,7 @@ export function TerminalConsole() {
               <div><span className="text-accent-2 font-mono">test studystack</span> — Run automated test suite</div>
               <div><span className="text-accent-2 font-mono">download ludo</span> — Direct links for Linux &amp; Android</div>
               <div><span className="text-accent-2 font-mono">download softify</span> — Android APK &amp; iOS IPA links</div>
-              <div><span className="text-accent-2 font-mono">release-notes</span> — Softify v1.0.1 changes &amp; fixes</div>
+              <div><span className="text-accent-2 font-mono">release-notes</span> — Softify v2.0.0 intelligence changelog</div>
               <div><span className="text-accent-2 font-mono">bench</span> — Run client-side micro-benchmark</div>
               <div><span className="text-accent-2 font-mono">matrix</span> — Digital cyberpunk matrix stream</div>
               <div><span className="text-accent-2 font-mono">skills</span> — Technical capability breakdown</div>
@@ -245,16 +245,16 @@ export function TerminalConsole() {
 
         result = (
           <div className="space-y-2 text-xs">
-            <p className="text-text font-semibold">Official Softify v1.0.1 Build Artifacts:</p>
+            <p className="text-text font-semibold">Official Softify v2.0.0 Build Artifacts:</p>
             <div className="flex flex-wrap gap-2">
               <a
-                href={apk?.file ?? "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-v1.0.1-Universal.apk"}
+                href={apk?.file ?? "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk"}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sound.playChime()}
                 className="inline-flex items-center gap-1.5 rounded-md bg-accent-3/20 border border-accent-3/40 px-3 py-1.5 text-accent-3 font-mono hover:bg-accent-3/30"
               >
-                <span>📱 Softify Universal .apk ({apk ? formatBytes(apk.sizeBytes) : "65.4 MB"}) — v{apk?.version ?? "1.0.1"}</span>
+                <span>📱 Softify Universal .apk ({apk ? formatBytes(apk.sizeBytes) : "66.5 MB"}) — v{apk?.version ?? "2.0.0"}</span>
               </a>
               {ipa ? (
                 <a
@@ -289,7 +289,7 @@ export function TerminalConsole() {
           <div className="space-y-2 text-xs font-mono">
             <div className="flex items-center justify-between border-b border-line pb-1.5">
               <span className="text-accent-3 font-semibold">
-                Softify {note?.tag ?? "v1.0.1"} — Release Notes
+                Softify {note?.tag ?? "v2.0.0"} — Release Notes
               </span>
               <span className="text-faint">{note?.date ?? "Oct 7, 2026"}</span>
             </div>
@@ -308,9 +308,9 @@ export function TerminalConsole() {
             </div>
             <div className="pt-1 flex flex-wrap items-center gap-2 text-accent-2">
               <span>Artifacts ready:</span>
-              <span className="text-text">Softify-v1.0.1-Universal.apk (65.4 MB)</span>
+              <span className="text-text">Softify-v2.0.0-Universal.apk (66.5 MB)</span>
               <span>·</span>
-              <span className="text-text">Softify-iOS-Universal.ipa (10.4 MB)</span>
+              <span className="text-text">Softify-iOS-Universal.ipa (10.6 MB)</span>
             </div>
           </div>
         );

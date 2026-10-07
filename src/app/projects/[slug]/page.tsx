@@ -115,7 +115,7 @@ export default async function ProjectPage({ params }: Props) {
             {project.liveUrl ? (
               <Button href={project.liveUrl} external>
                 <ArrowUpRight size={16} aria-hidden />
-                {project.slug === "softify" ? "v1.0.1 GitHub Release" : "Open live site"}
+                {project.slug === "softify" ? "v2.0.0 GitHub Release" : "Open live site"}
               </Button>
             ) : null}
             {project.releaseNotes && project.releaseNotes.length > 0 ? (
@@ -148,7 +148,7 @@ export default async function ProjectPage({ params }: Props) {
         {project.slug === "softify" && project.downloads.apk && (
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <CopySnippet
-              command={`adb install Softify-v1.0.1-Universal.apk`}
+              command={`adb install Softify-v2.0.0-Universal.apk`}
               label="Android ADB Install"
             />
             {project.downloads.ipa && (
@@ -247,13 +247,13 @@ export default async function ProjectPage({ params }: Props) {
               <div className="flex justify-between py-1 border-b border-line/50">
                 <span className="text-faint">Architecture</span>
                 <span className="text-text">
-                  {project.slug === "softify" ? "Clean Architecture + Riverpod" : "Client-Server / Clean"}
+                  {project.slug === "softify" ? "Clean Architecture + Drift FTS5 + On-Device ML" : "Client-Server / Clean"}
                 </span>
               </div>
               <div className="flex justify-between py-1 border-b border-line/50">
                 <span className="text-faint">Test Status</span>
                 <span className="text-ok">
-                  {project.slug === "softify" ? "54/54 Passing Green (100%)" : "100% Passing Green"}
+                  {project.slug === "softify" ? "170/170 Passing Green (100%)" : "100% Passing Green"}
                 </span>
               </div>
               <div className="flex justify-between py-1 border-b border-line/50">
