@@ -60,7 +60,7 @@ export function Hero() {
               >
                 <span className="flex h-2 w-2 rounded-full bg-accent-3 animate-pulse" />
                 <span className="font-mono text-xs text-text font-medium">
-                  New: Softify v2.0.0 · On-Device Intelligence Engine Live
+                  New: Softify v2.0.0 · Linux Desktop + Android & iOS Live
                 </span>
                 <span className="font-mono text-[0.65rem] text-muted group-hover:text-accent-3 flex items-center gap-0.5">
                   Get App <ArrowRight size={11} weight="bold" />
@@ -122,12 +122,12 @@ export function Hero() {
                 </span>
                 <span className="flex items-center gap-1 text-ok">
                   <CheckCircle size={12} weight="fill" />
-                  455 Passing Tests · 0 Build Errors
+                  457 Passing Tests · 0 Build Errors
                 </span>
               </div>
               <div className="flex items-center justify-between pt-0.5">
                 <span className="text-text truncate max-w-[280px]">
-                  feat(softify): v2.0.0 on-device recommendation &amp; search engine
+                  feat(softify): Linux desktop client + terminal installer
                 </span>
                 <span className="text-accent-3 font-semibold shrink-0">v2.0.0</span>
               </div>

@@ -13,6 +13,7 @@ import {
   GameController,
   GraduationCap,
   Headphones,
+  Laptop,
   MagnifyingGlass,
   Sparkle,
   SpeakerHigh,
@@ -187,8 +188,8 @@ export function CommandMenu() {
       id: "proj-softify",
       category: "Projects",
       title: "Softify",
-      subtitle: "Ad-free 320kbps Android & iOS music player & streaming engine",
-      badge: "v1.0 APK",
+      subtitle: "Ad-free 320kbps Android, iOS & Linux music player & intelligence engine",
+      badge: "v2.0.0 Live",
       icon: <Headphones size={18} className="text-accent-3" />,
       action: () => {
         router.push("/projects/softify");
@@ -242,6 +243,23 @@ export function CommandMenu() {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        setOpen(false);
+      },
+    },
+    {
+      id: "act-softify-linux",
+      category: "Actions",
+      title: "Install Softify Linux Desktop",
+      subtitle: "Softify-Linux-x64.tar.gz (13.2 MB) / curl -fsSL install.sh",
+      badge: "Linux",
+      icon: <Laptop size={18} className="text-accent-3" />,
+      action: () => {
+        sound.playChime();
+        window.open(
+          "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-Linux-x64.tar.gz",
+          "_blank",
+          "noopener,noreferrer"
+        );
         setOpen(false);
       },
     },

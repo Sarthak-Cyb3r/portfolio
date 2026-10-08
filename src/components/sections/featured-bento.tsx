@@ -466,7 +466,7 @@ export function FeaturedBento() {
                   <h3 className="font-display text-xl sm:text-2xl text-text font-bold">
                     {softify.name}
                   </h3>
-                  <p className="font-mono text-xs text-muted">Flutter Android &amp; iOS · v2.0.0 Intelligence Engine</p>
+                  <p className="font-mono text-xs text-muted">Flutter Android, iOS &amp; Linux · v2.0.0</p>
                 </div>
               </div>
               <StatusBadge status={softify.status} />
@@ -534,7 +534,7 @@ export function FeaturedBento() {
                   )}
                   {softifyIpaPending
                     ? "Android APK shipped · iOS IPA in CI"
-                    : "Android APK + iOS IPA Live (v2.0.0)"}
+                    : "Android + iOS + Linux Shipped (v2.0.0)"}
                 </span>
                 {softify.repoUrl && (
                   <a

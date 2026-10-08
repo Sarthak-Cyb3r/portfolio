@@ -141,7 +141,7 @@ export function TerminalConsole() {
               <div><span className="text-accent-2 font-mono">projects</span> — List all 4 projects with live status</div>
               <div><span className="text-accent-2 font-mono">test studystack</span> — Run automated test suite</div>
               <div><span className="text-accent-2 font-mono">download ludo</span> — Direct links for Linux &amp; Android</div>
-              <div><span className="text-accent-2 font-mono">download softify</span> — Android APK &amp; iOS IPA links</div>
+              <div><span className="text-accent-2 font-mono">download softify</span> — Linux, Android &amp; iOS builds</div>
               <div><span className="text-accent-2 font-mono">release-notes</span> — Softify v2.0.0 intelligence changelog</div>
               <div><span className="text-accent-2 font-mono">bench</span> — Run client-side micro-benchmark</div>
               <div><span className="text-accent-2 font-mono">matrix</span> — Digital cyberpunk matrix stream</div>
@@ -204,7 +204,7 @@ export function TerminalConsole() {
                     {p.slug === "ludo-vercel"
                       ? "Web / Electron / APK"
                       : p.slug === "softify"
-                      ? "Android & iOS (Flutter)"
+                      ? "Android, iOS & Linux (Flutter)"
                       : "Node / SQLite"}
                   </span>
                   <span>
@@ -238,6 +238,7 @@ export function TerminalConsole() {
         );
       case "download softify": {
         const softify = projects.find((p) => p.slug === "softify");
+        const deb = softify?.downloads.deb;
         const apk = softify?.downloads.apk;
         const ipa = softify?.downloads.ipa;
         const ipaPending =
@@ -248,11 +249,20 @@ export function TerminalConsole() {
             <p className="text-text font-semibold">Official Softify v2.0.0 Build Artifacts:</p>
             <div className="flex flex-wrap gap-2">
               <a
-                href={apk?.file ?? "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk"}
+                href={deb?.file ?? "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-Linux-x64.tar.gz"}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sound.playChime()}
                 className="inline-flex items-center gap-1.5 rounded-md bg-accent-3/20 border border-accent-3/40 px-3 py-1.5 text-accent-3 font-mono hover:bg-accent-3/30"
+              >
+                <span>🐧 Linux Desktop ({deb ? formatBytes(deb.sizeBytes) : "13.2 MB"}) — v{deb?.version ?? "2.0.0"}</span>
+              </a>
+              <a
+                href={apk?.file ?? "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk"}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => sound.playChime()}
+                className="inline-flex items-center gap-1.5 rounded-md bg-accent/20 border border-accent/40 px-3 py-1.5 text-accent font-mono hover:bg-accent/30"
               >
                 <span>📱 Softify Universal .apk ({apk ? formatBytes(apk.sizeBytes) : "66.5 MB"}) — v{apk?.version ?? "2.0.0"}</span>
               </a>
@@ -267,6 +277,10 @@ export function TerminalConsole() {
                   <span>🍎 Softify iOS .ipa ({formatBytes(ipa.sizeBytes)}) — v{ipa.version}</span>
                 </a>
               ) : null}
+            </div>
+            <div className="rounded-md border border-line bg-surface-2/80 p-2 font-mono text-[0.75rem] text-muted flex items-center justify-between gap-2">
+              <span className="truncate">curl -fsSL https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh | bash</span>
+              <span className="text-accent-3 font-semibold shrink-0">Linux 1-Line Installer</span>
             </div>
             {ipaPending ? (
               <p className="text-muted">

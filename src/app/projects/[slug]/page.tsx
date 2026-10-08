@@ -94,7 +94,7 @@ export default async function ProjectPage({ params }: Props) {
           <span className="font-mono text-xs text-faint">
             Target:{" "}
             {project.slug === "softify"
-              ? "Android (API 26+) · iOS 15+ · Flutter"
+              ? "Android (API 26+) · iOS 15+ · Linux Desktop · Flutter"
               : project.slug === "ludo-vercel"
                 ? "Linux · Android · Web"
                 : "Linux / Docker · Web"}
@@ -137,7 +137,7 @@ export default async function ProjectPage({ params }: Props) {
         ) : null}
 
         {/* Quick CLI snippet if binary is available */}
-        {project.downloads.deb && (
+        {project.downloads.deb && project.slug !== "softify" && (
           <div className="mt-6">
             <CopySnippet
               command={`sudo dpkg -i ludo-with-friends-1.0.0-amd64.deb`}
@@ -145,12 +145,18 @@ export default async function ProjectPage({ params }: Props) {
             />
           </div>
         )}
-        {project.slug === "softify" && project.downloads.apk && (
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        {project.slug === "softify" && (
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <CopySnippet
-              command={`adb install Softify-v2.0.0-Universal.apk`}
-              label="Android ADB Install"
+              command={`curl -fsSL https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh | bash`}
+              label="Linux Terminal Install"
             />
+            {project.downloads.apk && (
+              <CopySnippet
+                command={`adb install Softify-v2.0.0-Universal.apk`}
+                label="Android ADB Install"
+              />
+            )}
             {project.downloads.ipa && (
               <CopySnippet
                 command={`sideloadly --install Softify-iOS-Universal.ipa`}
@@ -253,7 +259,7 @@ export default async function ProjectPage({ params }: Props) {
               <div className="flex justify-between py-1 border-b border-line/50">
                 <span className="text-faint">Test Status</span>
                 <span className="text-ok">
-                  {project.slug === "softify" ? "170/170 Passing Green (100%)" : "100% Passing Green"}
+                  {project.slug === "softify" ? "172/172 Passing Green (100%)" : "100% Passing Green"}
                 </span>
               </div>
               <div className="flex justify-between py-1 border-b border-line/50">

@@ -57,11 +57,19 @@ const TABS: TabDef[] = [
   {
     platform: "linux",
     key: "deb",
-    label: "Linux / Debian (.deb)",
+    label: "Linux Desktop",
     buttonLabel: "Download for Linux",
     Icon: Laptop,
-    hint: (fileName) => ({ text: `sudo apt install ./${fileName}`, mono: true }),
-    note: (projectName) => `No .deb package for ${projectName} has been published yet.`,
+    hint: (fileName) => {
+      if (fileName.endsWith(".sh") || fileName.endsWith(".tar.gz")) {
+        return {
+          text: "curl -fsSL https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh | bash",
+          mono: true,
+        };
+      }
+      return { text: `sudo apt install ./${fileName}`, mono: true };
+    },
+    note: (projectName) => `No Linux build for ${projectName} has been published yet.`,
     noteTone: "muted",
     unavailableLabel: "Not available yet",
     pendingNote: (projectName) =>

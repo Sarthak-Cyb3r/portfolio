@@ -178,10 +178,13 @@ export const projects: Project[] = [
     slug: "softify",
     name: "Softify",
     tagline:
-      "Ad-free, paywall-free Android & iOS music streaming app with on-device search & recommendations intelligence engine. 320kbps studio masters, synced lyrics, and zero telemetry.",
+      "Ad-free, paywall-free Android, iOS & Linux desktop music streaming app with on-device intelligence engine. 320kbps studio masters, synced lyrics, and zero telemetry.",
     description:
-      "Softify brings the premium music listening experience back to the listener across Android and iOS. Powered by a 100% on-device search and recommendation intelligence engine, Softify delivers instant local-first search, dual-band taste decay modeling, skip-sensitive algotorial shelves, vector semantic search, synchronized lyrics, custom playlists, and offline downloads without subscriptions, audio or visual advertisements, or account paywalls. Built from the ground up using Flutter and strict Clean Architecture, Softify operates entirely client-side with native Lock Screen & Dynamic Island controls, AirPods stem gestures, Apple CarPlay integration, and zero telemetry tracking.",
+      "Softify brings the premium music listening experience back to the listener across Android, iOS, and Linux desktop. Powered by a 100% on-device search and recommendation intelligence engine, Softify delivers instant local-first search, dual-band taste decay modeling, skip-sensitive algotorial shelves, vector semantic search, responsive desktop UI with sidebar and persistent bottom player bar, desktop keyboard shortcuts, synchronized lyrics, custom playlists, and offline downloads without subscriptions, audio or visual advertisements, or account paywalls. Built from the ground up using Flutter and strict Clean Architecture, Softify operates entirely client-side with native Lock Screen & Dynamic Island controls, AirPods stem gestures, Linux desktop integration, and zero telemetry tracking.",
     features: [
+      "Native Linux Desktop Client — Responsive desktop UI with collapsible navigation sidebar and persistent bottom player bar",
+      "Desktop Keyboard Shortcuts — Space to toggle playback, Ctrl+Arrow track skipping and volume stepping, Ctrl+S instant search",
+      "Automated Linux Terminal Installer (curl -fsSL .../install.sh | bash) with desktop integration (.desktop launcher, icons)",
       "On-Device Recommendation & Search Intelligence Engine — 100% client-side, zero cloud telemetry",
       "Instant Local-First Search (<100ms) — SQLite FTS5 full-text search with Damerau-Levenshtein typo tolerance & domain aliases",
       "Linear Search Re-Ranker — Combines BM25, listen counts, and recency with a +10.0 exact-title boost invariant",
@@ -203,11 +206,12 @@ export const projects: Project[] = [
       "1-Click Spotify Playlist Importer — Zero-key public playlist migration",
       "Offline Downloads Manager with ISO-BMFF MP4 atom chunk offset shifting and legacy auto-repair",
       "Client-Side Privacy — Zero central servers, zero accounts, zero telemetry",
-      "170/170 automated unit and integration tests passing (100% coverage, 0 lint issues)",
+      "172/172 automated unit and integration tests passing (100% coverage, 0 lint issues)",
     ],
     stack: [
       "Flutter 3.19+",
       "Dart 3.3+",
+      "Linux Desktop (GTK / CMake)",
       "Drift (SQLite FTS5)",
       "On-Device ML / SGD",
       "Vector Embeddings",
@@ -220,8 +224,10 @@ export const projects: Project[] = [
     ],
     status: "completed",
     progressNote:
-      "v2.0.0 released with On-Device Search & Recommendation Intelligence Engine, Universal Android APK (.apk), and sideloadable iOS package (.ipa). Features FTS5 instant search, dual-band taste decay, and 128-dim vector embeddings with 170 passing tests.",
+      "v2.0.0 released with On-Device Search & Recommendation Intelligence Engine across Android (.apk), iOS (.ipa), and Linux desktop (terminal installer & native GTK runner). 172/172 tests green.",
     roadmap: [
+      "✓ Native Linux desktop player shell with responsive sidebar & bottom player bar",
+      "✓ Linux terminal installer (install.sh) with desktop launcher integration & keyboard shortcuts",
       "✓ On-Device Search & Recommendation Intelligence Engine (Drift / SQLite FTS5)",
       "✓ Dual-band taste decay (4h fast / 14d slow) & session co-occurrence PPMI graph",
       "✓ Pointwise logistic regression ranker & Algotorial Home Shelves",
@@ -235,7 +241,7 @@ export const projects: Project[] = [
       "✓ iOS platform support: Dynamic Island, AirPods stem click gestures & CarPlay",
       "✓ Sideloadable iOS package (.ipa) for AltStore, Sideloadly & TrollStore",
       "Android Auto integration and landscape tablet UI layouts",
-      "Desktop Linux and Windows player shells",
+      "Windows desktop player shell",
     ],
     cover: "/projects/softify/cover.png",
     liveUrl: "https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0",
@@ -249,6 +255,12 @@ export const projects: Project[] = [
       "/projects/softify/04_settings.png",
     ],
     downloads: {
+      deb: {
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-Linux-x64.tar.gz",
+        sizeBytes: 13868102,
+        version: "2.0.0",
+        fileName: "Softify-Linux-x64.tar.gz",
+      },
       apk: {
         file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk",
         sizeBytes: 69714441,
@@ -269,8 +281,20 @@ export const projects: Project[] = [
         date: "October 7, 2026",
         title: "Softify v2.0.0 — On-Device Search & Recommendations Intelligence Engine",
         summary:
-          "Softify v2.0.0 is a milestone release introducing a state-of-the-art, 100% client-side, zero-telemetry search and recommendation intelligence system built directly on top of SQLite/Drift tables with zero cloud machine learning dependencies and 170 passing tests.",
+          "Softify v2.0.0 is a milestone release introducing native Linux desktop support with responsive layout & automated terminal installer, alongside a state-of-the-art, 100% client-side, zero-telemetry search and recommendation intelligence system with 172 passing tests.",
         changes: [
+          {
+            title: "Native Linux Desktop Client & Terminal Installer",
+            badge: "Desktop Support",
+            problem:
+              "Softify was previously mobile-only (Android & iOS), leaving desktop users on Linux without a native, low-latency streaming client or convenient terminal installation.",
+            fix:
+              "Introduced full native Linux Desktop support via GTK runner, responsive desktop layout with collapsible navigation sidebar and persistent bottom player bar, global keyboard shortcuts (Space, Ctrl+Arrows, Ctrl+S/F), and a one-liner terminal installer (install.sh).",
+            details: [
+              "Automated terminal installer creates ~/.local/share/softify, .desktop launcher, system menu integration, and application icons.",
+              "Keyboard navigation shortcuts: Space toggles playback, Ctrl+Right/Left skips tracks, Ctrl+Up/Down adjusts volume, Ctrl+S opens instant search.",
+            ],
+          },
           {
             title: "Local-First Instant Search & FTS5 Retrieval",
             badge: "Search Engine",
@@ -346,6 +370,18 @@ export const projects: Project[] = [
           },
         ],
         assets: [
+          {
+            name: "Softify-Linux-x64.tar.gz",
+            size: "13.2 MB",
+            platform: "Linux x86_64",
+            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-Linux-x64.tar.gz",
+          },
+          {
+            name: "install.sh (Linux Terminal Installer)",
+            size: "23.2 KB",
+            platform: "Linux Desktop (Any Distro)",
+            url: "https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh",
+          },
           {
             name: "Softify-v2.0.0-Universal.apk",
             size: "66.5 MB",
