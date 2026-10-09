@@ -1,100 +1,102 @@
 "use client";
 
-import { ArrowUpRight, Code, Cpu, GameController, Sparkle } from "@phosphor-icons/react";
-import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
-import { SectionHeading } from "@/components/ui/bits";
-import { Button } from "@/components/ui/button";
-import { site } from "@/data/site";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, MotionValue } from "motion/react";
+import { SectionHeader } from "@/components/ui/section-header";
 
-const PRINCIPLES = [
+const ABOUT_PARAGRAPH =
+  "I am an independent software developer focused on systems architecture, client-side intelligence, and cross-platform native execution. Rather than building ephemeral web prototypes or unvalidated concepts, I engineer resilient tools, games, and applications that run offline, respect user privacy, and compile into verifiable binaries.";
+
+const VALUES = [
   {
-    icon: Code,
-    title: "Code you can run",
-    body: "I don't stop at Figma or mockups. Every project has a runnable build, a live URL, or a double-clickable package.",
+    title: "Working software first",
+    desc: "If it cannot be compiled, installed, and verified on a real machine, it is not done.",
   },
   {
-    icon: GameController,
-    title: "Multiplayer & Interactive",
-    body: "Real-time state synchronization, PWA mechanics, and cross-platform desktop & mobile packaging.",
+    title: "Respect the device",
+    desc: "Zero tracking, client-side data persistence, and minimal memory footprints.",
   },
   {
-    icon: Cpu,
-    title: "Engineered Simplicity",
-    body: "Static where possible, zero-bloat architecture, and strict TypeScript types. Fast loads and 60fps responsiveness.",
+    title: "Disciplined engineering",
+    desc: "Understand every line of code, eliminate edge cases, and verify with automated tests.",
   },
-  {
-    icon: Sparkle,
-    title: "Vibe coding with discipline",
-    body: "Accelerated by AI, but vetted line-by-line. I read the diffs, write test suites, and understand every function I deploy.",
-  },
-];
+] as const;
+
+function Word({
+  word,
+  progress,
+  range,
+}: {
+  word: string;
+  progress: MotionValue<number>;
+  range: [number, number];
+}) {
+  const opacity = useTransform(progress, range, [0.2, 1]);
+  return (
+    <span className="relative inline-block mr-[0.3em]">
+      <motion.span style={{ opacity }} className="text-fg transition-opacity">
+        {word}
+      </motion.span>
+    </span>
+  );
+}
 
 export function About() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 0.85", "end 0.45"],
+  });
+
+  const words = ABOUT_PARAGRAPH.split(" ");
+
   return (
-    <section
-      id="about"
-      aria-labelledby="about-heading"
-      className="shell section"
-    >
-      <div className="grid gap-12 lg:grid-cols-[1.1fr_1.3fr] lg:gap-16 items-start">
-        {/* Left column: Bio */}
-        <div>
-          <Reveal>
-            <SectionHeading
-              kicker="About Me"
-              title="Self-taught, 16, shipping things that actually work."
-              lead="I started building because I wanted tools and games that didn't exist or had too much junk in them."
-            />
-          </Reveal>
+    <section id="about" className="py-24 sm:py-32 border-t border-border">
+      <div className="max-w-[1120px] mx-auto px-4 sm:px-6">
+        <SectionHeader
+          label="About"
+          title="Building with intention."
+          description="A quiet commitment to verifiable code, local-first performance, and craft."
+        />
 
-          <Reveal delay={0.2} className="mt-6 space-y-4 text-base leading-relaxed text-muted">
-            <p>
-              I&apos;m Sarthak — a 16-year-old 11th grader studying in Chinmaya Vidyalaya and a self-taught developer
-              who believes software should be fast, honest, and immediately usable.
-              I spend my free hours in the terminal, experimenting with real-time
-              protocols, native mobile &amp; desktop runtimes (Flutter, Electron &amp; Capacitor), and modern fullstack architectures.
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Scroll-scrubbed word opacity reveal */}
+          <div ref={containerRef} className="lg:col-span-7">
+            <p className="text-xl sm:text-2xl font-medium leading-[1.6] text-muted-fg/40 select-none">
+              {words.map((word, i) => {
+                const start = i / words.length;
+                const end = start + 1 / words.length;
+                return (
+                  <Word
+                    key={i}
+                    word={word}
+                    progress={scrollYProgress}
+                    range={[start, end]}
+                  />
+                );
+              })}
             </p>
-            <p>
-              When I build, I don&apos;t just generate code and hope for the best.
-              I test edge cases, package native binaries, and measure performance.
-              Whether it&apos;s an ad-free 320kbps music streaming app like Softify, a multiplayer game like Ludo, or an academic planner like
-              StudyStack, the goal is always a rock-solid artifact.
-            </p>
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.3} className="mt-8 flex items-center gap-4">
-            <Button href={site.githubUrl} external variant="primary">
-              Follow on GitHub
-              <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
-            </Button>
-            <Button href="#process" variant="ghost">
-              How I build
-            </Button>
-          </Reveal>
-        </div>
-
-        {/* Right column: Principles / Grid */}
-        <div>
-          <Stagger className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {PRINCIPLES.map((item) => {
-              const Icon = item.icon;
-              return (
-                <StaggerItem key={item.title}>
-                  <div className="card h-full p-6 transition-all duration-300 hover:border-line-strong hover:bg-surface-2/60">
-                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-surface-2 text-accent-2 border border-line">
-                      <Icon size={20} weight="duotone" aria-hidden="true" />
-                    </div>
-                    <h3 className="mt-4 font-display text-lg text-text font-semibold">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
-                      {item.body}
-                    </p>
-                  </div>
-                </StaggerItem>
-              );
-            })}
-          </Stagger>
+          {/* Right Column: 3 One-Line Values */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            {VALUES.map((val) => (
+              <div
+                key={val.title}
+                className="p-5.5 rounded-2xl bg-card/85 dark:bg-card/70 backdrop-blur-xl border border-border shadow-xs hover:border-primary/40 transition-all duration-200 flex flex-col gap-2"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2 h-2 rounded-full bg-primary" />
+                  <span className="text-sm font-bold text-fg">
+                    {val.title}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-muted-fg leading-relaxed pl-4.5">
+                  {val.desc}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

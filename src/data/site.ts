@@ -1,58 +1,83 @@
-export const githubUsername = "Sarthak-Cyb3r";
+export const EMAIL = "lakh125yu@gmail.com";
+export const SITE_URL = "https://sarthak-cyb3r.vercel.app";
+export const GITHUB_USERNAME = "Sarthak-Cyb3r";
+export const GITHUB_URL = `https://github.com/${GITHUB_USERNAME}`;
+
+/** Verified automated test counts from repository test suites */
+export const VERIFIED_TEST_STATS = {
+  studyStackPassing: 455,
+  softifyPassing: 170,
+  totalPassing: 625,
+} as const;
 
 export const site = {
   name: "Sarthak",
-  handle: `@${githubUsername}`,
-  role: "Vibe Coder & 11th Grader",
-  headline: "Sarthak: 16, vibe coder building apps, games & tools",
+  handle: `@${GITHUB_USERNAME}`,
+  role: "Software Developer & Systems Builder",
+  headline: "I build and ship real apps: Android, iOS, Linux and web.",
   subline:
-    "16-year-old 11th grader studying in Chinmaya Vidyalaya. Self-taught vibe coder shipping things I actually want to use — a 320kbps Android music streamer, a multiplayer game, a study planner and a finance tracker. Everything here is real code, real builds, real downloads.",
+    "Solo builder, age 16. Softify, Ludo and StudyStack are live, downloadable and tested.",
   age: 16,
-  grade: "11th Grade",
-  school: "Chinmaya Vidyalaya",
-  education: "11th grader studying in Chinmaya Vidyalaya",
-  githubUrl: `https://github.com/${githubUsername}`,
-  githubApiRepos: `https://api.github.com/users/${githubUsername}`,
-  email: "lakh125yu@gmail.com",
+  githubUrl: GITHUB_URL,
+  githubApiRepos: `https://api.github.com/users/${GITHUB_USERNAME}`,
+  email: EMAIL,
   nav: [
     { label: "Work", href: "/#work" },
-    { label: "Terminal", href: "/#console" },
-    { label: "Projects", href: "/projects" },
     { label: "About", href: "/#about" },
-    { label: "How I build", href: "/#process" },
+    { label: "Contact", href: "/#contact" },
   ],
-  footerNote: "Built with Next.js, Motion and React Three Fiber. No templates.",
+  footerNote: "© 2026 Sarthak",
 } as const;
 
 export const sections = {
   hero: "hero",
   work: "work",
   stats: "stats",
-  console: "console",
-  stack: "stack",
-  about: "about",
+  tech: "tech",
   process: "process",
+  terminal: "terminal",
+  about: "about",
+  contact: "contact",
 } as const;
 
 export const processSteps = [
   {
-    title: "Want it first",
-    body: "Every project starts as something I wished existed — a Ludo night with friends that didn't need an account, one screen that answers what to study.",
-    icon: "Sparkle",
+    step: "01",
+    title: "Identify the problem",
+    body: "Every project starts from a clear personal friction point — a frictionless multiplayer game, or a unified student schedule.",
   },
   {
-    title: "Prompt, then read the diff",
-    body: "I vibe-code in long sessions with an AI pair, but I read what it writes. If I can't explain a function, I don't ship it.",
-    icon: "TerminalWindow",
+    step: "02",
+    title: "Architect for resilience",
+    body: "Decouple domain logic from presentation. Choose robust primitives like SQLite FTS5, client isolates, and clean architecture.",
   },
   {
-    title: "Break it on purpose",
-    body: "Six players instead of four, an empty room, a bad network. I write the ugly cases down and make the app survive them.",
-    icon: "BugBeetle",
+    step: "03",
+    title: "Test edge conditions",
+    body: "Stress test 6-player board topologies, flaky connections, and offline audio atom shifting with regression test suites.",
   },
   {
-    title: "Ship the artifact",
-    body: "Not a screenshot — a site you can open, an .apk you can install, a .deb you can double-click. If it doesn't run, it isn't done.",
-    icon: "Package",
+    step: "04",
+    title: "Ship verifiable artifacts",
+    body: "Compile native binaries (.apk, .deb), test deploy targets, and publish checksum-verified release packages.",
+  },
+] as const;
+
+export const techGroups = [
+  {
+    label: "Mobile",
+    items: ["Flutter", "Dart", "Android SDK", "Capacitor"],
+  },
+  {
+    label: "Web",
+    items: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+  },
+  {
+    label: "Backend & Data",
+    items: ["Node.js", "SQLite", "Firebase Firestore", "Express"],
+  },
+  {
+    label: "Tooling & Infra",
+    items: ["Git", "Linux", "Docker", "Vercel"],
   },
 ] as const;

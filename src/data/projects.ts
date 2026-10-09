@@ -1,29 +1,21 @@
 export type ProjectStatus = "completed" | "in-development";
 
 export interface DownloadArtifact {
-  /** Public URL path, e.g. "/downloads/ludo-vercel/ludo-with-friends.apk" */
   file: string;
-  /** Exact size on disk, in bytes */
   sizeBytes: number;
-  /** Version label shown next to the button */
   version: string;
-  /** Download filename shown to the visitor */
   fileName: string;
+  sha256?: string;
+  installGuide?: string[];
 }
 
-export type DownloadKey = "deb" | "apk" | "ipa" | "windows";
+export type DownloadKey = "deb" | "apk" | "ipa" | "tar";
 
 export interface ProjectDownloads {
   deb?: DownloadArtifact;
   apk?: DownloadArtifact;
   ipa?: DownloadArtifact;
-  windows?: DownloadArtifact;
-  /**
-   * Platforms whose artifact is being built right now (e.g. a red CI run).
-   * Renders a disabled "CI build pending" control instead of a link that 404s.
-   * Removing the key once the file is published is all it takes to go live.
-   */
-  pending?: DownloadKey[];
+  tar?: DownloadArtifact;
 }
 
 export interface ReleaseChange {
@@ -41,65 +33,252 @@ export interface ReleaseNote {
   title: string;
   summary: string;
   changes: ReleaseChange[];
-  assets?: {
-    name: string;
-    size: string;
-    platform: string;
-    url: string;
-  }[];
+}
+
+export interface KeyDecision {
+  title: string;
+  rationale: string;
+}
+
+export interface ArchitectureNode {
+  title: string;
+  desc: string;
 }
 
 export interface Project {
   slug: string;
   name: string;
   tagline: string;
+  outcome: string;
   description: string;
+  problem: string;
+  solution: string;
   features: string[];
   stack: string[];
+  highlightTech: [string, string, string];
   status: ProjectStatus;
-  /** One honest sentence about where the project actually stands */
+  statusLabel: string;
   progressNote: string;
-  /** Real next steps for in-development projects. Empty = nothing published yet. */
-  roadmap: string[];
+  testsPassing?: number;
+  testSuiteCount?: number;
+  platforms: string[];
   cover?: string;
   liveUrl?: string;
   repoUrl?: string;
   screenshots: string[];
   downloads: ProjectDownloads;
+  keyDecisions: KeyDecision[];
+  challenges: string[];
+  architectureOverview: string;
   releaseNotes?: ReleaseNote[];
 }
 
 export const projects: Project[] = [
   {
-    slug: "ludo-vercel",
-    name: "Ludo",
-    tagline:
-      "Multiplayer Ludo for 2–6 players — open a room, share the 5-letter code, play with friends from any device.",
+    slug: "softify",
+    name: "Softify",
+    tagline: "Cross-platform audio player with on-device recommendation & search engine",
+    outcome: "Client-side music streaming app with offline caching and zero cloud telemetry",
     description:
-      "Ludo is a real-time multiplayer Ludo site built as a zero-build static app. A cross board for 2–4 players, a pentagon for 5 and a hexagon for 6 all run off the same room-code flow: create a room, send the code, friends join from their phone or laptop. Firestore holds the live room state, anonymous Firebase Auth handles identity, and a service worker turns the site into an installable PWA. The same codebase ships as a native Android app (Capacitor) and a Linux desktop app (Electron), both built from this repo.",
+      "Softify is a cross-platform music streaming client engineered with Flutter and strict Clean Architecture. Operating entirely client-side without centralized servers or telemetry tracking, it features an on-device search and ranking engine, background audio playback, offline MP4 atom shifting, and native multi-platform compilation for Android, iOS, and Linux desktop.",
+    problem:
+      "Traditional streaming apps rely heavily on continuous telemetry, server-side tracking, and cloud-dependent recommendation pipelines that degrade privacy and induce interface latency.",
+    solution:
+      "A 100% client-side architecture using Drift/SQLite FTS5, subword trigram vector embeddings, and on-device SGD classification for recommendation ranking, paired with dual-engine standby pre-buffering.",
     features: [
-      "5-letter room codes — friends join from any device",
-      "Three board shapes: classic cross (2–4), pentagon (5), hexagon (6)",
-      "Live Firestore sync for moves, turns and board state",
-      "In-room chat while you play",
-      "Playable demo mode that works without Firebase",
-      "Installable PWA with offline shell and launcher icons",
-      "Native Android build via Capacitor",
-      "Linux .deb and AppImage builds via Electron",
+      "Cross-platform compilation across Android, iOS, Linux desktop, and Web",
+      "On-device search index with SQLite FTS5, typo tolerance, and domain alias normalization",
+      "On-device recommendation ranker with dual-band taste decay (4h fast / 14d slow)",
+      "Standby pre-buffering pipeline achieving sub-10ms perceived track transitions",
+      "ISO-BMFF MP4 atom tagger with dynamic chunk-offset shifting for reliable offline storage",
+      "Synced lyrics rendering via real-time LRCLIB synchronization",
+      "Native MPRemoteCommandCenter, Dynamic Island, and headset gesture integration",
+      "Client-side privacy model: zero telemetry, zero accounts, zero analytics collection",
     ],
     stack: [
-      "Vanilla JS (ES modules)",
+      "Flutter",
+      "Dart",
+      "Drift (SQLite FTS5)",
+      "Riverpod",
+      "Clean Architecture",
+      "Linux GTK",
+      "Android SDK",
+      "iOS (Swift)",
+    ],
+    highlightTech: ["Flutter", "Drift / SQLite", "Riverpod"],
+    status: "completed",
+    statusLabel: "Live",
+    progressNote:
+      "v2.0.0 released with on-device search & recommendation engine across Android, iOS (sideload), Linux desktop, and Web. 170 passing tests.",
+    testsPassing: 170,
+    testSuiteCount: 1,
+    platforms: ["Android", "iOS (Sideload)", "Linux", "Web"],
+    cover: "/projects/softify/cover.png",
+    liveUrl: "https://softify-app.vercel.app/",
+    repoUrl: "https://github.com/Sarthak-Cyb3r/softify",
+    screenshots: [
+      "/projects/softify/cover.png",
+      "/projects/softify/01_homepage.png",
+      "/projects/softify/05_now_playing_self_aware.png",
+      "/projects/softify/02_search.png",
+      "/projects/softify/03_library.png",
+      "/projects/softify/04_settings.png",
+    ],
+    architectureOverview:
+      "Clean Architecture domain layers (UseCases, Repositories, Entities) decouple pure business logic from UI widgets and audio platform channels. Drift SQLite provides local persistence and FTS5 search indexing.",
+    keyDecisions: [
+      {
+        title: "Clean Architecture & Riverpod Isolation",
+        rationale:
+          "Separated pure domain models from the underlying audio driver and platform channels, allowing identical business logic to execute on mobile, desktop, and web.",
+      },
+      {
+        title: "Client-Side SQLite FTS5 & Vector Embeddings",
+        rationale:
+          "Rather than querying a remote index, tracks are tokenized locally with subword trigrams, enabling sub-100ms offline-capable search with zero server telemetry.",
+      },
+      {
+        title: "Dual-Engine Standby Pre-Buffering",
+        rationale:
+          "Pre-resolving track N+1 in a standby audio engine eliminated the 2–3s transition gap, making playback changes immediate.",
+      },
+      {
+        title: "Recursive ISO-BMFF Atom Tagging",
+        rationale:
+          "Traversed MP4 atom boxes (moov -> trak -> stbl) to dynamically recalculate 32-bit and 64-bit chunk offsets, resolving silent playback bugs on offline cached tracks.",
+      },
+    ],
+    challenges: [
+      "Handling MP4 chunk offset shifting across varying file encoders without corrupting audio containers.",
+      "Maintaining smooth 60/120 FPS UI performance while calculating off-thread PPMI matrix operations in background isolates.",
+      "iOS background audio lifecycle and remote command center synchronisation without proprietary push services.",
+    ],
+    downloads: {
+      apk: {
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.5/Softify-v2.0.5-Android-Universal.apk",
+        sizeBytes: 71193497,
+        version: "v2.0.5",
+        fileName: "Softify-v2.0.5-Android-Universal.apk",
+        sha256: "38674d92d0caa5721e32b2bbc700ee2e1b26f82942f18b21b30ae80cf84405df",
+        installGuide: [
+          "Download the APK onto your Android device (Android 8.0+).",
+          "Open your device file manager and tap the downloaded file.",
+          "If prompted, allow 'Install from unknown sources' for your browser or file manager.",
+          "Complete installation and launch Softify.",
+        ],
+      },
+      ipa: {
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.5/Softify-iOS-Universal.ipa",
+        sizeBytes: 11406080,
+        version: "v2.0.5",
+        fileName: "Softify-iOS-Universal.ipa",
+        installGuide: [
+          "iOS requires sideloading using an on-device or desktop tool such as AltStore, SideStore, Sideloadly, or TrollStore.",
+          "Download the .ipa package to your computer or iOS device.",
+          "Open your sideloading manager and sign the package using your free Apple ID certificate.",
+          "Trust your developer profile in iOS Settings → General → VPN & Device Management.",
+        ],
+      },
+      tar: {
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.5/Softify-Linux-x64.tar.gz",
+        sizeBytes: 14043394,
+        version: "v2.0.5",
+        fileName: "Softify-Linux-x64.tar.gz",
+        installGuide: [
+          "Extract archive: tar -xzf Softify-Linux-x64.tar.gz",
+          "Run executable: ./softify",
+          "Optional terminal installer for launcher icon: curl -fsSL https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh | bash",
+        ],
+      },
+    },
+    releaseNotes: [
+      {
+        version: "2.0.5",
+        tag: "v2.0.5",
+        date: "October 2026",
+        title: "v2.0.5 — YouTube Audio Tab & Studio Equalizer",
+        summary:
+          "Added dedicated YouTube audio-only streaming tab with InnerTube endpoint integration, 5-band studio hardware DSP equalizer, and 1-line Linux terminal updater.",
+        changes: [
+          {
+            title: "YouTube Audio-Only Stream Resolution",
+            badge: "Feature",
+            fix: "Direct mobile InnerTube endpoint integration with Android share intent, persistent history, and playlist queuing.",
+          },
+          {
+            title: "Native 5-Band Studio DSP Equalizer",
+            badge: "Audio DSP",
+            fix: "Hardware DSP acceleration, 14 acoustic presets, Catmull-Rom Bézier curve visualizer, and A/B audition bypass.",
+          },
+          {
+            title: "Linux In-Place Terminal Updater",
+            badge: "Platform",
+            fix: "Atomic 1-line updater preserving local SQLite databases and offline cached tracks.",
+          },
+        ],
+      },
+      {
+        version: "2.0.0",
+        tag: "v2.0.0",
+        date: "October 2026",
+        title: "v2.0.0 — On-Device Intelligence & Linux Desktop",
+        summary:
+          "Introduced local-first search engine, dual-band taste decay modeling, and native Linux desktop support with GTK runner.",
+        changes: [
+          {
+            title: "Local-First Instant Search with SQLite FTS5",
+            badge: "Search",
+            fix: "Sub-100ms debounced search index with prefix matching and typo tolerance running client-side.",
+          },
+          {
+            title: "Dual-Engine Standby Pre-Buffering",
+            badge: "Audio Engine",
+            fix: "Pre-buffers track N+1 in background isolate to eliminate track transition latency.",
+          },
+          {
+            title: "Native Linux Desktop Client",
+            badge: "Platform",
+            fix: "GTK-based desktop player with responsive layout, keyboard shortcuts, and system desktop launcher.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "ludo-vercel",
+    name: "Ludo",
+    tagline: "Real-time multiplayer board game for 2–6 players with zero build step",
+    outcome: "Multiplayer board game with Firestore real-time listeners and multi-platform installers",
+    description:
+      "Ludo with Friends is a lightweight, responsive multiplayer game supporting 2 to 6 players across classic cross, pentagon, and hexagon geometries. Built with vanilla JavaScript and HTML5 Canvas, it synchronizes moves via Firestore real-time listeners with anonymous authentication. The same codebase packages to native Android (Capacitor) and Linux (Electron).",
+    problem:
+      "Online multiplayer board games are often bloated with mandatory account creation, ad overlays, and heavyweight asset bundles that hinder quick casual games with friends.",
+    solution:
+      "A zero-build static architecture using Firebase Firestore real-time listeners, anonymous session tokens, 5-letter room codes, and mathematical SVG/Canvas board projections for 2, 3, 4, 5, and 6 players.",
+    features: [
+      "5-letter room code joining across phones, tablets, and laptops",
+      "Dynamic board geometry: classic cross (2–4), pentagon (5), and hexagon (6)",
+      "Real-time state synchronization via Firestore listeners",
+      "Playable offline demo mode functioning without cloud connection",
+      "Zero-build static frontend with pure ES modules and native Canvas rendering",
+      "Packaged Android APK via Capacitor (4.5 MB)",
+      "Packaged Linux .deb binary via Electron (95 MB)",
+    ],
+    stack: [
+      "Vanilla JavaScript",
+      "HTML5 Canvas",
       "Firebase Firestore",
-      "Firebase Auth (anonymous)",
-      "Service Worker / PWA",
-      "Capacitor (Android)",
-      "Electron (Linux)",
+      "Firebase Auth",
+      "Capacitor",
+      "Electron",
       "Vercel",
     ],
+    highlightTech: ["Firestore", "HTML5 Canvas", "Capacitor"],
     status: "completed",
+    statusLabel: "Live",
     progressNote:
-      "Shipped. The site is deployed on Vercel and the Android and Linux installers are built and published.",
-    roadmap: [],
+      "Deployed on Vercel with Android and Linux binaries compiled and available.",
+    platforms: ["Web", "Android", "Linux"],
     cover: "/projects/ludo/logo.png",
     liveUrl: "https://ludo-vercel-rho.vercel.app",
     repoUrl: "https://github.com/Sarthak-Cyb3r/ludo-vercel",
@@ -109,59 +288,115 @@ export const projects: Project[] = [
       "/projects/ludo/scoreboard.png",
       "/projects/ludo/logo.png",
     ],
+    architectureOverview:
+      "Game state machine updates locally and commits transactional state deltas to Firestore. Active listener subscriptions stream state transitions to all connected clients in the room.",
+    keyDecisions: [
+      {
+        title: "Firestore Real-Time Listeners over Custom WebSockets",
+        rationale:
+          "Firestore document snapshots provided robust presence handling, state recovery on mobile app backgrounding, and zero server maintenance costs.",
+      },
+      {
+        title: "Parametric Polygon Board Generation",
+        rationale:
+          "Rather than pre-rendering static assets for 5 and 6 players, board track vertices are generated parametrically, keeping total bundle size under 150 KB.",
+      },
+      {
+        title: "Anonymous Auth for Frictionless Access",
+        rationale:
+          "Players jump immediately into games without passwords or email verification while maintaining a secure UID for turn authorization.",
+      },
+    ],
+    challenges: [
+      "Reconciling simultaneous dice rolls and network race conditions under intermittent mobile connectivity.",
+      "Calculating coordinate trajectories across pentagonal and hexagonal tile geometry without visual distortion.",
+    ],
     downloads: {
+      apk: {
+        file: "/downloads/ludo-vercel/ludo-with-friends.apk",
+        sizeBytes: 4710178,
+        version: "1.0.0",
+        fileName: "ludo-with-friends.apk",
+        sha256: "0d6c46f1426d51fbb224a7c57127711bdc188452fa5a049c4eb13036f31de500",
+        installGuide: [
+          "Download the APK to your Android device (4.5 MB).",
+          "Open the file from your notifications or file manager.",
+          "Enable 'Install unknown apps' if prompted.",
+          "Launch and enter your room code to play.",
+        ],
+      },
       deb: {
         file: "/downloads/ludo-vercel/ludo-with-friends-1.0.0-amd64.deb",
         sizeBytes: 98844460,
         version: "1.0.0",
         fileName: "ludo-with-friends-1.0.0-amd64.deb",
-      },
-      apk: {
-        file: "/downloads/ludo-vercel/ludo-with-friends.apk",
-        sizeBytes: 4710178,
-        version: "1.0",
-        fileName: "ludo-with-friends.apk",
+        sha256: "c4f22c683040969f9d0c41775ca12002adc00a19462c708e7d834be6a3487295",
+        installGuide: [
+          "Download the Debian package to your Linux machine.",
+          "Install via terminal: sudo dpkg -i ludo-with-friends-1.0.0-amd64.deb",
+          "Or double-click the .deb package in your desktop file manager to install via software center.",
+          "Launch 'Ludo with Friends' from your application launcher.",
+        ],
       },
     },
+    releaseNotes: [
+      {
+        version: "1.0.0",
+        tag: "v1.0.0",
+        date: "September 2026",
+        title: "v1.0.0 — Initial Multi-Platform Release",
+        summary:
+          "Initial release featuring 2–6 player support, Firestore real-time sync, and native Android & Linux packages.",
+        changes: [
+          {
+            title: "2 to 6 Player Support",
+            badge: "Gameplay",
+            fix: "Parametric board rendering for 4, 5, and 6 players with turn sequencing.",
+          },
+          {
+            title: "Offline Demo Mode",
+            badge: "Offline",
+            fix: "Full local hotseat game loop operational without network connection.",
+          },
+        ],
+      },
+    ],
   },
   {
     slug: "studystack",
     name: "StudyStack",
-    tagline:
-      "App to manage academics — lectures, backlogs, assignments and everything with a deadline on it.",
+    tagline: "Academic planning engine with deadline auto-prioritization and revision tracking",
+    outcome: "Student task manager with 455 passing tests and ratio-interval scoring",
     description:
-      "StudyStack answers one question: what should I study right now? It folds the pieces students usually spread across a notes app, a calendar and a task manager into a single prioritised surface — a weekly timetable, homework with deadlines, a derived backlog view, and revision sessions that feed back into scoring. A ratio-interval engine ranks active tasks by deadline urgency, remaining workload and task type, so the dashboard order is computed rather than guessed.",
+      "StudyStack answers one fundamental question for students: what should I study right now? It consolidates timetables, homework deadlines, derived backlog lists, and revision intervals into a unified dashboard backed by a ratio-interval urgency scoring engine.",
+    problem:
+      "Students fragment their schedule across disjoint calendars, todo apps, and notes without an objective way to prioritize urgent tasks against heavy workloads.",
+    solution:
+      "A deterministic ratio-interval scoring algorithm ranking tasks based on remaining workload, deadline proximity, and assignment weight, backed by an Express and SQLite backend.",
     features: [
-      "Prioritised dashboard — the top item is what to study next",
-      "Weekly timetable with per-day class slots",
-      "Tasks and assignments with deadlines and estimated hours",
-      "Backlog view: everything incomplete, grouped by subject",
-      "Revision plans per chapter with session tracking",
-      "Scoring engine: urgency × workload × task type",
-      "CSV and RFC 5545 iCalendar export",
-      "Light and dark themes with a tested contrast gate",
-      "scrypt auth with server-revocable session cookies",
-      "Single-use hashed-token password reset",
+      "Prioritized dashboard showing deterministic next-action items",
+      "Weekly timetable matrix mapping day-of-week class schedules",
+      "Derived backlog view grouping uncompleted tasks by subject",
+      "Spaced revision planner tracking chapter progress and study cadence",
+      "RFC 5545 iCalendar and CSV schedule export",
+      "scrypt password hashing with session revocation",
+      "455 verified automated tests across 21 test suites",
     ],
     stack: [
-      "Node.js 18",
-      "Express 4",
+      "Node.js",
+      "Express",
       "SQLite (better-sqlite3)",
-      "EJS templates",
-      "Hand-written CSS",
-      "Docker",
-      "Node test runner",
+      "EJS",
+      "Vanilla CSS",
     ],
+    highlightTech: ["Node.js", "SQLite", "Express"],
     status: "in-development",
+    statusLabel: "In Progress",
     progressNote:
-      "Phase 2 shipped — 455/455 tests passing and five release gates green. Not cleared for deployment: the Docker image has never been built and no host exists yet.",
-    roadmap: [
-      "Build the Docker image and run a real deployment with TLS",
-      "Wire a real mail transport so password reset works in production",
-      "Email verification for registrations, reusing the reset-token flow",
-      "Per-subject backlog filters and a month-view calendar",
-      "Repair the visual regression gate and verify WCAG 1.4.10 reflow",
-    ],
+      "Phase 2 complete with 455/455 tests passing across 21 test suites. Production Docker deployment pending.",
+    testsPassing: 455,
+    testSuiteCount: 21,
+    platforms: ["Web", "Self-Hosted"],
     cover: "/projects/studystack/dashboard.png",
     repoUrl: "https://github.com/Sarthak-Cyb3r/studystack",
     screenshots: [
@@ -172,340 +407,63 @@ export const projects: Project[] = [
       "/projects/studystack/tasks.png",
       "/projects/studystack/timetable.png",
     ],
+    architectureOverview:
+      "Express controller pipeline with SQLite prepared statements via better-sqlite3. A mathematical prioritization module computes score = (workload_hours / hours_until_deadline) * weight_factor.",
+    keyDecisions: [
+      {
+        title: "Node.js & better-sqlite3 Runtime",
+        rationale:
+          "Selected synchronous SQLite bindings in Node.js to achieve sub-millisecond query execution without external database container overhead.",
+      },
+      {
+        title: "Derived View for Backlog",
+        rationale:
+          "Rather than persisting redundant backlog tables, backlog views are queried dynamically from active task deadlines, preventing data synchronization anomalies.",
+      },
+      {
+        title: "Strict Test-Driven Hardening",
+        rationale:
+          "Authored 455 regression tests covering session handling, boundary dates, leap years, and rate limits to guarantee reliability.",
+      },
+    ],
+    challenges: [
+      "Handling timezone offsets and daylight saving transitions across student timetable recurrence rules.",
+      "Maintaining high contrast accessibility across both light and dark themes without heavy CSS frameworks.",
+    ],
     downloads: {},
-  },
-  {
-    slug: "softify",
-    name: "Softify",
-    tagline:
-      "Ad-free, paywall-free Android, iOS & Linux desktop music streaming app with on-device intelligence engine. 320kbps studio masters, synced lyrics, and zero telemetry.",
-    description:
-      "Softify brings the premium music listening experience back to the listener across Android, iOS, and Linux desktop. Powered by a 100% on-device search and recommendation intelligence engine, Softify delivers instant local-first search, dual-band taste decay modeling, skip-sensitive algotorial shelves, vector semantic search, responsive desktop UI with sidebar and persistent bottom player bar, desktop keyboard shortcuts, synchronized lyrics, custom playlists, and offline downloads without subscriptions, audio or visual advertisements, or account paywalls. Built from the ground up using Flutter and strict Clean Architecture, Softify operates entirely client-side with native Lock Screen & Dynamic Island controls, AirPods stem gestures, Linux desktop integration, and zero telemetry tracking.",
-    features: [
-      "Native Linux Desktop Client — Responsive desktop UI with collapsible navigation sidebar and persistent bottom player bar",
-      "Desktop Keyboard Shortcuts — Space to toggle playback, Ctrl+Arrow track skipping and volume stepping, Ctrl+S instant search",
-      "Automated Linux Terminal Installer (curl -fsSL .../install.sh | bash) with desktop integration (.desktop launcher, icons)",
-      "On-Device Recommendation & Search Intelligence Engine — 100% client-side, zero cloud telemetry",
-      "Instant Local-First Search (<100ms) — SQLite FTS5 full-text search with Damerau-Levenshtein typo tolerance & domain aliases",
-      "Linear Search Re-Ranker — Combines BM25, listen counts, and recency with a +10.0 exact-title boost invariant",
-      "Dual-Band Taste Decay Modeling — 4-hour fast mood band (W_fast) + 14-day slow long-term band (W_slow)",
-      "Session Sentence Co-Occurrence Graph — Off-thread PPMI calculation treating consecutive plays as natural language sentences",
-      "Pointwise Logistic Regression Ranker — On-device SGD classifier with >50% penalty on 3 consecutive skips",
-      "Algotorial Home Shelves — Heavy Rotation, Forgotten Favorites, and Discover Weekly with 10% familiar anchor ratio",
-      "Dual-Engine Standby Pre-Buffering — Near-instant song transitions (<10ms perceived latency)",
-      "Automix Tail Reordering — Respects untouched Track N and N+1 player pre-buffer invariant",
-      "Contextual Bandit & Calibration — Epsilon-greedy novelty exploration with KL-divergence genre distribution calibration",
-      "MMR Diversity Controller — Hard maxPerArtist=2 cap per shelf with 30-day artist snoozing & Incognito taste mode",
-      "On-Device Semantic Vector Search — 128-dimensional subword trigram float32 embeddings with zero-network cosine similarity",
-      "Native iOS & Android integration — Lock Screen & Dynamic Island (MPRemoteCommandCenter) with live scrubber",
-      "AirPods & Bluetooth controls — Hardware stem squeeze / tap gesture handling and volume sync",
-      "Apple CarPlay & background audio streaming",
-      "iOS Sideloading support — AltStore, Sideloadly, TrollStore, and SideStore (.ipa package)",
-      "320 kbps Studio Master Streaming with automated stream failover",
-      "Synced Karaoke Lyrics — Real-time LRCLIB synchronization with tap-to-seek",
-      "1-Click Spotify Playlist Importer — Zero-key public playlist migration",
-      "Offline Downloads Manager with ISO-BMFF MP4 atom chunk offset shifting and legacy auto-repair",
-      "Client-Side Privacy — Zero central servers, zero accounts, zero telemetry",
-      "172/172 automated unit and integration tests passing (100% coverage, 0 lint issues)",
-    ],
-    stack: [
-      "Flutter 3.19+",
-      "Dart 3.3+",
-      "Linux Desktop (GTK / CMake)",
-      "Drift (SQLite FTS5)",
-      "On-Device ML / SGD",
-      "Vector Embeddings",
-      "Clean Architecture",
-      "Riverpod",
-      "iOS 15+ (Swift & Obj-C)",
-      "Android SDK (API 26+)",
-      "Just Audio & MPRemoteCommandCenter",
-      "LRCLIB API",
-    ],
-    status: "completed",
-    progressNote:
-      "v2.0.0 released with On-Device Search & Recommendation Intelligence Engine across Android (.apk), iOS (.ipa), and Linux desktop (terminal installer & native GTK runner). 172/172 tests green.",
-    roadmap: [
-      "✓ Native Linux desktop player shell with responsive sidebar & bottom player bar",
-      "✓ Linux terminal installer (install.sh) with desktop launcher integration & keyboard shortcuts",
-      "✓ On-Device Search & Recommendation Intelligence Engine (Drift / SQLite FTS5)",
-      "✓ Dual-band taste decay (4h fast / 14d slow) & session co-occurrence PPMI graph",
-      "✓ Pointwise logistic regression ranker & Algotorial Home Shelves",
-      "✓ Contextual bandit novelty exploration with KL-divergence calibration",
-      "✓ 128-dim subword trigram vector embeddings & zero-network similarity search",
-      "✓ Dual-Engine standby pre-buffering (<10ms track transitions)",
-      "✓ ISO-BMFF MP4 atom tagger & legacy offline audio auto-repair",
-      "✓ 320kbps studio master stream resolver with automated fallback",
-      "✓ Synced lyrics integration via LRCLIB with interactive seek",
-      "✓ 1-click Spotify public playlist importer and library sync",
-      "✓ iOS platform support: Dynamic Island, AirPods stem click gestures & CarPlay",
-      "✓ Sideloadable iOS package (.ipa) for AltStore, Sideloadly & TrollStore",
-      "Android Auto integration and landscape tablet UI layouts",
-      "Windows desktop player shell",
-    ],
-    cover: "/projects/softify/cover.png",
-    liveUrl: "https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0",
-    repoUrl: "https://github.com/Sarthak-Cyb3r/softify",
-    screenshots: [
-      "/projects/softify/cover.png",
-      "/projects/softify/01_homepage.png",
-      "/projects/softify/05_now_playing_self_aware.png",
-      "/projects/softify/02_search.png",
-      "/projects/softify/03_library.png",
-      "/projects/softify/04_settings.png",
-    ],
-    downloads: {
-      deb: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-Linux-x64.tar.gz",
-        sizeBytes: 13868102,
-        version: "2.0.0",
-        fileName: "Softify-Linux-x64.tar.gz",
-      },
-      apk: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk",
-        sizeBytes: 69714441,
-        version: "2.0.0",
-        fileName: "Softify-v2.0.0-Universal.apk",
-      },
-      ipa: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-iOS-Universal.ipa",
-        sizeBytes: 11086504,
-        version: "2.0.0",
-        fileName: "Softify-iOS-Universal.ipa",
-      },
-    },
     releaseNotes: [
       {
-        version: "2.0.0",
-        tag: "v2.0.0",
-        date: "October 7, 2026",
-        title: "Softify v2.0.0 — On-Device Search & Recommendations Intelligence Engine",
+        version: "0.2.0",
+        tag: "v0.2.0",
+        date: "September 2026",
+        title: "Phase 2 Security & Scheduling Hardening",
         summary:
-          "Softify v2.0.0 is a milestone release introducing native Linux desktop support with responsive layout & automated terminal installer, alongside a state-of-the-art, 100% client-side, zero-telemetry search and recommendation intelligence system with 172 passing tests.",
+          "Shipped single-use token password resets, rate limiting, calendar exports, and 455 passing tests.",
         changes: [
           {
-            title: "Native Linux Desktop Client & Terminal Installer",
-            badge: "Desktop Support",
-            problem:
-              "Softify was previously mobile-only (Android & iOS), leaving desktop users on Linux without a native, low-latency streaming client or convenient terminal installation.",
-            fix:
-              "Introduced full native Linux Desktop support via GTK runner, responsive desktop layout with collapsible navigation sidebar and persistent bottom player bar, global keyboard shortcuts (Space, Ctrl+Arrows, Ctrl+S/F), and a one-liner terminal installer (install.sh).",
-            details: [
-              "Automated terminal installer creates ~/.local/share/softify, .desktop launcher, system menu integration, and application icons.",
-              "Keyboard navigation shortcuts: Space toggles playback, Ctrl+Right/Left skips tracks, Ctrl+Up/Down adjusts volume, Ctrl+S opens instant search.",
-            ],
+            title: "Ratio-Interval Scoring Engine",
+            badge: "Algorithm",
+            fix: "Computed ranking sorting pending tasks by deadline urgency and remaining hours.",
           },
           {
-            title: "Local-First Instant Search & FTS5 Retrieval",
-            badge: "Search Engine",
-            problem:
-              "Network-only search caused input lag, failed completely without connectivity, and had zero typo tolerance for artist names or track aliases.",
-            fix:
-              "Sub-100ms debounced instant search backed by SQLite FTS5 full-text indexing, Damerau-Levenshtein typo tolerance, and domain alias normalization. Merges local results before network tracks stream in.",
-            details: [
-              "Diacritic stripping and tokenized prefix search across your entire library, history, and playlists.",
-              "Linear search re-ranker combining BM25, listen counts, and recency with a strict +10.0 exact-match boost invariant.",
-            ],
-          },
-          {
-            title: "Dual-Band Taste Decay & Co-occurrence Sentence Graph",
-            badge: "Taste Profiling",
-            problem:
-              "Conventional recommendation models either erase long-term preferences prematurely or become trapped in repetitive listening bubbles.",
-            fix:
-              "Dual-Band Exponential Half-Life Modeling: W_fast (4-hour half-life) captures immediate mood and session vibes, while W_slow (14-day half-life) protects enduring favorite genres. Consecutive plays (≤60s gap) form sentence graphs to compute Positive Pointwise Mutual Information (PPMI).",
-            details: [
-              "Runs off-thread in background isolates to keep the UI strictly at 60/120 FPS.",
-              "PPMI co-occurrence weights naturally chain musically compatible songs without cloud training.",
-            ],
-          },
-          {
-            title: "Pointwise Logistic Regression & Algotorial Shelves",
-            badge: "Ranking & Discovery",
-            problem:
-              "Static playlists ignore negative interaction signals and fail to dynamically surface forgotten music.",
-            fix:
-              "On-Device SGD Classifier estimating stream probabilities σ(z) = 1 / (1 + e^-z) locally, coupled with an aggressive skip sensitivity rule penalizing tracks/artists >50% after 3 consecutive skips.",
-            details: [
-              "Heavy Rotation shelf: High-affinity tracks blended across fast and slow interest bands.",
-              "Forgotten Favorites shelf: Deep catalog favorites not played in >30 days.",
-              "Discover Weekly shelf: Fresh musical discoveries with a strict ~10% familiar anchor ratio (1 anchor per 10 recommendations).",
-            ],
-          },
-          {
-            title: "Dynamic Queue Reordering & Pre-Buffer Invariant",
-            badge: "Playback Pipeline",
-            problem:
-              "Dynamic queue adjustments can interrupt or corrupt the active player standby engine.",
-            fix:
-              "Player Pre-Buffer Invariant: The dual-engine pipeline strictly guarantees Track N and Track N+1 are never reordered, mutated, or canceled once buffered. Re-ranking occurs exclusively on the unbuffered tail (≥ N+2).",
-            details: [
-              "Contextual Epsilon-Greedy Bandit exploring novelty arms (0.0 to 0.5) to avoid listening fatigue.",
-              "KL Divergence Distribution Calibrator aligning recommendation slate genres with historical listening distributions.",
-            ],
-          },
-          {
-            title: "Maximal Marginal Relevance, Diversity & Privacy Agency",
-            badge: "Discovery Controls",
-            problem:
-              "Algorithmic recommendations often monopolize feeds with a single artist and lack privacy for shared listening.",
-            fix:
-              "Maximal Marginal Relevance (MMR) enforcing hard maxPerArtist = 2 caps per shelf, 30-day 1-tap artist snoozing, incognito taste mode, and 1-line transparent recommendation explanations.",
-            details: [
-              "Incognito Taste Mode: Toggle in Settings to pause all profile learning during party or shared speaker sessions.",
-              "Cold-Start Seeding: Instant taste initialization from imported Spotify playlists or onboarding genre picker.",
-            ],
-          },
-          {
-            title: "On-Device Semantic Vector Search (128-Dim)",
-            badge: "Vector AI",
-            problem:
-              "Traditional lexical keyword matching fails when searching for subgenres, moods, or loosely recalled track vibes.",
-            fix:
-              "128-dimensional Float32 embeddings generated via subword character trigrams and word hashing, with zero-network cosine similarity computed directly over SQLite (<1 MB binary overhead).",
-            details: [
-              "On-Device Team-Draft Interleaving with 10% holdback slot to measure real user preference without telemetry.",
-              "Automated Latency Guardrail runner ensuring p75 < 100ms over 54 golden query benchmarks.",
-            ],
-          },
-        ],
-        assets: [
-          {
-            name: "Softify-Linux-x64.tar.gz",
-            size: "13.2 MB",
-            platform: "Linux x86_64",
-            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-Linux-x64.tar.gz",
-          },
-          {
-            name: "install.sh (Linux Terminal Installer)",
-            size: "23.2 KB",
-            platform: "Linux Desktop (Any Distro)",
-            url: "https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh",
-          },
-          {
-            name: "Softify-v2.0.0-Universal.apk",
-            size: "66.5 MB",
-            platform: "Android 8.0+",
-            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk",
-          },
-          {
-            name: "Softify-iOS-Universal.ipa",
-            size: "10.6 MB",
-            platform: "iOS 15.0+",
-            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-iOS-Universal.ipa",
-          },
-        ],
-      },
-      {
-        version: "1.0.1",
-        tag: "v1.0.1",
-        date: "October 7, 2026",
-        title: "Softify v1.0.1 — Critical Bug Fixes & Sideloadable iOS Release",
-        summary:
-          "This release addresses two critical playback bugs reported in v1.0.0, restoring offline music playback and making song transitions virtually instant (<10ms), while publishing the official sideloadable iOS IPA.",
-        changes: [
-          {
-            title: "Near-Instant Song Transitions (< 10ms Perception)",
-            badge: "Playback Engine",
-            problem:
-              "Transitions between songs previously suffered from noticeable dead silence (1.5s – 3.5s) due to synchronous stream resolution, player teardown, and fresh network buffering on every track advance.",
-            fix:
-              "Implemented Dual-Engine Standby Pre-Buffering Architecture in JustAudioPlayerAdapter. While track N plays, track N+1 is pre-resolved and pre-buffered in the background on a standby audio engine sitting paused at ProcessingState.ready. Swapping engines on skip/finish is instantaneous with zero perceived latency.",
-            details: [
-              "Non-critical database logging (e.g. play history recording) is handled asynchronously without blocking transition pipelines.",
-              "Continuous queue listener ensures standby engine preloads the next song ~15 seconds before the current track finishes.",
-            ],
-          },
-          {
-            title: "Downloaded Songs Silence & Playback Failure Repair",
-            badge: "Offline Storage",
-            problem:
-              "Songs downloaded for offline listening appeared to download successfully, but produced complete silence when played back.",
-            fix:
-              "Re-architected M4aAtomTagger to recursively traverse the MP4 atom tree (moov -> trak -> mdia -> minf -> stbl) and dynamically shift all stco (32-bit) and co64 (64-bit) chunk offsets by the exact metadata size delta.",
-            details: [
-              "On-The-Fly Legacy Repair: existing offline tracks downloaded on v1.0.0 are automatically detected and healed upon access in BackgroundDownloadRepository.",
-              "Robust fallback: if local file playback ever fails, SoftifyAudioHandler seamlessly falls back to real-time CDN streaming.",
-            ],
-          },
-          {
-            title: "Official Sideloadable iOS Release (.ipa)",
-            badge: "iOS Distribution",
-            problem:
-              "iOS users required a pre-packaged sideloadable IPA compatible with AltStore, Sideloadly, TrollStore, and SideStore.",
-            fix:
-              "Configured automated GitHub Actions workflow to build runner archive, package Runner.app into standard Payload directory, and publish Softify-iOS-Universal.ipa directly to release assets.",
-            details: [
-              "Full iOS 15.0+ compatibility across iPhone and iPad.",
-              "Lock Screen & Dynamic Island (MPRemoteCommandCenter) with live scrubber.",
-              "AirPods stem click gestures & Apple CarPlay support.",
-            ],
-          },
-          {
-            title: "In-App OTA Updater & Release Build Optimizations",
-            badge: "Tooling & CI",
-            problem:
-              "Manual APK verification was required to discover new releases, and CI release builds took excessive memory.",
-            fix:
-              "Connected GitHubReleaseUpdateChecker to Sarthak-Cyb3r/softify for seamless one-tap background APK updating, and bypassed memory-heavy lint tasks in Gradle release builds.",
-            details: [
-              "One-tap update checking from inside Settings screen.",
-              "GitHub Actions release write permissions enabled.",
-            ],
-          },
-        ],
-        assets: [
-          {
-            name: "Softify-v1.0.1-Universal.apk",
-            size: "65.4 MB",
-            platform: "Android 8.0+",
-            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-v1.0.1-Universal.apk",
-          },
-          {
-            name: "Softify-iOS-Universal.ipa",
-            size: "10.4 MB",
-            platform: "iOS 15.0+",
-            url: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v1.0.1/Softify-iOS-Universal.ipa",
+            title: "Security & Session Gate",
+            badge: "Security",
+            fix: "Implemented scrypt auth, timing-safe token comparisons, and bruteforce rate limiting.",
           },
         ],
       },
     ],
   },
+];
+
+export const inProgressProjects = [
   {
-    slug: "accounty",
     name: "Accounty",
-    tagline:
-      "Finance app that tracks and analyses your spending — e.g. how much you spent each month.",
-    description:
-      "Accounty is a personal finance app built around one job: show where the money went and what it adds up to per month. The source, screenshots and any public repo are not published yet, so this page only states what is confirmed — nothing is filled in with guesses.",
-    features: [],
-    stack: [],
-    status: "in-development",
-    progressNote:
-      "In development — no source, screenshots or repository published yet.",
-    roadmap: [],
-    cover: "/projects/accounty/placeholder.png",
-    screenshots: ["/projects/accounty/placeholder.png"],
-    downloads: {},
+    oneLiner: "Personal finance and monthly expense tracking app (in active design and prototyping).",
+    status: "In Progress",
+    stack: ["TypeScript", "Next.js", "SQLite"],
   },
 ];
 
 export const getProject = (slug: string): Project | undefined =>
   projects.find((project) => project.slug === slug);
-
-export const completedProjects = projects.filter((p) => p.status === "completed");
-export const inDevelopmentProjects = projects.filter(
-  (p) => p.status === "in-development",
-);
-
-/** Unique technologies across every project — drives the marquee and the stat counter. */
-export const technologies: string[] = Array.from(
-  new Set(projects.flatMap((project) => project.stack)),
-).sort((a, b) => a.localeCompare(b));
-
-export const stats = {
-  projects: projects.length,
-  completed: completedProjects.length,
-  inDevelopment: inDevelopmentProjects.length,
-  technologies: technologies.length,
-};

@@ -1,72 +1,66 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Bricolage_Grotesque,
-  Instrument_Sans,
-  JetBrains_Mono,
-} from "next/font/google";
+import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/nav/navbar";
-import { MobileFloatingIsland } from "@/components/nav/mobile-floating-island";
-import { CustomCursor } from "@/components/motion/custom-cursor";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
+import { CustomCursor } from "@/components/motion/custom-cursor";
+import { Preloader } from "@/components/motion/preloader";
 import { Providers } from "@/components/providers";
 import { Footer } from "@/components/sections/footer";
-import { site } from "@/data/site";
+import { CommandMenu } from "@/components/ui/command-menu";
+import { SITE_URL, GITHUB_URL } from "@/data/site";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
-  variable: "--font-bricolage",
+  variable: "--font-sans",
 });
 
-const instrument = Instrument_Sans({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
-  variable: "--font-instrument",
+  variable: "--font-mono",
 });
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-jetbrains",
-});
-
-const url = "https://sarthak-cyb3r.vercel.app";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(url),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: `${site.name} — 16, 11th grader at Chinmaya Vidyalaya & vibe coder`,
-    template: `%s — ${site.name}`,
+    default: "Sarthak — Softify, Ludo & StudyStack",
+    template: "%s — Sarthak",
   },
-  description: site.subline,
+  description:
+    "Software developer building native Android, iOS, Linux, and web applications. Softify, Ludo, and StudyStack are live, tested, and downloadable.",
   keywords: [
     "Sarthak",
-    "vibe coder",
-    "teen developer",
-    "Chinmaya Vidyalaya",
+    "software engineer",
+    "developer",
     "portfolio",
     "Softify",
     "Flutter",
+    "Next.js",
+    "Linux",
     "Android",
     "Ludo",
     "StudyStack",
-    "Accounty",
   ],
-  authors: [{ name: site.name, url: site.githubUrl }],
-  creator: site.name,
+  authors: [{ name: "Sarthak", url: GITHUB_URL }],
+  creator: "Sarthak",
   openGraph: {
     type: "website",
-    url,
-    siteName: `${site.name} — Portfolio`,
-    title: `${site.name} — 16, 11th grader at Chinmaya Vidyalaya & vibe coder`,
-    description: site.subline,
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: site.headline }],
+    url: SITE_URL,
+    siteName: "Sarthak — Portfolio",
+    title: "Sarthak — Softify, Ludo & StudyStack",
+    description:
+      "Software developer building native Android, iOS, Linux, and web applications. Softify, Ludo, and StudyStack are live, tested, and downloadable.",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Sarthak — Portfolio" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — 16, 11th grader at Chinmaya Vidyalaya & vibe coder`,
-    description: site.subline,
+    title: "Sarthak — Softify, Ludo & StudyStack",
+    description:
+      "Software developer building native Android, iOS, Linux, and web applications. Softify, Ludo, and StudyStack are live, tested, and downloadable.",
     images: ["/og.png"],
   },
   robots: { index: true, follow: true },
@@ -76,12 +70,46 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#08080C" },
-    { media: "(prefers-color-scheme: light)", color: "#F6F6F4" },
+    { media: "(prefers-color-scheme: light)", color: "#F8FAFC" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0F17" },
   ],
 };
 
-const themeInit = `(function(){try{var k="sarthak-theme";var s=localStorage.getItem(k);var m=window.matchMedia("(prefers-color-scheme: light)").matches;var t=s||(m?"light":"dark");document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`;
+const themeInitScript = `(function(){try{var k="sarthak-theme";var s=localStorage.getItem(k);var t=s?s:"light";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Sarthak",
+      "url": SITE_URL,
+      "jobTitle": "Software Developer",
+      "sameAs": [GITHUB_URL],
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Softify",
+      "operatingSystem": "Android, iOS, Linux, Web",
+      "applicationCategory": "MultimediaApplication",
+      "offers": { "@type": "Offer", "price": "0" },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Ludo",
+      "operatingSystem": "Web, Android, Linux",
+      "applicationCategory": "GameApplication",
+      "offers": { "@type": "Offer", "price": "0" },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "StudyStack",
+      "operatingSystem": "Web",
+      "applicationCategory": "ProductivityApplication",
+      "offers": { "@type": "Offer", "price": "0" },
+    },
+  ],
+};
 
 export default function RootLayout({
   children,
@@ -89,25 +117,30 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-theme="dark"
-      className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable}`}
+      data-theme="light"
+      className={`${plusJakarta.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
-      <body>
+      <body className="font-sans antialiased bg-bg text-fg min-h-screen selection:bg-accent selection:text-on-accent">
         <Providers>
+          <Preloader />
+          <CustomCursor />
           <a
             href="#main"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-[var(--c-surface)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-card focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:ring-2 focus:ring-accent"
           >
             Skip to content
           </a>
           <ScrollProgress />
-          <CustomCursor />
           <Navbar />
-          <MobileFloatingIsland />
+          <CommandMenu />
           <main id="main">{children}</main>
           <Footer />
         </Providers>

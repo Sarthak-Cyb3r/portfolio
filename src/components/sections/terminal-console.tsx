@@ -1,560 +1,329 @@
 "use client";
 
-import { useState, useRef, useEffect, type KeyboardEvent } from "react";
-import { Reveal } from "@/components/motion/reveal";
-import { SectionHeading } from "@/components/ui/bits";
-import { projects, stats } from "@/data/projects";
-import { site } from "@/data/site";
-import { sound } from "@/lib/sound";
-import { formatBytes } from "@/lib/utils";
+import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from "react";
+import { Terminal as TerminalIcon, Sparkles } from "lucide-react";
+import { useInView } from "motion/react";
+import { projects } from "@/data/projects";
+import { site, EMAIL, GITHUB_URL } from "@/data/site";
+import { SectionHeader } from "@/components/ui/section-header";
 
 interface CommandOutput {
   command: string;
-  output: string | React.ReactNode;
+  output: React.ReactNode;
 }
 
-const PRESET_COMMANDS = [
+const COMMANDS = [
   "help",
   "whoami",
   "projects",
-  "test studystack",
-  "download ludo",
-  "download softify",
-  "release-notes",
-  "bench",
-  "matrix",
   "skills",
+  "download",
   "contact",
   "theme",
   "clear",
-];
-
-function computeBenchmark(): React.ReactNode {
-  const t0 = performance.now();
-  let primeCount = 0;
-  const limit = 200000;
-  for (let i = 2; i <= limit; i++) {
-    let isPrime = true;
-    for (let j = 2; j * j <= i; j++) {
-      if (i % j === 0) {
-        isPrime = false;
-        break;
-      }
-    }
-    if (isPrime) primeCount++;
-  }
-  const t1 = performance.now();
-  const duration = (t1 - t0).toFixed(2);
-
-  return (
-    <div className="space-y-1 font-mono text-xs">
-      <p className="text-accent-2">▶ Sarthak Vibe-Bench: Computing primes up to {limit.toLocaleString()}...</p>
-      <p className="text-ok">✔ Found {primeCount.toLocaleString()} primes in {duration} ms</p>
-      <p className="text-muted">✔ Architecture: V8 Turbopack Engine</p>
-      <p className="text-accent-3 font-semibold">
-        Performance Grade: {Number(duration) < 50 ? "🚀 S-TIER ULTRA FAST" : "⚡ A-TIER EXCELLENT"}
-      </p>
-    </div>
-  );
-}
+] as const;
 
 export function TerminalConsole() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.4 });
+  const autoTypeFired = useRef(false);
+
   const [history, setHistory] = useState<CommandOutput[]>([
     {
-      command: "welcome",
+      command: "sysinfo",
       output: (
-        <div className="space-y-1 text-xs sm:text-sm">
-          <p className="text-accent-2 font-semibold">
-            ⚡ Welcome to Sarthak&apos;s Interactive Vibe Console [v2.6.4]
-          </p>
-          <p className="text-muted">
-            Type <span className="text-accent-3 font-mono">help</span> or click any command chip below to explore projects, run live benchmarks, or trigger downloads.
-          </p>
+        <div className="space-y-1 text-xs text-slate-400 font-mono">
+          <p className="text-primary font-semibold">Sarthak Terminal v2.4 (Production Shell)</p>
+          <p>Native Flutter · Next.js 16 · SQLite FTS5 · Zero Telemetry</p>
+          <p>Type <span className="text-white font-bold underline">help</span> or tap any suggested command below.</p>
         </div>
       ),
     },
   ]);
   const [input, setInput] = useState("");
-  const [cmdIndex, setCmdIndex] = useState<number>(-1);
+  const [historyIndex, setHistoryIndex] = useState(-1);
   const [pastCommands, setPastCommands] = useState<string[]>([]);
-  const [isMatrixActive, setIsMatrixActive] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const isFirstRender = useRef(true);
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [history, isMatrixActive]);
-
-  const execute = (rawCmd: string) => {
+  const execute = useCallback((rawCmd: string) => {
     const cmd = rawCmd.trim().toLowerCase();
     if (!cmd) return;
 
-    sound.playClick(1300);
     setPastCommands((prev) => [cmd, ...prev]);
-    setCmdIndex(-1);
+    setHistoryIndex(-1);
 
     if (cmd === "clear") {
       setHistory([]);
-      setIsMatrixActive(false);
       setInput("");
       return;
     }
 
-    if (cmd === "matrix") {
-      setIsMatrixActive(true);
-      setTimeout(() => {
-        setIsMatrixActive(false);
-      }, 5000);
-      setHistory((prev) => [
-        ...prev,
-        {
-          command: rawCmd,
-          output: (
-            <div className="font-mono text-xs text-ok space-y-1 animate-pulse">
-              <p>Initializing Cybernetic Neural Matrix Stream [5000ms]...</p>
-              <p className="text-accent-3">01001100 01010101 01000100 01001111 (LUDO)</p>
-              <p className="text-accent-2">01010011 01010100 01010101 01000100 (STUDY)</p>
-              <p className="text-ok">01010011 01001111 01000110 01010100 (SOFTIFY)</p>
-              <p className="text-faint">System integrity verified. Stream synchronized.</p>
-            </div>
-          ),
-        },
-      ]);
-      setInput("");
-      return;
-    }
-
-    let result: React.ReactNode;
+    let out: React.ReactNode;
 
     switch (cmd) {
       case "help":
-        result = (
-          <div className="space-y-1 text-xs">
-            <p className="text-text font-semibold">Available system commands:</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-muted">
-              <div><span className="text-accent-2 font-mono">whoami</span> — Developer background &amp; philosophy</div>
-              <div><span className="text-accent-2 font-mono">projects</span> — List all 4 projects with live status</div>
-              <div><span className="text-accent-2 font-mono">test studystack</span> — Run automated test suite</div>
-              <div><span className="text-accent-2 font-mono">download ludo</span> — Direct links for Linux &amp; Android</div>
-              <div><span className="text-accent-2 font-mono">download softify</span> — Linux, Android &amp; iOS builds</div>
-              <div><span className="text-accent-2 font-mono">release-notes</span> — Softify v2.0.0 intelligence changelog</div>
-              <div><span className="text-accent-2 font-mono">bench</span> — Run client-side micro-benchmark</div>
-              <div><span className="text-accent-2 font-mono">matrix</span> — Digital cyberpunk matrix stream</div>
-              <div><span className="text-accent-2 font-mono">skills</span> — Technical capability breakdown</div>
-              <div><span className="text-accent-2 font-mono">theme</span> — Toggle dark / light interface</div>
-              <div><span className="text-accent-2 font-mono">sound</span> — Toggle synthesized audio feedback</div>
-              <div><span className="text-accent-2 font-mono">clear</span> — Wipe terminal screen</div>
+        out = (
+          <div className="space-y-1.5 text-xs font-mono">
+            <p className="text-slate-400 font-medium">Available production commands:</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-slate-300">
+              <div><span className="text-primary font-semibold">whoami</span> — Profile summary & background</div>
+              <div><span className="text-primary font-semibold">projects</span> — Flagship builds & status</div>
+              <div><span className="text-primary font-semibold">skills</span> — Verified technical toolchain</div>
+              <div><span className="text-primary font-semibold">download</span> — Compiled native packages</div>
+              <div><span className="text-primary font-semibold">contact</span> — Reach out directly</div>
+              <div><span className="text-primary font-semibold">theme</span> — Toggle light / dark mode</div>
+              <div><span className="text-primary font-semibold">clear</span> — Reset terminal history</div>
             </div>
           </div>
         );
         break;
 
       case "whoami":
-        result = (
-          <div className="space-y-2 text-xs text-muted">
-            <p className="text-text font-semibold">Sarthak · 16 Years Old · 11th Grader @ Chinmaya Vidyalaya · Vibe Coder</p>
-            <p>
-              Self-taught developer building apps, games, and high-performance tools.
-              Believes in shipping real binaries (.deb, .apk) rather than static prototypes.
+        out = (
+          <div className="space-y-1 text-xs font-mono text-slate-300">
+            <p className="font-semibold text-white">Sarthak</p>
+            <p className="text-slate-400">
+              16-year-old solo software developer. Building native Android, iOS, Linux, and web applications.
             </p>
-            <p className="font-mono text-accent-2">
-              Email: {site.email} | GitHub: @Sarthak-Cyb3r
+            <p className="text-slate-400">
+              GitHub: <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="text-primary underline">{GITHUB_URL}</a>
             </p>
-            <p className="font-mono text-accent-3">
-              Total Projects: {stats.projects} | Completed: {stats.completed} | Active: {stats.inDevelopment}
-            </p>
-          </div>
-        );
-        break;
-
-      case "contact":
-      case "email":
-        result = (
-          <div className="space-y-1.5 text-xs font-mono">
-            <p className="text-text font-semibold">Direct Developer Contact:</p>
-            <p className="text-accent-3">✉ Email: {site.email}</p>
-            <p className="text-accent-2">🐙 GitHub: {site.githubUrl}</p>
-            <p className="text-muted">Available for discussions, architecture questions, and collaborations.</p>
           </div>
         );
         break;
 
       case "projects":
-        result = (
-          <div className="space-y-2 text-xs">
-            <div className="rounded border border-line bg-surface p-2.5 font-mono">
-              <div className="grid grid-cols-4 gap-2 font-semibold text-text border-b border-line pb-1 mb-1">
-                <span>PROJECT</span>
-                <span>STATUS</span>
-                <span>PLATFORM</span>
-                <span>DOWNLOADS</span>
-              </div>
-              {projects.map((p) => (
-                <div key={p.slug} className="grid grid-cols-4 gap-2 py-0.5 text-muted">
-                  <span className="text-text font-medium">{p.name}</span>
-                  <span className={p.status === "completed" ? "text-ok" : "text-warn"}>
-                    {p.status}
-                  </span>
-                  <span>
-                    {p.slug === "ludo-vercel"
-                      ? "Web / Electron / APK"
-                      : p.slug === "softify"
-                      ? "Android, iOS & Linux (Flutter)"
-                      : "Node / SQLite"}
-                  </span>
-                  <span>
-                    {[
-                      p.downloads.deb && "Linux",
-                      p.downloads.apk && "Android",
-                      p.downloads.ipa && "iOS",
-                      p.downloads.pending?.includes("ipa") && "iOS (CI)",
-                    ]
-                      .filter(Boolean)
-                      .join(" & ") || "In Development"}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-        break;
-
-      case "test studystack":
-      case "test":
-        result = (
-          <div className="space-y-1 font-mono text-xs">
-            <p className="text-accent-2">▶ node --test (StudyStack Phase 2 Test Suite)</p>
-            <p className="text-ok">✔ 14 test suites passed</p>
-            <p className="text-ok">✔ 455 assertions green (0 failed, 0 skipped)</p>
-            <p className="text-muted">✔ Ratio-interval task prioritization algorithm: PASSED</p>
-            <p className="text-muted">✔ Password reset token verification: PASSED</p>
-            <p className="text-ok-soft text-ok font-semibold">Test Suites: 14 passed, 14 total (4.21s)</p>
-          </div>
-        );
-      case "download softify": {
-        const softify = projects.find((p) => p.slug === "softify");
-        const deb = softify?.downloads.deb;
-        const apk = softify?.downloads.apk;
-        const ipa = softify?.downloads.ipa;
-        const ipaPending =
-          !ipa && (softify?.downloads.pending?.includes("ipa") ?? false);
-
-        result = (
-          <div className="space-y-2 text-xs">
-            <p className="text-text font-semibold">Official Softify v2.0.0 Build Artifacts:</p>
-            <div className="flex flex-wrap gap-2">
-              <a
-                href={deb?.file ?? "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-Linux-x64.tar.gz"}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => sound.playChime()}
-                className="inline-flex items-center gap-1.5 rounded-md bg-accent-3/20 border border-accent-3/40 px-3 py-1.5 text-accent-3 font-mono hover:bg-accent-3/30"
-              >
-                <span>🐧 Linux Desktop ({deb ? formatBytes(deb.sizeBytes) : "13.2 MB"}) — v{deb?.version ?? "2.0.0"}</span>
-              </a>
-              <a
-                href={apk?.file ?? "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.0/Softify-v2.0.0-Universal.apk"}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => sound.playChime()}
-                className="inline-flex items-center gap-1.5 rounded-md bg-accent/20 border border-accent/40 px-3 py-1.5 text-accent font-mono hover:bg-accent/30"
-              >
-                <span>📱 Softify Universal .apk ({apk ? formatBytes(apk.sizeBytes) : "66.5 MB"}) — v{apk?.version ?? "2.0.0"}</span>
-              </a>
-              {ipa ? (
-                <a
-                  href={ipa.file}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => sound.playChime()}
-                  className="inline-flex items-center gap-1.5 rounded-md bg-accent-2/20 border border-accent-2/40 px-3 py-1.5 text-accent-2 font-mono hover:bg-accent-2/30"
-                >
-                  <span>🍎 Softify iOS .ipa ({formatBytes(ipa.sizeBytes)}) — v{ipa.version}</span>
-                </a>
-              ) : null}
-            </div>
-            <div className="rounded-md border border-line bg-surface-2/80 p-2 font-mono text-[0.75rem] text-muted flex items-center justify-between gap-2">
-              <span className="truncate">curl -fsSL https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh | bash</span>
-              <span className="text-accent-3 font-semibold shrink-0">Linux 1-Line Installer</span>
-            </div>
-            {ipaPending ? (
-              <p className="text-muted">
-                🍎 iOS (.ipa) —{" "}
-                <span className="text-warn font-semibold">CI build pending</span>
-                . The sideloadable package posts to the release as soon as the iOS workflow goes green.
-              </p>
-            ) : null}
-          </div>
-        );
-        break;
-      }
-
-      case "release-notes":
-      case "softify notes":
-      case "changelog": {
-        const softify = projects.find((p) => p.slug === "softify");
-        const note = softify?.releaseNotes?.[0];
-        result = (
+        out = (
           <div className="space-y-2 text-xs font-mono">
-            <div className="flex items-center justify-between border-b border-line pb-1.5">
-              <span className="text-accent-3 font-semibold">
-                Softify {note?.tag ?? "v2.0.0"} — Release Notes
-              </span>
-              <span className="text-faint">{note?.date ?? "Oct 7, 2026"}</span>
-            </div>
-            <p className="text-muted">{note?.summary}</p>
-            <div className="space-y-1.5 pt-1">
-              {note?.changes.map((c) => (
-                <div key={c.title} className="rounded bg-surface p-2 border border-line/60">
-                  <div className="flex items-center justify-between text-text font-semibold">
-                    <span>{c.title}</span>
-                    {c.badge && <span className="text-[0.65rem] text-accent-2">[{c.badge}]</span>}
-                  </div>
-                  {c.problem && <p className="text-warn text-[0.7rem] mt-0.5">Problem: {c.problem}</p>}
-                  <p className="text-ok text-[0.7rem] mt-0.5">Fix: {c.fix}</p>
+            {projects.map((p) => (
+              <div key={p.slug} className="flex flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-white">{p.name}</span>
+                  <span className="text-slate-400">[{p.statusLabel}]</span>
+                  {p.liveUrl && (
+                    <a href={p.liveUrl} target="_blank" rel="noreferrer" className="text-primary underline">
+                      live
+                    </a>
+                  )}
                 </div>
-              ))}
-            </div>
-            <div className="pt-1 flex flex-wrap items-center gap-2 text-accent-2">
-              <span>Artifacts ready:</span>
-              <span className="text-text">Softify-v2.0.0-Universal.apk (66.5 MB)</span>
-              <span>·</span>
-              <span className="text-text">Softify-iOS-Universal.ipa (10.6 MB)</span>
-            </div>
-          </div>
-        );
-        break;
-      }
-
-      case "download ludo":
-      case "download":
-        result = (
-          <div className="space-y-2 text-xs">
-            <p className="text-text font-semibold">Official Ludo Build Artifacts:</p>
-            <div className="flex flex-wrap gap-2">
-              <a
-                href="/downloads/ludo-vercel/ludo-with-friends-1.0.0-amd64.deb"
-                download
-                onClick={() => sound.playChime()}
-                className="inline-flex items-center gap-1.5 rounded-md bg-accent-2/20 border border-accent-2/40 px-3 py-1.5 text-accent-2 font-mono hover:bg-accent-2/30"
-              >
-                <span>📦 Linux .deb (98.8 MB)</span>
-              </a>
-              <a
-                href="/downloads/ludo-vercel/ludo-with-friends.apk"
-                download
-                onClick={() => sound.playChime()}
-                className="inline-flex items-center gap-1.5 rounded-md bg-accent-3/20 border border-accent-3/40 px-3 py-1.5 text-accent-3 font-mono hover:bg-accent-3/30"
-              >
-                <span>📱 Android .apk (4.5 MB)</span>
-              </a>
+                <p className="text-slate-400">{p.outcome}</p>
+              </div>
+            ))}
+            <div className="flex flex-col gap-0.5 pt-1 border-t border-white/10">
+              <span className="font-semibold text-white">Accounty [In Progress]</span>
+              <p className="text-slate-400">Personal finance tracking app (in active prototyping).</p>
             </div>
           </div>
         );
-        break;
-
-      case "bench":
-        result = computeBenchmark();
         break;
 
       case "skills":
-        result = (
-          <div className="space-y-1.5 text-xs font-mono">
-            <p className="text-accent-2 font-bold">┌─ CORE DISCIPLINES &amp; STACK</p>
-            <p className="text-muted">├── Fullstack: Next.js 16 (App Router), React 19, TypeScript, Tailwind v4</p>
-            <p className="text-muted">├── 3D &amp; Motion: Three.js, React Three Fiber, Drei, Motion / Motion Plus</p>
-            <p className="text-muted">├── Native &amp; Mobile: Electron packaging (.deb), Capacitor / Android SDK (.apk)</p>
-            <p className="text-muted">├── Databases: SQLite (better-sqlite3), Firebase Firestore, Redis cache</p>
-            <p className="text-muted">└── Testing &amp; QA: Playwright E2E, Node Test Runner, Zero regressions</p>
+        out = (
+          <div className="space-y-1 text-xs font-mono text-slate-300">
+            <p><span className="text-slate-400">Mobile:</span> Flutter, Dart, Android SDK</p>
+            <p><span className="text-slate-400">Web:</span> Next.js, React, TypeScript, Tailwind CSS</p>
+            <p><span className="text-slate-400">Backend & Data:</span> Node.js, SQLite FTS5, Firebase Firestore Listeners</p>
+            <p><span className="text-slate-400">Tooling:</span> Git, Linux, Docker, Vercel</p>
           </div>
         );
         break;
 
-      case "sound": {
-        const updated = sound.toggle();
-        result = (
-          <p className="text-xs text-accent-3 font-mono">
-            ✔ Audio synthesizer {updated ? "ENABLED (audible feedback active)" : "MUTED"}.
-          </p>
+      case "download":
+        out = (
+          <div className="space-y-1.5 text-xs font-mono">
+            <p className="font-medium text-white">Verified application packages:</p>
+            <ul className="space-y-1 text-slate-300">
+              <li>
+                Softify:{" "}
+                <a href={projects[0].downloads.apk?.file} className="text-primary underline">Android APK</a> ·{" "}
+                <a href={projects[0].downloads.ipa?.file} className="text-primary underline">iOS IPA</a> ·{" "}
+                <a href={projects[0].downloads.tar?.file} className="text-primary underline">Linux x64</a>
+              </li>
+              <li>
+                Ludo:{" "}
+                <a href={projects[1].downloads.apk?.file} className="text-primary underline">Android APK (4.5 MB)</a> ·{" "}
+                <a href={projects[1].downloads.deb?.file} className="text-primary underline">Linux .deb (95 MB)</a>
+              </li>
+            </ul>
+          </div>
         );
         break;
-      }
 
-      case "stack":
-        result = (
-          <div className="space-y-2 text-xs">
-            <p className="text-text font-semibold">Technologies verified in code:</p>
-            <p className="font-mono text-muted">
-              Next.js 16, TypeScript, React 19, React Three Fiber, Three.js, Tailwind CSS v4, Motion, Node.js 18, Express, SQLite (better-sqlite3), Firebase Firestore, Electron, Capacitor, Docker, Playwright.
+      case "contact":
+        out = (
+          <div className="space-y-1 text-xs font-mono text-slate-300">
+            <p className="text-slate-400">
+              Email: <span className="font-semibold text-white">{EMAIL}</span>
+            </p>
+            <p className="text-slate-400">
+              GitHub: <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="text-primary underline">{site.handle}</a>
             </p>
           </div>
         );
         break;
 
       case "theme": {
-        const current = document.documentElement.getAttribute("data-theme") || "dark";
-        const next = current === "dark" ? "light" : "dark";
+        const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+        const next = currentTheme === "dark" ? "light" : "dark";
         document.documentElement.setAttribute("data-theme", next);
-        try {
-          localStorage.setItem("sarthak-theme", next);
-        } catch {}
-        result = (
-          <p className="text-xs text-accent-3 font-mono">
-            ✔ Theme toggled to &apos;{next}&apos; mode successfully.
-          </p>
-        );
+        localStorage.setItem("sarthak-theme", next);
+        out = <p className="text-xs text-slate-400 font-mono">Switched theme to {next} mode.</p>;
         break;
       }
 
       default:
-        result = (
-          <p className="text-xs text-warn font-mono">
-            zsh: command not found: {cmd}. Type &apos;help&apos; for valid commands.
+        out = (
+          <p className="text-xs text-slate-400 font-mono">
+            Command not recognized: <span className="font-semibold text-white">{cmd}</span>. Type <span className="text-primary underline">help</span> for available commands.
           </p>
         );
     }
 
-    setHistory((prev) => [...prev, { command: rawCmd, output: result }]);
+    setHistory((prev) => [...prev, { command: rawCmd, output: out }]);
     setInput("");
-  };
+  }, []);
+
+  // Autoplay typing demo on first view
+  useEffect(() => {
+    if (!isInView || autoTypeFired.current) return;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    autoTypeFired.current = true;
+    const demoCmd = "whoami";
+    let charIndex = 0;
+
+    const timer = setTimeout(() => {
+      const typeInterval = setInterval(() => {
+        if (charIndex <= demoCmd.length) {
+          setInput(demoCmd.slice(0, charIndex));
+          charIndex++;
+        } else {
+          clearInterval(typeInterval);
+          setTimeout(() => {
+            execute("whoami");
+          }, 300);
+        }
+      }, 70);
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [isInView, execute]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    sound.playBlip(1000);
     if (e.key === "Enter") {
       execute(input);
-    } else if (e.key === "Tab") {
-      e.preventDefault();
-      // Tab autocomplete
-      const partial = input.trim().toLowerCase();
-      if (partial) {
-        const match = PRESET_COMMANDS.find((cmd) => cmd.startsWith(partial));
-        if (match) {
-          setInput(match);
-          sound.playClick(1400);
-        }
-      }
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       if (pastCommands.length > 0) {
-        const nextIndex = Math.min(cmdIndex + 1, pastCommands.length - 1);
-        setCmdIndex(nextIndex);
+        const nextIndex = Math.min(historyIndex + 1, pastCommands.length - 1);
+        setHistoryIndex(nextIndex);
         setInput(pastCommands[nextIndex]);
       }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      if (cmdIndex > 0) {
-        const nextIndex = cmdIndex - 1;
-        setCmdIndex(nextIndex);
+      if (historyIndex > 0) {
+        const nextIndex = historyIndex - 1;
+        setHistoryIndex(nextIndex);
         setInput(pastCommands[nextIndex]);
-      } else if (cmdIndex === 0) {
-        setCmdIndex(-1);
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
         setInput("");
       }
     }
   };
 
   return (
-    <section
-      id="console"
-      aria-labelledby="console-heading"
-      className="shell section"
-    >
-      <div className="max-w-3xl mb-8">
-        <Reveal>
-          <SectionHeading
-            kicker="Interactive Playground"
-            title="The Vibe Code Terminal"
-            lead="Don't just take my word for it. Run live commands, inspect tests, and query artifacts directly from this browser terminal."
+    <section id="terminal" className="py-24 sm:py-32 border-t border-border/80 bg-dot-pattern/40">
+      <div className="max-w-[1160px] mx-auto px-4 sm:px-6">
+        <SectionHeader
+          label="Terminal"
+          title="Interactive console."
+          description="Inspect system specs, binaries, and repositories directly via command line."
+        />
+
+        <div
+          ref={containerRef}
+          className="relative rounded-2xl border border-slate-800 bg-slate-950/95 text-slate-200 shadow-2xl overflow-hidden font-mono"
+        >
+          {/* Subtle Scanline Overlay */}
+          <div
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] opacity-40 z-10"
+            aria-hidden
           />
-        </Reveal>
-      </div>
 
-      <Reveal delay={0.15}>
-        <div className="card overflow-hidden border border-line bg-[#050508] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]">
-          {/* Terminal Window Header */}
-          <div className="flex items-center justify-between border-b border-line bg-[#0E0E14] px-4 py-3 select-none">
+          {/* macOS-style Header Bar */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-slate-900/80 text-xs text-slate-400">
             <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-[#EF4444]/80 inline-block" />
-              <span className="h-3 w-3 rounded-full bg-[#F59E0B]/80 inline-block" />
-              <span className="h-3 w-3 rounded-full bg-[#10B981]/80 inline-block" />
-              <span className="ml-2 font-mono text-xs text-muted">
-                sarthak@vibe-box: ~ (zsh)
-              </span>
+              {/* macOS window action dots */}
+              <div className="flex items-center gap-1.5 mr-2">
+                <span className="w-3 h-3 rounded-full bg-rose-500/90 shadow-xs" />
+                <span className="w-3 h-3 rounded-full bg-amber-500/90 shadow-xs" />
+                <span className="w-3 h-3 rounded-full bg-emerald-500/90 shadow-xs" />
+              </div>
+              <TerminalIcon className="w-3.5 h-3.5 text-primary" />
+              <span className="text-[11px] text-slate-300">sarthak@portfolio — zsh</span>
             </div>
-
-            <div className="flex items-center gap-2 font-mono text-[0.65rem] text-faint">
-              <span className="h-1.5 w-1.5 rounded-full bg-ok animate-pulse" />
-              <span>ONLINE · TAB TO AUTOCOMPLETE</span>
+            <div className="flex items-center gap-2 text-[10px] text-slate-500">
+              <Sparkles className="w-3 h-3 text-primary" />
+              <span>UTF-8</span>
             </div>
           </div>
 
-          {/* Quick preset commands */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar border-b border-line/60 bg-[#0A0A0F] px-4 py-2.5 text-xs">
-            <span className="font-mono text-[0.65rem] text-faint mr-1 uppercase shrink-0">
-              Quick run:
-            </span>
-            {PRESET_COMMANDS.map((preset) => (
-              <button
-                key={preset}
-                type="button"
-                onClick={() => execute(preset)}
-                className="rounded-md border border-line bg-surface-2 px-3 py-1.5 min-h-[34px] whitespace-nowrap font-mono text-xs text-muted transition-all active:scale-95 touch-manipulation hover:border-accent-2/60 hover:text-accent-2"
-              >
-                {preset}
-              </button>
-            ))}
-          </div>
-
-          {/* Terminal Body */}
+          {/* Terminal Output Area */}
           <div
             onClick={() => inputRef.current?.focus()}
-            className="h-84 overflow-y-auto p-4 sm:p-5 font-mono text-xs sm:text-sm text-text space-y-3 cursor-text scrollbar-none"
+            className="relative z-20 p-5 sm:p-6 text-sm min-h-[300px] max-h-[440px] overflow-y-auto space-y-4 cursor-text"
           >
             {history.map((item, idx) => (
               <div key={idx} className="space-y-1.5">
-                <div className="flex items-center gap-2 text-muted">
-                  <span className="text-accent-2 font-semibold">➜</span>
-                  <span className="text-accent-3">~</span>
-                  <span className="text-text">{item.command}</span>
-                </div>
-                <div className="pl-4">{item.output}</div>
+                {item.command !== "sysinfo" && (
+                  <div className="flex items-center gap-2 text-xs text-slate-400">
+                    <span className="text-primary font-bold">➜</span>
+                    <span className="text-emerald-400 font-semibold">~</span>
+                    <span className="text-white">{item.command}</span>
+                  </div>
+                )}
+                <div>{item.output}</div>
               </div>
             ))}
 
-            {/* Matrix Digital Stream Animation */}
-            {isMatrixActive && (
-              <div className="pl-4 py-2 font-mono text-xs text-ok space-y-0.5">
-                <p>01010011 01000001 01010010 01010100 01001000 01000001 01001011</p>
-                <p>11010010 01100001 10010100 11011001 01001111 00101011 11000001</p>
-                <p>01110011 01110100 01110101 01100100 01111001 01110011 01110100</p>
-              </div>
-            )}
-
-            {/* Active input line */}
-            <div className="flex items-center gap-2 pt-1">
-              <span className="text-accent-2 font-semibold">➜</span>
-              <span className="text-accent-3">~</span>
+            {/* Current Input Line */}
+            <div className="flex items-center gap-2 text-xs pt-1">
+              <span className="text-primary font-bold">➜</span>
+              <span className="text-emerald-400 font-semibold">~</span>
               <input
                 ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="type a command, e.g. 'help' (Tab to autocomplete)..."
-                spellCheck={false}
-                autoCapitalize="off"
-                className="flex-1 bg-transparent text-text outline-none border-none p-0 text-xs sm:text-sm font-mono placeholder:text-faint"
+                placeholder="type a command (e.g. whoami, projects, help)..."
+                className="w-full bg-transparent text-white placeholder:text-slate-500 outline-none font-mono text-xs"
               />
             </div>
             <div ref={bottomRef} />
           </div>
+
+          {/* Suggested Quick-Action Chips */}
+          <div className="relative z-20 p-3 sm:p-4 border-t border-white/10 bg-slate-900/60 flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-mono text-slate-400 mr-1.5 hidden sm:inline">
+              Suggested:
+            </span>
+            {COMMANDS.map((cmd) => (
+              <button
+                key={cmd}
+                type="button"
+                onClick={() => execute(cmd)}
+                className="px-2.5 py-1 rounded-md text-xs font-mono text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/50 transition-all cursor-pointer active:scale-95"
+              >
+                {cmd}
+              </button>
+            ))}
+          </div>
         </div>
-      </Reveal>
+      </div>
     </section>
   );
 }

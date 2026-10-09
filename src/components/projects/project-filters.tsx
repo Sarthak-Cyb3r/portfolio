@@ -1,12 +1,10 @@
 "use client";
 
-import { MagnifyingGlass } from "@phosphor-icons/react";
 import { useEffect, useMemo, useState } from "react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import {
   projects as allProjects,
-  technologies,
   type Project,
   type ProjectStatus,
 } from "@/data/projects";
@@ -33,17 +31,10 @@ const toSearchIndex = (project: Project) =>
     .join(" ")
     .toLowerCase();
 
-/**
- * Status tabs + debounced search + technology chips, and the results grid.
- *
- * Everything is derived from `@/data/projects`, so adding a project to that
- * file is all it takes for it to show up here — filters included.
- */
 export function ProjectFilters() {
   const [status, setStatus] = useState<StatusFilter>("all");
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const [activeTech, setActiveTech] = useState<string[]>([]);
 
   useEffect(() => {
     const timer = window.setTimeout(
@@ -68,156 +59,85 @@ export function ProjectFilters() {
     const needle = debouncedQuery;
     return allProjects.filter((project) => {
       if (status !== "all" && project.status !== status) return false;
-      if (
-        activeTech.length > 0 &&
-        !project.stack.some((tech) => activeTech.includes(tech))
-      ) {
-        return false;
-      }
       if (needle && !toSearchIndex(project).includes(needle)) return false;
       return true;
     });
-  }, [status, activeTech, debouncedQuery]);
+  }, [status, debouncedQuery]);
 
-  const hasFilters =
-    status !== "all" || activeTech.length > 0 || query.trim().length > 0;
+  const hasFilters = status !== "all" || query.trim().length > 0;
 
   const clearFilters = () => {
     setStatus("all");
-    setActiveTech([]);
     setQuery("");
   };
 
-  const toggleTech = (tech: string) =>
-    setActiveTech((current) =>
-      current.includes(tech)
-        ? current.filter((item) => item !== tech)
-        : [...current, tech],
-    );
-
   return (
     <div className="flex flex-col gap-8">
-      {/* ---------------------------------------------------------- */}
-      {/* Controls                                                    */}
-      {/* ---------------------------------------------------------- */}
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div
-            role="group"
-            aria-label="Filter projects by status"
-            className="flex flex-wrap gap-2"
-          >
-            {STATUS_TABS.map((tab) => {
-              const selected = status === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setStatus(tab.id)}
-                  aria-pressed={selected}
-                  className={cn(
-                    "inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm transition-colors duration-200",
-                    selected
-                      ? "border-transparent bg-text text-bg"
-                      : "border-line text-muted hover:border-line-strong hover:text-text",
-                  )}
-                >
-                  {tab.label}
-                  <span className="tabular font-mono text-[0.7rem] opacity-70">
-                    {counts[tab.id]}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="relative w-full lg:max-w-sm">
-            <label htmlFor="project-search" className="sr-only">
-              Search projects by name, description or technology
-            </label>
-            <MagnifyingGlass
-              size={16}
-              aria-hidden
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-faint"
-            />
-            <input
-              id="project-search"
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search projects…"
-              autoComplete="off"
-              spellCheck={false}
-              className="min-h-11 w-full rounded-full border border-line bg-surface pl-11 pr-12 text-sm text-text transition-colors duration-200 placeholder:text-faint hover:border-line-strong"
-            />
-          </div>
+      {/* Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Status Tabs */}
+        <div
+          role="group"
+          aria-label="Filter projects by status"
+          className="flex flex-wrap gap-2"
+        >
+          {STATUS_TABS.map((tab) => {
+            const selected = status === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setStatus(tab.id)}
+                aria-pressed={selected}
+                className={cn(
+                  "inline-flex min-h-[44px] items-center gap-2 rounded-[10px] border px-4 text-xs font-medium transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-accent outline-none",
+                  selected
+                    ? "border-accent bg-accent text-on-accent"
+                    : "border-border bg-card text-muted-fg hover:text-fg hover:border-slate-400",
+                )}
+              >
+                <span>{tab.label}</span>
+                <span className="tabular font-mono text-[11px] opacity-80">
+                  {counts[tab.id]}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {technologies.length > 0 ? (
-          <div role="group" aria-label="Filter projects by technology">
-            <p className="kicker mb-3">Built with</p>
-            <div className="flex flex-wrap gap-2">
-              {technologies.map((tech) => {
-                const selected = activeTech.includes(tech);
-                return (
-                  <button
-                    key={tech}
-                    type="button"
-                    onClick={() => toggleTech(tech)}
-                    aria-pressed={selected}
-                    className={cn(
-                      "inline-flex min-h-11 items-center rounded-full border px-4 font-mono text-[0.7rem] tracking-[0.04em] transition-colors duration-200",
-                      selected
-                        ? "border-transparent bg-accent-2 text-[#05060A]"
-                        : "border-line bg-surface-2 text-muted hover:border-line-strong hover:text-text",
-                    )}
-                  >
-                    {tech}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ) : null}
-
-        <p
-          role="status"
-          aria-live="polite"
-          className="tabular font-mono text-[0.7rem] uppercase tracking-[0.18em] text-faint"
-        >
-          Showing {filtered.length} of {allProjects.length} projects
-          {hasFilters ? " — filters active" : ""}
-        </p>
+        {/* Search */}
+        <div className="relative w-full sm:max-w-xs">
+          <Search className="w-4 h-4 text-muted-fg pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search projects..."
+            className="w-full min-h-[44px] rounded-[10px] border border-border bg-card pl-10 pr-4 text-xs text-fg placeholder:text-muted-fg outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          />
+        </div>
       </div>
 
-      {/* ---------------------------------------------------------- */}
-      {/* Results                                                     */}
-      {/* ---------------------------------------------------------- */}
+      {/* Results Count */}
+      <div className="text-xs font-mono text-muted-fg">
+        Showing {filtered.length} of {allProjects.length} projects
+        {hasFilters && " (filters active)"}
+      </div>
+
+      {/* Grid */}
       {filtered.length > 0 ? (
-        <Stagger className="grid gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((project) => (
-            <StaggerItem key={project.slug} className="h-full">
-              <ProjectCard project={project} />
-            </StaggerItem>
+            <ProjectCard key={project.slug} project={project} />
           ))}
-        </Stagger>
+        </div>
       ) : (
-        <div className="card flex flex-col items-center gap-5 px-6 py-14 text-center">
-          <MagnifyingGlass
-            size={28}
-            aria-hidden
-            className="text-faint"
-          />
-          <div className="max-w-sm">
-            <p className="font-display text-xl text-text">
-              Nothing matches those filters
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              No project matches that search and those tags right now. Clear
-              everything to see all {allProjects.length} projects again.
-            </p>
-          </div>
-          <Button variant="quiet" onClick={clearFilters}>
+        <div className="rounded-[14px] border border-border bg-card p-12 text-center space-y-4">
+          <p className="text-base font-semibold text-fg">No projects found</p>
+          <p className="text-xs text-muted-fg max-w-sm mx-auto">
+            Try resetting your search query or status filter to see all projects.
+          </p>
+          <Button variant="secondary" onClick={clearFilters} size="sm">
             Clear filters
           </Button>
         </div>

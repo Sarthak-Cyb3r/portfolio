@@ -4,23 +4,23 @@ import { motion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-const ease = [0.16, 1, 0.3, 1] as const;
+export const EASE = [0.22, 1, 0.36, 1] as const;
 
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 26 },
+  hidden: { opacity: 0, y: 24 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease },
+    transition: { duration: 0.7, ease: EASE },
   },
 };
 
-/** Entrance reveal, triggered when the element scrolls into view. */
+/** Entrance reveal triggered once at ~20% in view, y 24 -> 0 + fade, 0.7s */
 export function Reveal({
   children,
   className,
   delay = 0,
-  y = 26,
+  y = 24,
   as = "div",
 }: {
   children: ReactNode;
@@ -35,72 +35,19 @@ export function Reveal({
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-      transition={{ duration: 0.7, ease, delay }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.7, ease: EASE, delay }}
     >
       {children}
     </Comp>
   );
 }
 
-/**
- * Word-by-word headline reveal. Words enter with a small stagger so the line
- * reads instantly even when the animation is skipped.
- */
-export function WordReveal({
-  text,
-  className,
-  wordClassName,
-  delay = 0,
-  stagger = 0.045,
-  as = "h1",
-}: {
-  text: string;
-  className?: string;
-  wordClassName?: string;
-  delay?: number;
-  stagger?: number;
-  as?: "h1" | "h2" | "p" | "span";
-}) {
-  const Comp = motion[as] as typeof motion.h1;
-  const words = text.split(" ");
-  return (
-    <Comp
-      className={className}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{ staggerChildren: stagger, delayChildren: delay }}
-    >
-      {words.map((word, i) => (
-        <span key={`${word}-${i}`}>
-          <span className="inline-block overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em]">
-            <motion.span
-              className={cn("inline-block", wordClassName)}
-              variants={{
-                hidden: { y: "115%", opacity: 0 },
-                show: {
-                  y: "0%",
-                  opacity: 1,
-                  transition: { duration: 0.8, ease },
-                },
-              }}
-            >
-              {word}
-            </motion.span>
-          </span>
-          {i < words.length - 1 ? " " : null}
-        </span>
-      ))}
-    </Comp>
-  );
-}
-
-/** Container that staggers direct children on scroll into view. */
+/** Container that staggers direct children on scroll into view (80ms stagger) */
 export function Stagger({
   children,
   className,
-  stagger = 0.06,
+  stagger = 0.08,
   delay = 0,
 }: {
   children: ReactNode;
@@ -113,9 +60,16 @@ export function Stagger({
       className={className}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{ staggerChildren: stagger, delayChildren: delay }}
-      variants={fadeUp}
+      viewport={{ once: true, amount: 0.2 }}
+      variants={{
+        hidden: {},
+        show: {
+          transition: {
+            staggerChildren: stagger,
+            delayChildren: delay,
+          },
+        },
+      }}
     >
       {children}
     </motion.div>
@@ -130,7 +84,7 @@ export function StaggerItem({
   className?: string;
 }) {
   return (
-    <motion.div className={className} variants={fadeUp}>
+    <motion.div variants={fadeUp} className={cn("h-full", className)}>
       {children}
     </motion.div>
   );

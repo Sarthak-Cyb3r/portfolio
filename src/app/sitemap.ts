@@ -1,18 +1,17 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
+import { SITE_URL } from "@/data/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://sarthak.vercel.app";
-
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
+      url: SITE_URL,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/projects`,
+      url: `${SITE_URL}/projects`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
@@ -20,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const projectPages: MetadataRoute.Sitemap = projects.map((p) => ({
-    url: `${baseUrl}/projects/${p.slug}`,
+    url: `${SITE_URL}/projects/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.8,

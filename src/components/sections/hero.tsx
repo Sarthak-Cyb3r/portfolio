@@ -1,195 +1,144 @@
 "use client";
 
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  CheckCircle,
-  EnvelopeSimple,
-  GitBranch,
-  GithubLogo,
-  MagnifyingGlass,
-  TerminalWindow,
-} from "@phosphor-icons/react";
 import Link from "next/link";
-import { HeroCenterpiece } from "@/components/hero/hero-centerpiece";
-import { Magnetic } from "@/components/motion/interactive";
-import { Reveal, WordReveal } from "@/components/motion/reveal";
+import { ArrowRight } from "lucide-react";
+import { GithubIcon } from "@/components/ui/icons";
+import { motion } from "motion/react";
+import { GITHUB_URL } from "@/data/site";
 import { Button } from "@/components/ui/button";
-import { site } from "@/data/site";
-import { sound } from "@/lib/sound";
+import { HeroDevice3D } from "@/components/sections/hero-device-3d";
+import { Spotlight } from "@/components/ui/spotlight";
+import { BorderBeam } from "@/components/ui/border-beam";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export function Hero() {
-  const triggerCommandPalette = () => {
-    sound.playClick(1400);
-    window.dispatchEvent(
-      new KeyboardEvent("keydown", {
-        key: "k",
-        metaKey: true,
-        bubbles: true,
-      })
-    );
-  };
+  const line1 = "I build and ship real apps:";
+  const line2 = "Android, iOS, Linux and web.";
 
   return (
     <section
       id="hero"
-      aria-labelledby="hero-title"
-      className="relative flex min-h-[calc(100dvh-4rem)] flex-col justify-center overflow-hidden pt-20 pb-16 sm:pt-24 sm:pb-24"
+      aria-labelledby="hero-heading"
+      className="relative pt-24 pb-20 sm:pt-32 sm:pb-32 overflow-hidden bg-dot-pattern"
     >
-      {/* Background blueprint grid & radial glow */}
-      <div
-        aria-hidden="true"
-        className="grid-bg pointer-events-none absolute inset-0 -z-10 h-full w-full"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/4 -z-10 h-[500px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-[#7C5CFF]/15 via-[#38E1FF]/12 to-transparent blur-[120px]"
-      />
+      {/* Background Radial Aurora Wash */}
+      <div className="absolute inset-0 hero-radial-wash pointer-events-none" />
 
-      <div className="shell flex flex-col-reverse items-center justify-between gap-12 lg:flex-row lg:gap-16">
-        {/* Left Column: Headlines & CTAs */}
-        <div className="flex max-w-2xl flex-col items-start text-left">
-          {/* Top Announcement Pill */}
-          <Reveal delay={0.05}>
-            <div className="flex flex-wrap items-center gap-2">
+      {/* Cursor Spotlight Overlay */}
+      <Spotlight className="max-w-[1160px] mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          {/* Left Column: Copy & Actions */}
+          <div className="lg:col-span-7 flex flex-col items-start z-10">
+            {/* Status Pill */}
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease }}
+              className="mb-6"
+            >
               <Link
                 href="/projects/softify"
-                onClick={() => sound.playClick(1200)}
-                className="group inline-flex items-center gap-2 rounded-full border border-accent-3/40 bg-surface-2/80 px-3.5 py-1.5 backdrop-blur-md transition-all duration-300 hover:border-accent-3 hover:bg-surface-2 shadow-sm"
+                className="relative group inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-card/80 dark:bg-card/60 backdrop-blur-md text-fg border border-border hover:border-primary/40 shadow-sm transition-all duration-200 cursor-pointer"
               >
-                <span className="flex h-2 w-2 rounded-full bg-accent-3 animate-pulse" />
-                <span className="font-mono text-xs text-text font-medium">
-                  New: Softify v2.0.0 · Linux Desktop + Android & iOS Live
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
                 </span>
-                <span className="font-mono text-[0.65rem] text-muted group-hover:text-accent-3 flex items-center gap-0.5">
-                  Get App <ArrowRight size={11} weight="bold" />
+                <span>Softify v2.0.5 is out</span>
+                <span className="text-muted-fg group-hover:text-primary group-hover:translate-x-0.5 transition-all">
+                  →
                 </span>
+                <BorderBeam size={80} duration={8} colorFrom="#2563EB" colorTo="#7C3AED" />
               </Link>
+            </motion.div>
 
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/80 px-3 py-1 font-mono text-xs text-accent-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent-2" />
-                <span>11th Grader @ Chinmaya Vidyalaya</span>
+            {/* H1 Masked line-by-line reveal */}
+            <h1
+              id="hero-heading"
+              className="text-4xl sm:text-5xl lg:text-[62px] font-bold tracking-[-0.035em] leading-[1.08] text-fg text-balance"
+            >
+              <span className="block overflow-hidden pb-1">
+                <motion.span
+                  initial={{ y: "100%", filter: "blur(6px)" }}
+                  animate={{ y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.8, ease, delay: 0.1 }}
+                  className="block"
+                >
+                  {line1}
+                </motion.span>
               </span>
+              <span className="block overflow-hidden pb-1">
+                <motion.span
+                  initial={{ y: "100%", filter: "blur(6px)" }}
+                  animate={{ y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.8, ease, delay: 0.2 }}
+                  className="block text-gradient-shimmer"
+                >
+                  {line2}
+                </motion.span>
+              </span>
+            </h1>
 
-              <a
-                href={`mailto:${site.email}`}
-                onClick={() => sound.playClick(1300)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/80 px-3 py-1 font-mono text-xs text-muted hover:text-text hover:border-accent-3 transition-colors"
-                title={`Send email to ${site.email}`}
+            {/* One-line subtext */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease, delay: 0.35 }}
+              className="mt-6 text-[17px] sm:text-lg leading-[1.6] text-muted-fg max-w-[62ch]"
+            >
+              Solo builder, age 16. Softify, Ludo and StudyStack are live, downloadable and tested.
+            </motion.p>
+
+            {/* 2 CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease, delay: 0.45 }}
+              className="mt-8 flex flex-wrap items-center gap-4"
+            >
+              <div className="relative group">
+                <Button href="#work" variant="primary" size="lg" shimmer>
+                  <span>View work</span>
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </div>
+              <Button
+                href={GITHUB_URL}
+                external
+                variant="secondary"
+                size="lg"
               >
-                <EnvelopeSimple size={12} className="text-accent-3" />
-                <span>{site.email}</span>
-              </a>
+                <GithubIcon className="w-4 h-4" />
+                <span>GitHub</span>
+              </Button>
+            </motion.div>
 
-              <button
-                type="button"
-                onClick={triggerCommandPalette}
-                className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/80 px-3 py-1 font-mono text-xs text-muted hover:text-text hover:border-accent-2 transition-colors"
-              >
-                <MagnifyingGlass size={12} className="text-accent-2" />
-                <span>Command Menu</span>
-                <kbd className="rounded bg-surface-2 px-1 text-[0.625rem]">⌘K</kbd>
-              </button>
-            </div>
-          </Reveal>
-
-          <h1 id="hero-title" className="sr-only">
-            {site.headline}
-          </h1>
-
-          <div aria-hidden="true" className="mt-6">
-            <WordReveal
-              text={site.headline}
-              as="h2"
-              className="font-display text-[clamp(2.5rem,1.4rem+4.2vw,4.75rem)] font-extrabold leading-[1.03] tracking-tight text-text"
-            />
+            {/* Quiet row: Shipped platforms */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, ease, delay: 0.6 }}
+              className="mt-12 pt-8 border-t border-border/80 w-full flex items-center gap-3 text-xs font-medium text-muted-fg tracking-wide"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Shipped on Android · iOS · Linux · Web</span>
+            </motion.div>
           </div>
 
-          <Reveal delay={0.25}>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-              {site.subline}
-            </p>
-          </Reveal>
-
-          {/* Real-time mini git / system badge */}
-          <Reveal delay={0.35} className="mt-6 w-full max-w-lg">
-            <div className="rounded-xl border border-line bg-surface/80 p-3.5 backdrop-blur-sm font-mono text-xs text-muted flex flex-col gap-1.5">
-              <div className="flex items-center justify-between text-[0.7rem] text-faint border-b border-line/60 pb-1.5">
-                <span className="flex items-center gap-1.5 text-accent-2 font-medium">
-                  <GitBranch size={13} weight="bold" />
-                  main @ Sarthak-Cyb3r
-                </span>
-                <span className="flex items-center gap-1 text-ok">
-                  <CheckCircle size={12} weight="fill" />
-                  457 Passing Tests · 0 Build Errors
-                </span>
-              </div>
-              <div className="flex items-center justify-between pt-0.5">
-                <span className="text-text truncate max-w-[280px]">
-                  feat(softify): Linux desktop client + terminal installer
-                </span>
-                <span className="text-accent-3 font-semibold shrink-0">v2.0.0</span>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Magnetic CTA Row */}
-          <Reveal delay={0.45} className="mt-8 flex flex-wrap items-center gap-4">
-            <Magnetic strength={0.25}>
-              <Button href="#work" onClick={() => sound.playClick(1000)}>
-                Explore Projects
-                <ArrowDown size={15} weight="bold" aria-hidden="true" />
-              </Button>
-            </Magnetic>
-
-            <Magnetic strength={0.25}>
-              <Button
-                href={site.githubUrl}
-                external
-                variant="outline"
-                onClick={() => sound.playClick(1100)}
-              >
-                <GithubLogo size={17} weight="regular" aria-hidden="true" />
-                GitHub Profile
-                <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
-              </Button>
-            </Magnetic>
-
-            <Magnetic strength={0.25}>
-              <Button
-                href="#console"
-                variant="quiet"
-                onClick={() => sound.playClick(1200)}
-              >
-                <TerminalWindow size={15} weight="bold" className="text-accent-3" />
-                Open Terminal
-              </Button>
-            </Magnetic>
-          </Reveal>
-
-          {/* Live Micro Badges */}
-          <Reveal delay={0.55} className="mt-10 flex flex-wrap items-center gap-6 border-t border-line/60 pt-5 font-mono text-xs text-faint">
-            <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent-2" />
-              <span>Real 95MB Deb &amp; 4.5MB APK</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent-3" />
-              <span>Zero Fake Links / Pure Code</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-ok" />
-              <span>Next.js 16 Turbopack</span>
-            </div>
-          </Reveal>
+          {/* Right Column: 3D Standout Visual */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: 1, ease, delay: 0.25 }}
+              className="w-full flex justify-center"
+            >
+              <HeroDevice3D />
+            </motion.div>
+          </div>
         </div>
-
-        {/* Right Column: 3D Interactive Centerpiece */}
-        <Reveal delay={0.2} className="flex shrink-0 items-center justify-center relative">
-          <HeroCenterpiece />
-        </Reveal>
-      </div>
+      </Spotlight>
     </section>
   );
 }

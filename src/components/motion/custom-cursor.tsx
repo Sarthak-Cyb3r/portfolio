@@ -1,73 +1,87 @@
 "use client";
 
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
-import { useEffect, useState, useSyncExternalStore } from "react";
-
-function subscribePointer(callback: () => void) {
-  if (typeof window === "undefined") return () => {};
-  const mql = window.matchMedia("(pointer: fine)");
-  mql.addEventListener("change", callback);
-  return () => mql.removeEventListener("change", callback);
-}
-
-function getPointerSnapshot() {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(pointer: fine)").matches;
-}
+import { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 
 /**
- * Desktop-only custom cursor: a precise dot plus a lagging ring that swells
- * over interactive elements. Disabled for touch pointers and reduced motion.
+ * High-craft custom cursor for precision pointer devices.
+ * Automatically disabled on touch screens, mobile devices, or prefers-reduced-motion.
  */
 export function CustomCursor() {
-  const isFinePointer = useSyncExternalStore(
-    subscribePointer,
-    getPointerSnapshot,
-    () => false,
-  );
-  const [active, setActive] = useState(false);
-  const reduced = useReducedMotion();
+  const [visible, setVisible] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  const x = useMotionValue(-100);
-  const y = useMotionValue(-100);
-  const ringX = useSpring(x, { stiffness: 340, damping: 32, mass: 0.35 });
-  const ringY = useSpring(y, { stiffness: 340, damping: 32, mass: 0.35 });
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  const springConfig = { damping: 28, stiffness: 350, mass: 0.4 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    if (!isFinePointer || reduced) return;
+    // Only enable for mouse/pointer devices with fine precision
+    const isFinePointer = window.matchMedia("(pointer: fine)").matches;
+    const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!isFinePointer || isReducedMotion) return;
 
-    document.documentElement.classList.add("has-custom-cursor");
-
-    const move = (event: PointerEvent) => {
-      x.set(event.clientX);
-      y.set(event.clientY);
-      const target = event.target as HTMLElement | null;
-      setActive(Boolean(target?.closest("a, button, [role='button'], input, textarea, [data-cursor]")));
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+      if (!visible) setVisible(true);
     };
 
-    window.addEventListener("pointermove", move, { passive: true });
+    const handleMouseLeave = () => setVisible(false);
+    const handleMouseEnter = () => setVisible(true);
+
+    const handlePointerOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const isInteractive = Boolean(
+        target.closest('a, button, [role="button"], input, textarea, select, [data-interactive]')
+      );
+      setHovered(isInteractive);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
+    document.addEventListener("mouseover", handlePointerOver, { passive: true });
+
     return () => {
-      window.removeEventListener("pointermove", move);
-      document.documentElement.classList.remove("has-custom-cursor");
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
+      document.removeEventListener("mouseover", handlePointerOver);
     };
-  }, [isFinePointer, reduced, x, y]);
+  }, [mouseX, mouseY, visible]);
 
-  if (!isFinePointer || reduced) return null;
+  if (!visible) return null;
 
   return (
-    <>
+    <div className="pointer-events-none fixed inset-0 z-[999] overflow-hidden" aria-hidden>
+      {/* Outer reactive halo */}
       <motion.div
-        aria-hidden
-        style={{ x, y }}
-        className="pointer-events-none fixed left-0 top-0 z-[120] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-accent-2)]"
+        className="fixed top-0 left-0 rounded-full border border-primary/40 transition-colors duration-150"
+        style={{
+          x: smoothX,
+          y: smoothY,
+          translateX: "-50%",
+          translateY: "-50%",
+          width: hovered ? 46 : 24,
+          height: hovered ? 46 : 24,
+          backgroundColor: hovered ? "rgba(37, 99, 235, 0.08)" : "transparent",
+        }}
       />
+      {/* Inner precise dot */}
       <motion.div
-        aria-hidden
-        style={{ x: ringX, y: ringY }}
-        animate={{ scale: active ? 2.1 : 1, opacity: active ? 0.55 : 0.35 }}
-        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        className="pointer-events-none fixed left-0 top-0 z-[119] h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--color-accent-2)]"
+        className="fixed top-0 left-0 h-1.5 w-1.5 rounded-full bg-primary"
+        style={{
+          x: mouseX,
+          y: mouseY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
       />
-    </>
+    </div>
   );
 }

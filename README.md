@@ -1,6 +1,6 @@
 # Sarthak — SaaS Portfolio & Engineering Showcase
 
-> **16-year-old 11th grader studying at Chinmaya Vidyalaya & vibe coder** crafting high-performance SaaS applications, real-time multiplayer systems, mobile audio engines, and developer tools.
+> **16-year-old vibe coder & software developer** crafting high-performance SaaS applications, real-time multiplayer systems, mobile audio engines, and developer tools.
 
 [![Live on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://sarthak-cyb3r.vercel.app)
 [![Next.js 15](https://img.shields.io/badge/Next.js-15%20(App%20Router)-000000?style=for-the-badge&logo=next.js)](https://nextjs.org)
@@ -16,6 +16,7 @@
 | **Primary Domain** | [https://sarthak-cyb3r.vercel.app](https://sarthak-cyb3r.vercel.app) | Production Canonical |
 | **Portfolio Alias** | [https://sarthak-cyb3r-portfolio.vercel.app](https://sarthak-cyb3r-portfolio.vercel.app) | Branded Alias |
 | **Alternative Alias** | [https://portfolio-sarthak-cyb3r.vercel.app](https://portfolio-sarthak-cyb3r.vercel.app) | Mirrored Alias |
+| **Softify Web App** | [https://softify-app.vercel.app](https://softify-app.vercel.app) | Live In-Browser Streaming |
 | **GitHub Repository** | [https://github.com/Sarthak-Cyb3r/portfolio](https://github.com/Sarthak-Cyb3r/portfolio) | Private |
 
 ---
@@ -40,7 +41,7 @@
   - `projects` — Displays project manifest with quick links
   - `skills` — Prints full technical stack & tools
   - `stats` — Shows real-time vibe coding metrics
-  - `download` — Triggers verified Linux (`.deb`) and Android (`.apk`) downloads
+  - `download` — Triggers verified Linux (`.deb`), Android (`.apk`) and Web links
   - `contact` — Quick-copy contact info
   - `clear` — Resets console output
 
@@ -51,11 +52,12 @@
 - Deep-dive product breakdowns with architecture diagrams, live demo links, and tech breakdowns:
   - **Ludo with Friends** — Real-time multiplayer board game with Firebase subcollections, Electron desktop shell, Capacitor Android app, and PWA offline support.
   - **Studystack** — JEE 2028 analytics tracker, revision schedule engine, and test performance diagnostics.
-  - **Softify** — Ad-free, paywall-free Android, iOS & Linux desktop music streaming app built with Flutter. On-device recommendation intelligence engine, SQLite FTS5 instant search, dual-band taste decay (W_fast 4h / W_slow 14d), 128-dim vector embeddings, 320kbps studio masters, synced lyrics, dual-engine standby pre-buffering (<10ms track transitions), Spotify importer, offline playback, responsive Linux desktop shell with sidebar & keyboard shortcuts, automated terminal installer (`curl -fsSL .../install.sh | bash`), Dynamic Island & AirPods controls ([GitHub Repo](https://github.com/Sarthak-Cyb3r/softify)).
+  - **Softify** — Ad-free, paywall-free Web, Android, iOS & Linux desktop music streaming app built with Flutter. Live Web Player at [softify-app.vercel.app](https://softify-app.vercel.app/). On-device recommendation intelligence engine, SQLite FTS5 instant search, dual-band taste decay (W_fast 4h / W_slow 14d), 128-dim vector embeddings, 320kbps studio masters, synced lyrics, dual-engine standby pre-buffering (<10ms track transitions), Spotify importer, offline playback, responsive Linux desktop shell with sidebar & keyboard shortcuts, automated terminal installer (`curl -fsSL .../install.sh | bash`), Dynamic Island & AirPods controls ([GitHub Repo](https://github.com/Sarthak-Cyb3r/softify)).
   - **Accounty** — Double-entry personal ledger and finance tracker.
 
-### 7. Hosted Real Binaries
-- Direct downloads hosted and available:
+### 7. Hosted Real Binaries & Web Player
+- Direct downloads & web app available:
+  - **Softify Web Player**: [softify-app.vercel.app](https://softify-app.vercel.app/) — in-browser music streaming (no install required)
   - **Softify Linux Desktop**: [Softify-Linux-x64.tar.gz](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0) (13.2 MB, v2.0.0) & Terminal Installer (`curl -fsSL https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh | bash`)
   - **Softify Android APK**: [Softify-v2.0.0-Universal.apk](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0) (66.5 MB, v2.0.0)
   - **Softify iOS IPA**: [Softify-iOS-Universal.ipa](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0) (10.6 MB, v2.0.0) — sideloadable build for AltStore, Sideloadly & TrollStore (iOS 15.0+)

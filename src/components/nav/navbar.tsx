@@ -1,21 +1,12 @@
 "use client";
 
-import {
-  GithubLogo,
-  List,
-  MagnifyingGlass,
-  Moon,
-  Sun,
-  X,
-} from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { site } from "@/data/site";
+import Link from "next/link";
+import { Moon, Sun, Search, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { GithubIcon } from "@/components/ui/icons";
+import { site, GITHUB_URL } from "@/data/site";
 import { cn } from "@/lib/utils";
-import { CommandMenu } from "@/components/ui/command-menu";
-import { SoundToggle } from "@/components/ui/sound-toggle";
 
 const THEME_KEY = "sarthak-theme";
 
@@ -34,10 +25,10 @@ function subscribeTheme(callback: () => void) {
 }
 
 function getThemeSnapshot(): "dark" | "light" {
-  if (typeof document === "undefined") return "dark";
+  if (typeof document === "undefined") return "light";
   return (
     (document.documentElement.getAttribute("data-theme") as "dark" | "light") ??
-    "dark"
+    "light"
   );
 }
 
@@ -45,7 +36,7 @@ export function ThemeToggle({ className }: { className?: string }) {
   const theme = useSyncExternalStore(
     subscribeTheme,
     getThemeSnapshot,
-    () => "dark",
+    () => "light"
   );
 
   const toggle = () => {
@@ -54,245 +45,205 @@ export function ThemeToggle({ className }: { className?: string }) {
     try {
       localStorage.setItem(THEME_KEY, next);
     } catch {
-      /* storage blocked — the attribute still applies for this session */
+      /* ignore storage failure */
     }
   };
-
-  const nextLabel = theme === "dark" ? "light" : "dark";
 
   return (
     <button
       type="button"
       onClick={toggle}
-      aria-label={`Switch to ${nextLabel} theme`}
+      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
       className={cn(
-        "grid h-10 w-10 place-items-center rounded-full border border-[var(--c-line)] text-[var(--c-muted)] transition-colors hover:border-[var(--c-line-strong)] hover:text-[var(--c-text)]",
-        className,
+        "w-8 h-8 flex items-center justify-center rounded-full text-muted-fg hover:text-fg hover:bg-muted/80 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-accent outline-none",
+        className
       )}
     >
       {theme === "dark" ? (
-        <Sun size={17} weight="regular" aria-hidden />
+        <Sun className="w-4 h-4 text-amber-400" />
       ) : (
-        <Moon size={17} weight="regular" aria-hidden />
+        <Moon className="w-4 h-4 text-slate-700" />
       )}
     </button>
   );
 }
 
-function subscribeScroll(callback: () => void) {
-  if (typeof window === "undefined") return () => {};
-  window.addEventListener("scroll", callback, { passive: true });
-  return () => window.removeEventListener("scroll", callback);
-}
-
-function getScrollSnapshot() {
-  if (typeof window === "undefined") return false;
-  return window.scrollY > 24;
-}
+const NAV_LINKS = [
+  { label: "Work", href: "/#work", id: "work" },
+  { label: "About", href: "/#about", id: "about" },
+  { label: "Contact", href: "/#contact", id: "contact" },
+];
 
 export function Navbar() {
-  const pathname = usePathname();
-  const scrolled = useSyncExternalStore(
-    subscribeScroll,
-    getScrollSnapshot,
-    () => false,
-  );
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<string>("");
-
-  const isProjects = pathname.startsWith("/projects");
-  const currentActive = isProjects ? "/projects" : active;
+  const [hidden, setHidden] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (pathname !== "/") return;
-    const targets = site.nav
-      .filter((item) => item.href.startsWith("/#"))
-      .map((item) => document.getElementById(item.href.slice(2)))
-      .filter((el): el is HTMLElement => Boolean(el));
+    let lastY = window.scrollY;
 
-    if (!targets.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(`/#${visible.target.id}`);
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.6] },
-    );
-
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
-  }, [pathname]);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      if (currentY > 120 && currentY > lastY + 8) {
+        setHidden(true);
+      } else if (currentY < lastY - 8 || currentY <= 50) {
+        setHidden(false);
+      }
+      lastY = currentY;
     };
-  }, [open]);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Intersection observer for active section
+  useEffect(() => {
+    const sectionIds = ["work", "about", "contact"];
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveSection(id);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((obs) => obs.disconnect());
+    };
+  }, []);
+
+  const triggerCommandMenu = () => {
+    window.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true })
+    );
+  };
 
   return (
-    <>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-[90] transition-[border-color,background-color] duration-300",
-          scrolled
-            ? "glass border-b border-[var(--c-line)]"
-            : "border-b border-transparent",
-        )}
+    <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
+      <motion.div
+        animate={{ y: hidden ? -100 : 0, opacity: hidden ? 0 : 1 }}
+        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 rounded-full bg-card/85 dark:bg-card/80 backdrop-blur-xl border border-border px-3 sm:px-4 py-2 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
       >
-        <div className="shell flex h-16 items-center justify-between gap-4">
-          <Link
-            href="/"
-            className="group flex items-center gap-2 font-mono text-[0.8rem] font-medium uppercase tracking-[0.2em] text-[var(--c-text)]"
-            onClick={() => setOpen(false)}
+        {/* Logo / Monogram */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 pl-1 pr-2 text-sm font-semibold tracking-tight text-fg hover:opacity-80 transition-opacity"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+          <span>{site.name}</span>
+        </Link>
+
+        {/* Desktop Dock Navigation Links */}
+        <nav
+          aria-label="Main Navigation"
+          className="hidden md:flex items-center gap-1 text-sm font-medium"
+        >
+          {NAV_LINKS.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <Link
+                key={link.id}
+                href={link.href}
+                className={cn(
+                  "relative px-3 py-1.5 rounded-full transition-colors cursor-pointer",
+                  isActive ? "text-fg font-semibold" : "text-muted-fg hover:text-fg"
+                )}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="active-nav-indicator"
+                    className="absolute inset-0 rounded-full bg-muted border border-border"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{link.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Actions Dock */}
+        <div className="flex items-center gap-1 sm:gap-1.5 border-l border-border/80 pl-2">
+          {/* Command palette */}
+          <button
+            type="button"
+            onClick={triggerCommandMenu}
+            aria-label="Open command palette (⌘K)"
+            className="w-8 h-8 flex items-center justify-center rounded-full text-muted-fg hover:text-fg hover:bg-muted/80 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-accent outline-none"
           >
-            <span
-              aria-hidden
-              className="grid h-7 w-7 place-items-center rounded-md bg-[linear-gradient(135deg,#7C5CFF,#38E1FF)] text-[0.7rem] font-bold text-[#08080C] transition-transform duration-300 group-hover:-rotate-6"
-            >
-              S
-            </span>
-            {site.name}
-          </Link>
+            <Search className="w-3.5 h-3.5" />
+          </button>
 
-          <nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
-            {site.nav.map((item) => {
-              const isActive = currentActive === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={isActive ? "true" : undefined}
-                  className={cn(
-                    "relative rounded-full px-3.5 py-2 text-sm transition-colors duration-200",
-                    isActive
-                      ? "text-[var(--c-text)]"
-                      : "text-[var(--c-muted)] hover:text-[var(--c-text)]",
-                  )}
-                >
-                  {item.label}
-                  {isActive ? (
-                    <motion.span
-                      layoutId="nav-active"
-                      className="absolute inset-0 -z-10 rounded-full border border-[var(--c-line)] bg-[var(--c-surface-2)]"
-                      transition={{ type: "spring", stiffness: 400, damping: 34 }}
-                    />
-                  ) : null}
-                </Link>
-              );
-            })}
-          </nav>
+          {/* Theme toggle */}
+          <ThemeToggle />
 
-          <div className="flex items-center gap-2">
-            <CommandMenu />
-            <SoundToggle className="hidden sm:grid" />
-            <ThemeToggle />
-            <a
-              href={site.githubUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label={`GitHub profile of ${site.name} (opens in a new tab)`}
-              className="hidden h-10 w-10 place-items-center rounded-full border border-[var(--c-line)] text-[var(--c-muted)] transition-colors hover:border-[var(--c-line-strong)] hover:text-[var(--c-text)] sm:grid"
-            >
-              <GithubLogo size={17} weight="regular" aria-hidden />
-            </a>
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              aria-controls="mobile-nav"
-              aria-label={open ? "Close menu" : "Open menu"}
-              className="grid h-10 w-10 place-items-center rounded-full border border-[var(--c-line)] text-[var(--c-muted)] md:hidden"
-            >
-              {open ? (
-                <X size={17} weight="regular" aria-hidden />
-              ) : (
-                <List size={17} weight="regular" aria-hidden />
-              )}
-            </button>
-          </div>
+          {/* GitHub link */}
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="GitHub profile"
+            className="w-8 h-8 flex items-center justify-center rounded-full text-muted-fg hover:text-fg hover:bg-muted/80 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-accent outline-none"
+          >
+            <GithubIcon className="w-3.5 h-3.5" />
+          </a>
+
+          {/* Mobile menu trigger */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            className="md:hidden w-8 h-8 flex items-center justify-center rounded-full text-muted-fg hover:text-fg hover:bg-muted/80 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-accent outline-none"
+          >
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          </button>
         </div>
-      </header>
+      </motion.div>
 
+      {/* Mobile Drawer Menu */}
       <AnimatePresence>
-        {open ? (
+        {mobileMenuOpen && (
           <motion.div
-            id="mobile-nav"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[85] bg-[var(--c-bg)] pt-16 md:hidden"
+            className="pointer-events-auto absolute top-16 inset-x-4 max-w-sm mx-auto rounded-2xl border border-border bg-card/95 backdrop-blur-2xl p-5 shadow-2xl flex flex-col gap-3 md:hidden z-50"
           >
-            <nav
-              aria-label="Mobile"
-              className="shell flex flex-col gap-1 py-8"
-            >
-              {site.nav.map((item, index) => (
-                <motion.div
-                  key={item.href}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.04 * index + 0.05, duration: 0.4 }}
+            <nav className="flex flex-col gap-2 text-base font-medium">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.id}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 rounded-lg text-fg hover:bg-muted transition-colors flex items-center justify-between"
                 >
-                  <Link
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="block border-b border-[var(--c-line)] py-4 font-display text-3xl text-[var(--c-text)]"
-                  >
-                    {item.label}
-                  </Link>
-                </motion.div>
+                  <span>{link.label}</span>
+                  <span className="text-xs text-muted-fg font-mono">→</span>
+                </Link>
               ))}
-              <motion.div
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.4 }}
-                className="mt-6 flex flex-wrap items-center gap-3"
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpen(false);
-                    setTimeout(() => {
-                      window.dispatchEvent(
-                        new KeyboardEvent("keydown", {
-                          key: "k",
-                          metaKey: true,
-                          bubbles: true,
-                        }),
-                      );
-                    }, 100);
-                  }}
-                  className="flex items-center gap-2 rounded-full border border-[var(--c-line)] px-4 py-2 text-sm text-[var(--c-muted)] hover:text-[var(--c-text)]"
-                >
-                  <MagnifyingGlass size={16} className="text-accent-2" />
-                  <span>Search commands</span>
-                  <span className="rounded bg-[var(--c-surface-2)] px-1.5 py-0.5 font-mono text-xs">⌘K</span>
-                </button>
-                <SoundToggle />
-              </motion.div>
-
-              <motion.a
-                href={site.githubUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.4 }}
-                className="mt-3 inline-flex w-fit items-center gap-2 rounded-full border border-[var(--c-line)] px-4 py-2.5 text-sm text-[var(--c-muted)]"
-                onClick={() => setOpen(false)}
-              >
-                <GithubLogo size={16} aria-hidden />
-                {site.handle}
-              </motion.a>
             </nav>
           </motion.div>
-        ) : null}
+        )}
       </AnimatePresence>
-    </>
+    </header>
   );
 }

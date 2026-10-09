@@ -1,25 +1,23 @@
-import { ScrollCanvas } from "@/components/canvas/scroll-canvas";
-import { ScrollNavHud } from "@/components/motion/scroll-nav-hud";
 import { Hero } from "@/components/sections/hero";
-import { Stats } from "@/components/sections/stats";
-import { FeaturedBento } from "@/components/sections/featured-bento";
-import { TerminalConsole } from "@/components/sections/terminal-console";
-import { TechMarquee } from "@/components/sections/marquee";
-import { About } from "@/components/sections/about";
+import { FeaturedWork } from "@/components/sections/featured-work";
+import { ProofStrip } from "@/components/sections/proof-strip";
+import { Tech } from "@/components/sections/tech";
 import { HowIBuild } from "@/components/sections/how-i-build";
+import { TerminalConsole } from "@/components/sections/terminal-console";
+import { About } from "@/components/sections/about";
+import { Contact } from "@/components/sections/contact";
 
 export default function Home() {
   return (
     <>
-      <ScrollCanvas />
-      <ScrollNavHud />
       <Hero />
-      <Stats />
-      <FeaturedBento />
-      <TerminalConsole />
-      <TechMarquee />
-      <About />
+      <FeaturedWork />
+      <ProofStrip />
+      <Tech />
       <HowIBuild />
+      <TerminalConsole />
+      <About />
+      <Contact />
     </>
   );
 }
