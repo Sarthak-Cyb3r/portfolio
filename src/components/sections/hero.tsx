@@ -56,27 +56,31 @@ export function Hero() {
             {/* H1 Masked line-by-line reveal */}
             <h1
               id="hero-heading"
+              aria-label="I build and ship real apps: Android, iOS, Linux and web."
               className="text-4xl sm:text-5xl lg:text-[62px] font-bold tracking-[-0.035em] leading-[1.08] text-fg text-balance"
             >
-              <span className="block overflow-hidden pb-1">
-                <motion.span
-                  initial={{ y: "100%", filter: "blur(6px)" }}
-                  animate={{ y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.8, ease, delay: 0.1 }}
-                  className="block"
-                >
-                  {line1}
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden pb-1">
-                <motion.span
-                  initial={{ y: "100%", filter: "blur(6px)" }}
-                  animate={{ y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.8, ease, delay: 0.2 }}
-                  className="block text-gradient-shimmer"
-                >
-                  {line2}
-                </motion.span>
+              <span className="sr-only">I build and ship real apps: Android, iOS, Linux and web.</span>
+              <span aria-hidden="true">
+                <span className="block overflow-hidden pb-1">
+                  <motion.span
+                    initial={{ y: "100%", filter: "blur(6px)" }}
+                    animate={{ y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 0.8, ease, delay: 0.1 }}
+                    className="block"
+                  >
+                    {line1}
+                  </motion.span>
+                </span>
+                <span className="block overflow-hidden pb-1">
+                  <motion.span
+                    initial={{ y: "100%", filter: "blur(6px)" }}
+                    animate={{ y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 0.8, ease, delay: 0.2 }}
+                    className="block text-gradient-shimmer"
+                  >
+                    {line2}
+                  </motion.span>
+                </span>
               </span>
             </h1>
 

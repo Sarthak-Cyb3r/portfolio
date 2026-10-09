@@ -106,26 +106,30 @@ export function SceneRail({
       </nav>
 
       {/* Floating Bottom View Mode Switcher Pill */}
-      <div className="fixed bottom-6 left-6 z-40 flex items-center gap-2">
+      <div className="fixed bottom-6 left-6 z-40 flex items-center">
         <button
           type="button"
           onClick={onToggleViewMode}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/85 dark:bg-card/70 backdrop-blur-xl border border-border text-xs font-mono font-medium text-fg shadow-sm hover:border-primary/40 hover:bg-muted/40 transition-all focus-visible:ring-2 focus-visible:ring-primary"
-          title={`Switch to ${viewMode === "cinematic" ? "Classic reading view" : "Cinematic 100svh stage"}`}
+          aria-pressed={viewMode === "cinematic"}
+          aria-label={`View mode switch: currently ${viewMode === "cinematic" ? "Cinematic" : "Classic"}. Click to switch.`}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/90 dark:bg-card/75 backdrop-blur-xl border border-border text-xs font-mono font-medium text-fg shadow-md hover:border-primary/50 transition-all focus-visible:ring-2 focus-visible:ring-primary cursor-pointer select-none"
         >
-          {viewMode === "cinematic" ? (
-            <>
-              <Film className="w-3.5 h-3.5 text-primary" />
-              <span>Cinematic Stage</span>
-            </>
-          ) : (
-            <>
-              <Monitor className="w-3.5 h-3.5 text-muted-fg" />
-              <span>Classic View</span>
-            </>
-          )}
-          <span className="text-[10px] text-muted-fg px-1.5 py-0.2 rounded-full bg-muted">
-            Toggle
+          <span className="text-muted-fg">Stage:</span>
+          <span className="flex items-center gap-1.5 font-semibold text-fg">
+            {viewMode === "cinematic" ? (
+              <>
+                <Film className="w-3.5 h-3.5 text-primary" />
+                <span>Cinematic</span>
+              </>
+            ) : (
+              <>
+                <Monitor className="w-3.5 h-3.5 text-secondary" />
+                <span>Classic</span>
+              </>
+            )}
+          </span>
+          <span className="text-[10px] uppercase tracking-wider text-muted-fg px-1.5 py-0.5 rounded-md bg-muted/80 ml-1">
+            Switch
           </span>
         </button>
       </div>

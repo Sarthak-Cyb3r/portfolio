@@ -2,6 +2,17 @@
 
 All notable architectural and design improvements to Sarthak's portfolio are documented here.
 
+## [3.3.0] - 2026-10-10
+
+### Refinements & Accessibility Hardening
+- **Single Global Footer**: Eliminated duplicate footer elements between Scene 9 and layout. Simplified root `Footer` to a single credit line (`© 2026 Sarthak · Engineered with Next.js, Motion & GSAP`) and removed scrapable mailto anchors.
+- **Hero H1 Crawler & Screen Reader Accessibility**: Exposed full sentence (`"I build and ship real apps: Android, iOS, Linux and web."`) via `aria-label` and `sr-only` span across both `CinematicStage` and `Hero` while preserving visual rotating keyword. Fixed missing space in `"Shipped native across "` label.
+- **Verified Metrics & Privacy Grounding**: Replaced `"Zero invented numbers."` and `"VERIFIED COMPILER STATS"` with `"By the numbers."`. Replaced unverifiable `"0 Cloud telemetry"` stat with verified GitHub releases count (`9 GitHub releases` across native platforms). Removed absolute privacy claims that contradicted Ludo's Firestore architecture.
+- **Benefit-First Softify Scene Copy**: Rewrote Softify showcase text to two punchy benefit-oriented sentences focusing on ad-free streaming, instant offline playback, and custom EQ. Moved technical deep-dive terms (subword trigrams, Catmull-Rom Bézier spline DSP, ISO-BMFF chunk offset shifting) to the dedicated case study page (`/projects/softify`).
+- **Softify Release Tag Consistency**: Verified and synchronized `v2.0.5` release tag consistently across hero status pill, scene badge, case study data, download assets, and documentation.
+- **Accessible Kinetic Marquee**: Tagged duplicated copies with `aria-hidden="true"`, added hover-pause (`hover:[animation-play-state:paused]`), and disabled animations and skew transforms under `prefers-reduced-motion`.
+- **Labelled Cinematic / Classic Switch & Contact Copy**: Renamed stage switcher to an accessible labelled switch with `aria-pressed`, explicit stage states, and persisted preference in `localStorage`. Rewrote contact copy to natural phrasing (`"Get in touch directly below"`).
+
 ## [3.2.0] - 2026-10-09
 
 ### Phase 3: Scroll Animation, Effects & Animated Typography

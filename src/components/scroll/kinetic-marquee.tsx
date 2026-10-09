@@ -20,6 +20,7 @@ export function KineticMarquee({
   // Apply velocity skew (max 4deg) and speed offset
   useEffect(() => {
     if (!trackRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const clampedSkew = Math.max(-4, Math.min(4, velocity * 0.003));
     gsap.to(trackRef.current, {
       skewX: clampedSkew,
@@ -34,11 +35,11 @@ export function KineticMarquee({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full overflow-hidden select-none py-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] ${className}`}
+      className={`group relative w-full overflow-hidden select-none py-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] ${className}`}
     >
       <div
         ref={trackRef}
-        className="flex gap-8 w-max will-change-transform animate-[marquee_24s_linear_infinite]"
+        className="flex gap-8 w-max will-change-transform animate-[marquee_24s_linear_infinite] group-hover:[animation-play-state:paused] hover:[animation-play-state:paused] motion-reduce:[animation-play-state:paused] motion-reduce:animate-none"
         style={{
           transformStyle: "preserve-3d",
         }}
@@ -46,6 +47,7 @@ export function KineticMarquee({
         {items.map((item, idx) => (
           <span
             key={idx}
+            aria-hidden={idx > 0 ? "true" : undefined}
             className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-fg/15 dark:text-fg/10 hover:text-primary transition-colors cursor-default whitespace-nowrap"
           >
             {item}

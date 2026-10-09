@@ -66,12 +66,12 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="w-2 h-2 rounded-full bg-sky-500" />
-              <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">Privacy</span>
+              <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">Releases</span>
             </div>
             <Stat
-              value={0}
-              label="Cloud telemetry"
-              sublabel="100% client-side privacy architecture"
+              value={9}
+              label="GitHub releases"
+              sublabel="Softify v2.0.5 latest · Multi-platform"
             />
           </div>
         </div>

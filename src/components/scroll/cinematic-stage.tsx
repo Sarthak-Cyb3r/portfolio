@@ -13,7 +13,7 @@ import {
   Globe,
   Database,
   Terminal as TerminalIcon,
-  Film,
+  Monitor,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -649,10 +649,18 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
           <button
             type="button"
             onClick={toggleViewMode}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/90 backdrop-blur-xl border border-border text-xs font-mono font-medium text-fg shadow-lg hover:border-primary/50 transition-all"
+            aria-pressed={false}
+            aria-label="View mode switch: currently Classic. Click to switch to Cinematic Stage."
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/90 dark:bg-card/75 backdrop-blur-xl border border-border text-xs font-mono font-medium text-fg shadow-lg hover:border-primary/50 transition-all focus-visible:ring-2 focus-visible:ring-primary cursor-pointer select-none"
           >
-            <Film className="w-3.5 h-3.5 text-primary" />
-            <span>Switch to Cinematic Stage</span>
+            <span className="text-muted-fg">Stage:</span>
+            <span className="flex items-center gap-1.5 font-semibold text-fg">
+              <Monitor className="w-3.5 h-3.5 text-secondary" />
+              <span>Classic</span>
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-muted-fg px-1.5 py-0.5 rounded-md bg-muted/80 ml-1">
+              Switch
+            </span>
           </button>
         </div>
       </div>
@@ -733,27 +741,33 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
             </div>
 
             {/* Headline with Masked Word Reveal & Rotating Keyword */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.04em] leading-[1.06] text-fg mb-6">
-              I build and ship real apps:{" "}
-              <span className="inline-block relative text-primary overflow-hidden align-baseline">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={HERO_KEYWORDS[keywordIndex]}
-                    initial={{ y: 40, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -40, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="inline-block text-gradient-shimmer"
-                  >
-                    {HERO_KEYWORDS[keywordIndex]}
-                  </motion.span>
-                </AnimatePresence>
+            <h1
+              aria-label="I build and ship real apps: Android, iOS, Linux and web."
+              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.04em] leading-[1.06] text-fg mb-6"
+            >
+              <span className="sr-only">I build and ship real apps: Android, iOS, Linux and web.</span>
+              <span aria-hidden="true">
+                I build and ship real apps:{" "}
+                <span className="inline-block relative text-primary overflow-hidden align-baseline">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={HERO_KEYWORDS[keywordIndex]}
+                      initial={{ y: 40, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -40, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      className="inline-block text-gradient-shimmer"
+                    >
+                      {HERO_KEYWORDS[keywordIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
               </span>
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-fg leading-relaxed mb-8 max-w-[55ch]">
               Solo builder, age 16. Softify, Ludo and StudyStack are live, downloadable and
-              tested with zero server telemetry.
+              tested across native platforms.
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
@@ -767,8 +781,8 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
               </Button>
             </div>
 
-            <div className="mt-10 flex items-center gap-4 text-xs font-mono text-muted-fg">
-              <span>Shipped native across</span>
+            <div className="mt-10 flex items-center gap-2 text-xs font-mono text-muted-fg flex-wrap">
+              <span>Shipped native across </span>
               <span className="text-fg font-semibold">Android · iOS · Linux · Web</span>
             </div>
           </div>
@@ -789,14 +803,14 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
             <div className="flex items-center gap-2 mb-3">
               <ShieldCheck className="w-4 h-4 text-primary" />
               <ScrambleText
-                text="VERIFIED COMPILER STATS"
+                text="BY THE NUMBERS"
                 className="text-xs uppercase tracking-widest text-primary font-semibold"
                 trigger={currentScene === 1}
               />
             </div>
 
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-fg mb-4">
-              Zero invented numbers.
+              By the numbers.
             </h2>
             <p className="text-base sm:text-lg text-muted-fg leading-relaxed mb-10">
               Every count below compiles directly from source code test runners, GitHub commits,
@@ -820,9 +834,9 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
               </div>
               <div className="p-5 rounded-2xl bg-card/90 dark:bg-card/75 border border-border shadow-sm">
                 <Stat
-                  value={0}
-                  label="Cloud telemetry"
-                  sublabel="100% client-side privacy architecture"
+                  value={9}
+                  label="GitHub releases"
+                  sublabel="Softify v2.0.5 latest · Multi-platform"
                 />
               </div>
             </div>
@@ -886,15 +900,14 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
                 >
                   {softifyHeadlineIdx === 0 && "On-Device Intelligence."}
                   {softifyHeadlineIdx === 1 && "5-Band DSP Equalizer."}
-                  {softifyHeadlineIdx === 2 && "Zero Cloud Telemetry."}
+                  {softifyHeadlineIdx === 2 && "Instant Offline Playback."}
                 </motion.h2>
               </AnimatePresence>
             </div>
 
             <p className="text-base sm:text-lg text-muted-fg leading-relaxed mb-6">
-              Ad-free cross-platform music streaming engineered in Flutter. Features on-device
-              SQLite FTS5 instant search, subword trigrams, Catmull-Rom Bézier equalizer, and
-              offline ISO-BMFF atom synchronization.
+              Stream music ad-free with instant offline playback and studio-grade audio controls.
+              Enjoy fast on-device search and custom equalization without ads, subscriptions, or interruptions.
             </p>
 
             <div className="flex flex-wrap gap-2 mb-8">
@@ -1318,9 +1331,9 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
           }}
           id="contact"
           inert={currentScene !== 9 ? true : undefined}
-          className="absolute inset-0 flex flex-col justify-between max-w-[1160px] mx-auto px-6 sm:px-10 py-12 sm:py-16 z-20"
+          className="absolute inset-0 flex flex-col justify-center max-w-[1160px] mx-auto px-6 sm:px-10 py-12 sm:py-16 z-20"
         >
-          <div className="my-auto max-w-[640px]">
+          <div className="max-w-[640px]">
             <span className="text-xs font-mono uppercase tracking-widest text-primary font-bold">
               Get in Touch
             </span>
@@ -1328,8 +1341,8 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
               Let&apos;s build something real.
             </h2>
             <p className="text-base sm:text-lg text-muted-fg leading-relaxed mb-8">
-              Open to technical collaborations, challenging system architectures, and open source
-              inquiries. Single source of contact below.
+              Open to technical collaborations, systems engineering, and open source
+              inquiries. Get in touch directly below.
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
@@ -1363,12 +1376,6 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Available · IST (UTC+5:30)</span>
             </div>
-          </div>
-
-          {/* Footer Giant Wordmark Watermark */}
-          <div className="relative w-full pt-8 border-t border-border/80 flex items-center justify-between text-xs font-mono text-muted-fg">
-            <span>© 2026 Sarthak</span>
-            <span>Engineered with Next.js, Motion & GSAP</span>
           </div>
         </div>
       </div>

@@ -78,22 +78,23 @@ export const projects: Project[] = [
     slug: "softify",
     name: "Softify",
     tagline: "Cross-platform audio player with on-device recommendation & search engine",
-    outcome: "Client-side music streaming app with offline caching and zero cloud telemetry",
+    outcome: "Client-side music streaming app with offline caching and on-device search",
     description:
-      "Softify is a cross-platform music streaming client engineered with Flutter and strict Clean Architecture. Operating entirely client-side without centralized servers or telemetry tracking, it features an on-device search and ranking engine, background audio playback, offline MP4 atom shifting, and native multi-platform compilation for Android, iOS, and Linux desktop.",
+      "Softify is a cross-platform music streaming client engineered with Flutter and strict Clean Architecture. Operating client-side with local data persistence, it features an on-device search and ranking engine, background audio playback, offline MP4 atom shifting, and native multi-platform compilation for Android, iOS, and Linux desktop.",
     problem:
       "Traditional streaming apps rely heavily on continuous telemetry, server-side tracking, and cloud-dependent recommendation pipelines that degrade privacy and induce interface latency.",
     solution:
-      "A 100% client-side architecture using Drift/SQLite FTS5, subword trigram vector embeddings, and on-device SGD classification for recommendation ranking, paired with dual-engine standby pre-buffering.",
+      "A client-side architecture using Drift/SQLite FTS5, subword trigram vector embeddings, and on-device SGD classification for recommendation ranking, paired with dual-engine standby pre-buffering.",
     features: [
       "Cross-platform compilation across Android, iOS, Linux desktop, and Web",
       "On-device search index with SQLite FTS5, typo tolerance, and domain alias normalization",
       "On-device recommendation ranker with dual-band taste decay (4h fast / 14d slow)",
       "Standby pre-buffering pipeline achieving sub-10ms perceived track transitions",
+      "Catmull-Rom Bézier spline DSP equalizer with real-time gain curve interpolation",
       "ISO-BMFF MP4 atom tagger with dynamic chunk-offset shifting for reliable offline storage",
       "Synced lyrics rendering via real-time LRCLIB synchronization",
       "Native MPRemoteCommandCenter, Dynamic Island, and headset gesture integration",
-      "Client-side privacy model: zero telemetry, zero accounts, zero analytics collection",
+      "Local-first privacy model: zero mandatory accounts, zero ad trackers, client-side data persistence",
     ],
     stack: [
       "Flutter",
@@ -135,12 +136,17 @@ export const projects: Project[] = [
       {
         title: "Client-Side SQLite FTS5 & Vector Embeddings",
         rationale:
-          "Rather than querying a remote index, tracks are tokenized locally with subword trigrams, enabling sub-100ms offline-capable search with zero server telemetry.",
+          "Rather than querying a remote index, tracks are tokenized locally with subword trigrams, enabling sub-100ms offline-capable search without cloud bottlenecks.",
       },
       {
         title: "Dual-Engine Standby Pre-Buffering",
         rationale:
           "Pre-resolving track N+1 in a standby audio engine eliminated the 2–3s transition gap, making playback changes immediate.",
+      },
+      {
+        title: "Catmull-Rom Bézier DSP Equalizer Curve",
+        rationale:
+          "Calculated Catmull-Rom Bézier splines across 5 frequency bands in real-time, delivering continuous non-linear gain curves without audio clipping or phase distortion.",
       },
       {
         title: "Recursive ISO-BMFF Atom Tagging",
