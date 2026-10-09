@@ -145,7 +145,7 @@ export function LudoInteractive() {
       {/* Footer details */}
       <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
         <span>Deterministic rules</span>
-        <span>0ms state latency</span>
+        <span>2–6 players · Android, Linux, Web</span>
       </div>
     </div>
   );

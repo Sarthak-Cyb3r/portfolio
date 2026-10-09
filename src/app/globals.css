@@ -4,6 +4,7 @@
 
 @theme inline {
   --font-sans: var(--font-sans), "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-display), "Roboto Flex", sans-serif;
   --font-mono: var(--font-mono), "Geist Mono", ui-monospace, SFMono-Regular, monospace;
 
   --color-bg: var(--c-bg);

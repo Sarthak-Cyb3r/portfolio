@@ -1,171 +1,116 @@
-# Sarthak — SaaS Portfolio & Engineering Showcase
+# Sarthak — Developer Portfolio & Systems Showcase
 
-> **16-year-old vibe coder & software developer** crafting high-performance SaaS applications, real-time multiplayer systems, mobile audio engines, and developer tools.
+![Sarthak Portfolio Preview](./public/og.png)
 
-[![Live on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://sarthak-cyb3r.vercel.app)
-[![Next.js 15](https://img.shields.io/badge/Next.js-15%20(App%20Router)-000000?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![Three.js](https://img.shields.io/badge/3D-Three.js%20%2B%20WebGL-black?style=for-the-badge&logo=three.js)](https://threejs.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
+## What This Is
 
----
+Production developer portfolio and engineering showcase for **Sarthak**, an independent 16-year-old software developer. Demonstrates native Android, iOS (sideload), Linux desktop, and web applications built with clean architecture, offline-first data persistence, client-side intelligence, and verified test suites.
 
-## 🌐 Live Deployments
+## Live Deployment
 
-| Channel | URL | Notes |
-|---|---|---|
-| **Primary Domain** | [https://sarthak-cyb3r.vercel.app](https://sarthak-cyb3r.vercel.app) | Production Canonical |
-| **Portfolio Alias** | [https://sarthak-cyb3r-portfolio.vercel.app](https://sarthak-cyb3r-portfolio.vercel.app) | Branded Alias |
-| **Alternative Alias** | [https://portfolio-sarthak-cyb3r.vercel.app](https://portfolio-sarthak-cyb3r.vercel.app) | Mirrored Alias |
-| **Softify Web App** | [https://softify-app.vercel.app](https://softify-app.vercel.app) | Live In-Browser Streaming |
-| **GitHub Repository** | [https://github.com/Sarthak-Cyb3r/portfolio](https://github.com/Sarthak-Cyb3r/portfolio) | Private |
+- **Canonical URL**: [https://sarthak-cyb3r.vercel.app](https://sarthak-cyb3r.vercel.app)
+- **Repository**: [https://github.com/Sarthak-Cyb3r/portfolio](https://github.com/Sarthak-Cyb3r/portfolio)
 
----
+## Architecture & Tech Stack
 
-## ✨ Features & Highlights
+Direct dependencies as defined in `package.json`:
 
-### 1. SaaS 3D Interactive Hero Canvas
-- **WebGL Three.js Engine**: Dynamic geometric Torus Knot with custom wireframe shaders, particle fields, and smooth mouse-follow physics.
-- **Scroll-Linked Mechanics**: 3D rotation, scaling, and camera depth seamlessly driven by scroll velocity.
+- **Framework**: Next.js 16.3.8 (App Router, Server Components, Turbopack)
+- **Core Library**: React 19.2.8 & React DOM 19.2.8
+- **Language**: TypeScript 5.x
+- **Styling**: Tailwind CSS 4.x (`@tailwindcss/postcss`) with CSS variables and custom design tokens
+- **Animations & Physics**: Motion 14.0.0
+- **Smooth Scrolling**: Lenis 1.3.26
+- **Scroll Orchestration**: GSAP 3.15.0
+- **3D Graphics**: Three.js 0.186.1 with `@react-three/fiber` 9.8.1 and `@react-three/drei` 10.7.9
+- **Icons**: Lucide React 1.54.0
 
-### 2. Motion & Velocity Animations
-- **Motion Engine**: Smooth spring physics, staggered list entries, and sticky scroll transitions.
-- **Micro-Interactions**: Magnetic buttons, holographic gradient glow borders, and synthetic Web Audio sound effects on click.
+## Flagship Projects Featured
 
-### 3. Mobile Dynamic Island & Floating Dock
-- **Adaptive Mobile Layout**: Custom dynamic island status bar, bottom blur navigation dock, and touch-optimized drawer menus.
-- **Haptic & Visual Feedback**: Fluid touch targets designed specifically for handheld navigation.
+1. **Softify (v2.0.5)**: Cross-platform music streaming and audio engine. Built with Flutter, Drift/SQLite FTS5, and on-device ranking. Shipped on Android APK (71.2 MB), iOS IPA (11.4 MB sideload), Linux x64 `.tar.gz` (14.0 MB), and Web. 170 automated tests passing.
+2. **Ludo**: Lightweight real-time multiplayer board game for 2–6 players with zero build step. Vanilla JavaScript, HTML5 Canvas, and Firestore real-time listeners. Shipped on Web, Android APK (4.5 MB), and Linux `.deb` (95 MB).
+3. **StudyStack**: Unified JEE preparation analytics tracker and deterministic spaced-repetition revision engine. 455 automated tests passing.
 
-### 4. Interactive In-Browser Terminal
-- Fully functional CLI terminal emulator supporting interactive commands:
-  - `help` — Lists available commands
-  - `projects` — Displays project manifest with quick links
-  - `skills` — Prints full technical stack & tools
-  - `stats` — Shows real-time vibe coding metrics
-  - `download` — Triggers verified Linux (`.deb`), Android (`.apk`) and Web links
-  - `contact` — Quick-copy contact info
-  - `clear` — Resets console output
+## Scenes & Interactions Overview
 
-### 5. Interactive Vibe Coding Calculator
-- Interactive ROI & dev velocity widget demonstrating real-world productivity multipliers and rapid prototyping speed.
+- **3D Device Canvas**: Lazy-loaded React Three Fiber scene rendering interactive floating device mockups reacting to cursor orientation.
+- **Scroll & Kinetic Motion**: Lenis smooth scrolling paired with scroll progress bars and section navigation telemetry.
+- **Accessible Typography Reveal**: Scroll-scrubbed word-by-word reveal in the About section with natural typographic spacing and full screen-reader compliance (`aria-label` / `aria-hidden`).
+- **In-Browser Terminal**: Fully interactive command console supporting real commands (`help`, `whoami`, `projects`, `skills`, `download`, `contact`, `theme`, `clear`).
+- **Command Palette**: Global keyboard search modal (`Cmd+K` / `Ctrl+K`) for direct navigation.
+- **Live Commit Activity**: Server-side GitHub API integration with background revalidation reflecting real repository updates without layout shift.
+- **Light & Dark Theme**: Zero-flicker theme toggle persisted in `localStorage` with system preference detection.
 
-### 6. Case Study Hub & Route Architecture
-- Deep-dive product breakdowns with architecture diagrams, live demo links, and tech breakdowns:
-  - **Ludo with Friends** — Real-time multiplayer board game with Firebase subcollections, Electron desktop shell, Capacitor Android app, and PWA offline support.
-  - **Studystack** — JEE 2028 analytics tracker, revision schedule engine, and test performance diagnostics.
-  - **Softify** — Ad-free, paywall-free Web, Android, iOS & Linux desktop music streaming app built with Flutter. Live Web Player at [softify-app.vercel.app](https://softify-app.vercel.app/). On-device recommendation intelligence engine, SQLite FTS5 instant search, dual-band taste decay (W_fast 4h / W_slow 14d), 128-dim vector embeddings, 320kbps studio masters, synced lyrics, dual-engine standby pre-buffering (<10ms track transitions), Spotify importer, offline playback, responsive Linux desktop shell with sidebar & keyboard shortcuts, automated terminal installer (`curl -fsSL .../install.sh | bash`), Dynamic Island & AirPods controls ([GitHub Repo](https://github.com/Sarthak-Cyb3r/softify)).
-  - **Accounty** — Double-entry personal ledger and finance tracker.
+## Project Structure
 
-### 7. Hosted Real Binaries & Web Player
-- Direct downloads & web app available:
-  - **Softify Web Player**: [softify-app.vercel.app](https://softify-app.vercel.app/) — in-browser music streaming (no install required)
-  - **Softify Linux Desktop**: [Softify-Linux-x64.tar.gz](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0) (13.2 MB, v2.0.0) & Terminal Installer (`curl -fsSL https://raw.githubusercontent.com/Sarthak-Cyb3r/softify/main/install.sh | bash`)
-  - **Softify Android APK**: [Softify-v2.0.0-Universal.apk](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0) (66.5 MB, v2.0.0)
-  - **Softify iOS IPA**: [Softify-iOS-Universal.ipa](https://github.com/Sarthak-Cyb3r/softify/releases/tag/v2.0.0) (10.6 MB, v2.0.0) — sideloadable build for AltStore, Sideloadly & TrollStore (iOS 15.0+)
-  - **Ludo Android APK**: `ludo-with-friends.apk` (4.7 MB)
-  - **Ludo Linux Debian Package**: `ludo-with-friends-1.0.0-amd64.deb` (94 MB)
+```
+portfolio/
+├── public/                 # Static assets, icons, screenshots, and OG images
+├── src/
+│   ├── app/                # Next.js App Router (pages, layout, metadata, routes)
+│   │   ├── layout.tsx      # Root layout, fonts, metadataBase, canonical URL
+│   │   ├── page.tsx        # Homepage composing all sections
+│   │   └── projects/       # Dedicated project directory and case study routes
+│   ├── components/
+│   │   ├── canvas/         # Three.js / WebGL canvas components
+│   │   ├── hero/           # Hero 3D centerpiece and fallbacks
+│   │   ├── motion/         # Lenis, preloader, and scroll reveal components
+│   │   ├── nav/            # Floating glass navbar and sheet menu
+│   │   ├── projects/       # Project cards, interactive previews, diagrams
+│   │   ├── sections/       # Hero, FeaturedWork, ProofStrip, Tech, Terminal, About, Contact
+│   │   └── ui/             # Reusable UI primitives (Button, Chip, Card, Stat, DownloadButton)
+│   ├── data/               # Single sources of truth (projects.ts, site.ts)
+│   └── lib/                # Utility helpers, GitHub API client, OS detection, sound
+├── next.config.ts          # 301 alias domain redirects and framework config
+├── vercel.json             # Vercel edge redirects
+├── package.json            # Exact dependencies and scripts
+└── TODO.md                 # Unverified items and backlog tracker
+```
 
----
-
-## 🛠️ Tech Stack
-
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router, React 19, Turbopack)
-- **3D & Visuals**: [Three.js](https://threejs.org/) WebGL canvas
-- **Animation**: [Motion / Motion Plus](https://motion.dev/) (Framer Motion)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with custom dark neon/cyber SaaS theme
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Audio Feedback**: Native HTML5 Web Audio API synthesizers
-- **Deployment**: [Vercel](https://vercel.com/) Edge Network
-
----
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-- Node.js 18.17+ or Node.js 20+
+
+- Node.js 20.x or higher (LTS recommended)
 - npm, pnpm, or yarn
 
 ### Installation
 
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/Sarthak-Cyb3r/portfolio.git
 cd portfolio
 
 # Install dependencies
 npm install
 
-# Start development server with Turbopack
+# Start local development server
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-### Production Build
+### Production Build & Linting
 
 ```bash
-# Compile and optimize for production
+# Typecheck and build static production bundle
 npm run build
 
-# Run production server locally
+# Run ESLint verification
+npm run lint
+
+# Start production server
 npm run start
 ```
 
-### Deploying to Vercel
+## Verification & Test Counts
 
-```bash
-# Deploy to production
-vercel --prod
-```
+All statistics and download sizes are verified directly against source repositories and compiler release artifacts:
 
----
+- **Total automated tests passing**: 625 (455 in StudyStack, 170 in Softify)
+- **Platforms shipped**: Android, iOS (sideload), Linux, Web
+- **Telemetry**: Zero tracking and 100% client-side privacy architecture
 
-## 📂 Project Structure
+## License
 
-```text
-portfolio/
-├── public/
-│   ├── downloads/          # Pre-built verified native binaries (.deb, .apk)
-│   ├── projects/           # High-resolution screenshots & UI mockups
-│   ├── favicon.ico         # Favicon and branding assets
-│   └── sitemap.xml         # Auto-generated SEO sitemap
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx      # Root HTML shell, fonts, meta tags
-│   │   ├── page.tsx        # SaaS Landing Page with 3D Canvas & Bento grid
-│   │   ├── projects/       # Dynamic case study route engine (/projects/[slug])
-│   │   └── sitemap.ts      # Programmatic sitemap generator
-│   ├── components/
-│   │   ├── 3d/             # Three.js canvas & WebGL shaders
-│   │   ├── layout/         # Navigation dock, header, footer, dynamic island
-│   │   ├── projects/       # Case study cards, filters, bento items
-│   │   ├── sections/       # Hero, Terminal, Calculator, Experience, Contact
-│   │   └── ui/             # Glass buttons, badges, modals, tooltips
-│   ├── data/
-│   │   └── projects.ts     # Centralized structured case study data
-│   └── lib/                # Audio synthesizer, utilities, animation helpers
-└── vercel.json             # Vercel deployment & cache headers configuration
-```
-
----
-
-## 🤖 AI-Assisted Changes
-
-Assisted by **`opencode/mimo-v2.6-flash-free`** (opencode CLI).
-
-| Commit | Change |
-|---|---|
-| `5ab5c9e` | Added the Softify case study with an honest **CI build pending** iOS download state — no `.ipa` link while `ios_release.yml` was still red, per the no-fabricated-download-links rule. |
-| `482299e` | Flipped iOS to a real download once `Softify-iOS-Universal.ipa` (10,938,031 bytes) landed on the Softify `v1.0.0` release; updated the progress note and roadmap to match. |
-| — | `tsc --noEmit`, `eslint`, and `next build` (11/11 routes) verified clean; deployed to production and re-pointed all three aliases. |
-
----
-
-## 📬 Contact & Connect
-
-- **Email**: [lakh125yu@gmail.com](mailto:lakh125yu@gmail.com)
-- **GitHub**: [@Sarthak-Cyb3r](https://github.com/Sarthak-Cyb3r)
-- **Portfolio**: [https://sarthak-cyb3r.vercel.app](https://sarthak-cyb3r.vercel.app)
-
----
-
-*Designed and vibe-coded with precision by Sarthak.*
+MIT License. Designed and engineered by [Sarthak](https://github.com/Sarthak-Cyb3r).

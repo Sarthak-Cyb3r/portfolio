@@ -3,11 +3,13 @@
 import { MotionConfig } from "motion/react";
 import { useEffect, type ReactNode } from "react";
 import Lenis from "lenis";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /**
- * Motion defaults + Lenis smooth scrolling (lerp ~0.09).
- * Anchor links scroll smoothly with sticky-nav offset (72px).
- * Bypassed for prefers-reduced-motion users.
+ * Motion defaults + Lenis smooth scrolling wired directly into GSAP ticker and ScrollTrigger:
+ * lenis.on('scroll', ScrollTrigger.update);
+ * gsap.ticker.add(t => lenis.raf(t * 1000));
+ * gsap.ticker.lagSmoothing(0);
  */
 export function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -23,12 +25,14 @@ export function Providers({ children }: { children: ReactNode }) {
     // Make lenis globally accessible for anchor navigation
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
-    let frame = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      frame = requestAnimationFrame(raf);
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const tickerCb = (time: number) => {
+      lenis.raf(time * 1000);
     };
-    frame = requestAnimationFrame(raf);
+
+    gsap.ticker.add(tickerCb);
+    gsap.ticker.lagSmoothing(0);
 
     // Smooth scroll for anchor clicks with sticky nav offset
     const handleAnchorClick = (e: MouseEvent) => {
@@ -42,7 +46,6 @@ export function Providers({ children }: { children: ReactNode }) {
       const id = href.slice(hashIndex + 1);
       if (!id) return;
 
-      // Only handle if on same page
       const currentPath = window.location.pathname;
       const targetPath = href.slice(0, hashIndex);
       if (targetPath && targetPath !== currentPath && targetPath !== "/") return;
@@ -58,12 +61,15 @@ export function Providers({ children }: { children: ReactNode }) {
     document.addEventListener("click", handleAnchorClick);
 
     return () => {
-      cancelAnimationFrame(frame);
       document.removeEventListener("click", handleAnchorClick);
+      gsap.ticker.remove(tickerCb);
       lenis.destroy();
-      delete (window as unknown as { __lenis?: Lenis }).__lenis;
     };
   }, []);
 
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+  return (
+    <MotionConfig reducedMotion="user">
+      {children}
+    </MotionConfig>
+  );
 }

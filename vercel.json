@@ -1,0 +1,26 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "sarthak-cyb3r-portfolio.vercel.app"
+        }
+      ],
+      "destination": "https://sarthak-cyb3r.vercel.app/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "portfolio-sarthak-cyb3r.vercel.app"
+        }
+      ],
+      "destination": "https://sarthak-cyb3r.vercel.app/$1",
+      "permanent": true
+    }
+  ]
+}

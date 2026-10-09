@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Geist_Mono, Roboto_Flex } from "next/font/google";
 import { Navbar } from "@/components/nav/navbar";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { CustomCursor } from "@/components/motion/custom-cursor";
@@ -12,14 +12,19 @@ import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
   display: "swap",
   variable: "--font-sans",
 });
 
+const robotoFlex = Roboto_Flex({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display",
+  axes: ["wdth"],
+});
+
 const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
   display: "swap",
   variable: "--font-mono",
 });
@@ -47,6 +52,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Sarthak", url: GITHUB_URL }],
   creator: "Sarthak",
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
     type: "website",
     url: SITE_URL,
@@ -54,14 +62,14 @@ export const metadata: Metadata = {
     title: "Sarthak — Softify, Ludo & StudyStack",
     description:
       "Software developer building native Android, iOS, Linux, and web applications. Softify, Ludo, and StudyStack are live, tested, and downloadable.",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Sarthak — Portfolio" }],
+    images: [{ url: `${SITE_URL}/og.png`, width: 1200, height: 630, alt: "Sarthak — Portfolio" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Sarthak — Softify, Ludo & StudyStack",
     description:
       "Software developer building native Android, iOS, Linux, and web applications. Softify, Ludo, and StudyStack are live, tested, and downloadable.",
-    images: ["/og.png"],
+    images: [`${SITE_URL}/og.png`],
   },
   robots: { index: true, follow: true },
 };
@@ -118,7 +126,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-theme="light"
-      className={`${plusJakarta.variable} ${geistMono.variable}`}
+      className={`${plusJakarta.variable} ${robotoFlex.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head>

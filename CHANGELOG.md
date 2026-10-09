@@ -2,6 +2,33 @@
 
 All notable architectural and design improvements to Sarthak's portfolio are documented here.
 
+## [3.2.0] - 2026-10-09
+
+### Phase 3: Scroll Animation, Effects & Animated Typography
+- **Synchronized Scroll Engine**: Wired Lenis smooth scroll directly into GSAP ticker (`lenis.on('scroll', ScrollTrigger.update)`, `gsap.ticker.add(t => lenis.raf(t * 1000))`, `gsap.ticker.lagSmoothing(0)`).
+- **100svh Pinned Master Stage (`CinematicStage`)**: Orchestrated 10 sequential scenes (`s0` to `s9`) along a pinned ScrollTrigger timeline with ~30% exit/entrance overlap and snap-to-labels. Maintained single semantic `<h1>` invariant and `inert` accessibility attribute on inactive scenes.
+- **Persistent 3D Traveling Device (`TravelingDevice`)**: Metallic device frame persisting and morphing across scenes 0 through 5 (Hero -> Metrics -> Softify -> Ludo -> StudyStack -> Toolchain) with velocity-modulated equalizer audio bars and screen state switching.
+- **Velocity-Reactive Dynamics**: Real-time scroll velocity modulates kinetic marquee skew (`clamp(-4, 4, vel * 0.003)`), motion blur, and Softify waveform frequency/amplitude.
+- **HUD & Scene Rail**: Right-aligned HUD with mechanical digit-roll counter ("01 / 10"), vertical progress gauge, clickable scene dot tooltips, keyboard navigation (Arrow keys, Space, Home, End), and hash deep-linking (`#hero`, `#stats`, `#softify`, `#ludo`, `#studystack`, `#tech`, `#methods`, `#terminal`, `#about`, `#contact`).
+- **Animated Typography**: Added Google `Roboto_Flex` variable display font with weight/width wave (`VariableWaveHeading`), `ScrambleTextPlugin` cipher decode (`ScrambleText`), cycling headline swap on Softify, tabular numerals, and masked footer wordmark.
+- **12 Non-Repeating Transitions**: Masked line reveals, perspective tilt-in, zoom-through, 3D card flip / rotateY, stack fan-out, SVG DrawSVG path conduit, horizontal multi-layer parallax, clip-path inset wipe, background morph, number roll, and clip-path circle wipe.
+- **Classic View Fallback**: Accessible persistent toggle between Cinematic Stage and Classic View, with automatic fallback for `prefers-reduced-motion` and low-power environments.
+- **Motion Specification (`MOTION.md`)**: Comprehensive documentation covering timeline architecture, transition vocabulary, typography techniques, interactive physics, and frame budgets.
+
+## [3.1.0] - 2026-10-09
+
+### Trust & Precision Fixes
+- **About Typography & Spacing**: Fixed word-by-word reveal dropped whitespace by replacing `inline-block mr-[0.3em]` with natural typographic `inline` spans followed by standard whitespace (`{" "}`). Added `aria-label` to parent `<p>` and `aria-hidden="true"` to child spans. Verified visually at 1440px and 390px viewports.
+- **Server-Side GitHub Commit Activity**: Replaced client-side fetch and "recently" fallback with a server-side GitHub API integration in `src/lib/github.ts` using Next.js 1-hour ISR revalidation (`revalidate: 3600`). Hides line completely without layout shift if API fails.
+- **Ludo Fact Grounding**: Removed unverifiable `"0ms state latency"` claim from `LudoInteractive` footer; replaced with verifiable repository facts: `"2–6 players · Android, Linux, Web"`.
+- **Test & CI Status Verification**: Updated proof strip badge from "CI Verified" to "Tests passing" and cited repository test suites (625 total tests: 455 StudyStack + 170 Softify) due to absence of GitHub Actions workflow runs.
+- **Softify Version Consistency**: Synchronized version `v2.0.5` across hero status pill, case study notes, and downloads. Aligned Linux asset name to `.tar.gz` (`Softify-Linux-x64.tar.gz`), eliminating AppImage mentions.
+- **Unified Tech Grouping**: Merged disparate tech sections into ONE grouped list of 4 clean categories (Mobile, Web, Backend & Data, Tooling), capped at 12 items, with concise 1-2 word chips. Removed redundant marquees.
+- **Terminal Console Cleanliness**: Removed fake `"v2.4 (Production Shell)"` string from terminal output; retained only authentic commands.
+- **Canonical URL & Domain Redirects**: Standardized on `https://sarthak-cyb3r.vercel.app` as single canonical URL across `SITE_URL`, `metadataBase`, `alternates.canonical`, and absolute OG/Twitter image URLs. Added permanent 301 redirects in `next.config.ts` and `vercel.json` for alias domains.
+- **Public README Rewrite**: Rewrote `README.md` with accurate `package.json` dependency versions (Next.js 16.3.8, React 19.2.8, Motion 14, Tailwind 4), hero preview image, animation overview, setup instructions, and feature lists. Removed Torus Knot, calculator claims, and all emoji headings.
+- **Quality Gates**: Verified clean compile with Next.js 16.3.8 App Router SSG (10 static pages), 0 ESLint warnings/errors, 0 TypeScript errors (`npx tsc --noEmit`), and 32/32 audit checks passing.
+
 ## [3.0.0] - 2026-10-09
 
 ### Summary

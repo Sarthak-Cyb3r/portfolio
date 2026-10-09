@@ -33,10 +33,11 @@ function Word({
 }) {
   const opacity = useTransform(progress, range, [0.2, 1]);
   return (
-    <span className="relative inline-block mr-[0.3em]">
+    <span aria-hidden="true" className="inline">
       <motion.span style={{ opacity }} className="text-fg transition-opacity">
         {word}
       </motion.span>
+      {" "}
     </span>
   );
 }
@@ -62,7 +63,10 @@ export function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Scroll-scrubbed word opacity reveal */}
           <div ref={containerRef} className="lg:col-span-7">
-            <p className="text-xl sm:text-2xl font-medium leading-[1.6] text-muted-fg/40 select-none">
+            <p
+              aria-label={ABOUT_PARAGRAPH}
+              className="text-xl sm:text-2xl font-medium leading-[1.6] text-muted-fg/40 select-none"
+            >
               {words.map((word, i) => {
                 const start = i / words.length;
                 const end = start + 1 / words.length;

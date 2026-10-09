@@ -33,7 +33,7 @@ export function TerminalConsole() {
       command: "sysinfo",
       output: (
         <div className="space-y-1 text-xs text-slate-400 font-mono">
-          <p className="text-primary font-semibold">Sarthak Terminal v2.4 (Production Shell)</p>
+          <p className="text-primary font-semibold">Sarthak Terminal</p>
           <p>Native Flutter · Next.js 16 · SQLite FTS5 · Zero Telemetry</p>
           <p>Type <span className="text-white font-bold underline">help</span> or tap any suggested command below.</p>
         </div>

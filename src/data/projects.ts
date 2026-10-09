@@ -109,7 +109,7 @@ export const projects: Project[] = [
     status: "completed",
     statusLabel: "Live",
     progressNote:
-      "v2.0.0 released with on-device search & recommendation engine across Android, iOS (sideload), Linux desktop, and Web. 170 passing tests.",
+      "v2.0.5 released with YouTube audio tab, studio DSP equalizer, and on-device search across Android, iOS (sideload), Linux desktop, and Web. 170 passing tests.",
     testsPassing: 170,
     testSuiteCount: 1,
     platforms: ["Android", "iOS (Sideload)", "Linux", "Web"],

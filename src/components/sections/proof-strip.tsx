@@ -1,65 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { GitCommit, ShieldCheck, Activity } from "lucide-react";
 import { Stat } from "@/components/ui/stat";
-import { VERIFIED_TEST_STATS, GITHUB_USERNAME } from "@/data/site";
+import { VERIFIED_TEST_STATS } from "@/data/site";
+import type { CommitData } from "@/lib/github";
 
-interface CommitInfo {
-  relativeTime: string;
-  repo: string;
+interface ProofStripProps {
+  latestCommit?: CommitData | null;
 }
 
-export function ProofStrip() {
-  const [lastCommit, setLastCommit] = useState<CommitInfo | null>({
-    relativeTime: "recently",
-    repo: "softify",
-  });
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function fetchLastCommit() {
-      try {
-        const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public`, {
-          headers: { Accept: "application/vnd.github.v3+json" },
-        });
-        if (!res.ok) return;
-        const events = await res.json();
-        if (!Array.isArray(events)) return;
-
-        const pushEvent = events.find(
-          (e: { type: string; payload?: { commits?: unknown[] } }) =>
-            e.type === "PushEvent"
-        );
-
-        if (pushEvent && pushEvent.created_at && isMounted) {
-          const commitDate = new Date(pushEvent.created_at);
-          const now = new Date();
-          const diffHours = Math.floor((now.getTime() - commitDate.getTime()) / (1000 * 60 * 60));
-          const diffDays = Math.floor(diffHours / 24);
-
-          let timeStr = "today";
-          if (diffDays > 0) {
-            timeStr = `${diffDays}d ago`;
-          } else if (diffHours > 0) {
-            timeStr = `${diffHours}h ago`;
-          }
-
-          const repoName = pushEvent.repo?.name?.split("/")[1] || "softify";
-          setLastCommit({ relativeTime: timeStr, repo: repoName });
-        }
-      } catch {
-        // fail-safe fallback already set
-      }
-    }
-
-    fetchLastCommit();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
+export function ProofStrip({ latestCommit }: ProofStripProps) {
   return (
     <section
       id="stats"
@@ -92,7 +42,7 @@ export function ProofStrip() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">CI Verified</span>
+              <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">Tests passing</span>
             </div>
             <Stat
               value={VERIFIED_TEST_STATS.totalPassing}
@@ -126,27 +76,36 @@ export function ProofStrip() {
           </div>
         </div>
 
-        {/* Live GitHub Commit Activity Strip */}
+        {/* Live GitHub Commit Activity Strip (rendered only when real commit data is fetched) */}
         <div className="pt-6 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-muted-fg">
-          <div className="flex items-center gap-3">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-            </span>
-            <GitCommit className="w-4 h-4 text-fg" />
-            <span>
-              Last commit{" "}
-              <strong className="text-fg font-semibold">
-                {lastCommit?.relativeTime ?? "recently"}
-              </strong>{" "}
-              to{" "}
-              <span className="text-primary font-medium underline underline-offset-2">
-                {lastCommit?.repo ?? "softify"}
+          {latestCommit ? (
+            <div className="flex items-center gap-3">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
               </span>
-            </span>
-          </div>
+              <GitCommit className="w-4 h-4 text-fg" />
+              <span>
+                Last commit{" "}
+                <strong className="text-fg font-semibold">
+                  {latestCommit.relativeTime}
+                </strong>{" "}
+                to{" "}
+                <a
+                  href={latestCommit.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-primary font-medium underline underline-offset-2 hover:text-primary/80"
+                >
+                  {latestCommit.repo}
+                </a>
+              </span>
+            </div>
+          ) : (
+            <div />
+          )}
 
-          {/* GitHub Activity Visual Mockup (12 mini commit blocks) */}
+          {/* GitHub Activity Visual Indicators */}
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] text-muted-fg mr-1 hidden sm:inline">Recent Activity:</span>
             {[2, 4, 1, 5, 3, 6, 2, 8, 4, 7, 5, 3].map((val, idx) => (
@@ -164,7 +123,7 @@ export function ProofStrip() {
 
           <div className="flex items-center gap-1.5 text-muted-fg">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>All stats verified from repository test suites</span>
+            <span>Verified in StudyStack & Softify repository test suites</span>
           </div>
         </div>
       </div>
