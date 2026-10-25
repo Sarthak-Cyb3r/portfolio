@@ -23,42 +23,46 @@
   --radius-card: 16px;
 }
 
-/* Light Theme (Swiss Minimalist Baseline) */
+/* Light Theme */
 :root {
   color-scheme: light;
-  --c-bg: #FAFAFB;
+  --c-bg: #F8FAFC;
   --c-card: #FFFFFF;
-  --c-fg: #090D14;
-  --c-muted-fg: #526071;
+  --c-fg: #0F172A;
+  --c-muted-fg: #475569;
   --c-border: #E2E8F0;
-  --c-border-hover: #CBD5E1;
+  --c-border-hover: rgba(37, 99, 235, 0.4);
   --c-muted: #F1F5F9;
-  --c-primary: #0F172A;
-  --c-secondary: #334155;
+  --c-primary: #2563EB;
+  --c-secondary: #7C3AED;
   --c-accent: #2563EB;
   --c-on-accent: #FFFFFF;
-  --c-ring: #0F172A;
-  --shadow-subtle: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-card: 0 4px 12px -2px rgba(15, 23, 42, 0.04), 0 2px 4px -2px rgba(15, 23, 42, 0.02);
+  --c-ring: #2563EB;
+  --glow-primary: rgba(37, 99, 235, 0.12);
+  --glow-secondary: rgba(124, 58, 237, 0.08);
+  --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 10px 30px -10px rgba(37, 99, 235, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
 }
 
-/* Dark Theme (Deep Obsidian & Slate Baseline) */
+/* Dark Theme (Obsidian & Luminous Neon Accents) */
 [data-theme="dark"] {
   color-scheme: dark;
-  --c-bg: #090D16;
-  --c-card: #0F1523;
+  --c-bg: #07090E;
+  --c-card: #0D111A;
   --c-fg: #F8FAFC;
-  --c-muted-fg: #8E9BAE;
+  --c-muted-fg: #94A3B8;
   --c-border: rgba(255, 255, 255, 0.08);
-  --c-border-hover: rgba(255, 255, 255, 0.18);
-  --c-muted: #161F33;
-  --c-primary: #F8FAFC;
-  --c-secondary: #CBD5E1;
+  --c-border-hover: rgba(59, 130, 246, 0.4);
+  --c-muted: #141A26;
+  --c-primary: #3B82F6;
+  --c-secondary: #8B5CF6;
   --c-accent: #3B82F6;
   --c-on-accent: #FFFFFF;
   --c-ring: #3B82F6;
-  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --shadow-card: 0 12px 24px -6px rgba(0, 0, 0, 0.45);
+  --glow-primary: rgba(59, 130, 246, 0.2);
+  --glow-secondary: rgba(139, 92, 246, 0.15);
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 16px 36px -12px rgba(0, 0, 0, 0.7), 0 0 24px -6px rgba(59, 130, 246, 0.12);
 }
 
 @layer base {
@@ -93,25 +97,48 @@
   }
 }
 
-/* Crisp Clean Dividers */
-.section-divider {
+/* Atmospheric Ambient Lighting Wash */
+.hero-ambient-wash {
+  background: radial-gradient(circle 900px at 50% 15%, rgba(59, 130, 246, 0.14), rgba(139, 92, 246, 0.07) 50%, transparent 80%);
+}
+
+[data-theme="dark"] .hero-ambient-wash {
+  background: radial-gradient(circle 900px at 50% 15%, rgba(59, 130, 246, 0.18), rgba(139, 92, 246, 0.09) 55%, transparent 80%);
+}
+
+/* Subtle Architectural Grid Texture */
+.bg-subtle-grid {
+  background-size: 48px 48px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Glowing Hairline Dividers */
+.glowing-divider {
   height: 1px;
   width: 100%;
-  background-color: var(--c-border);
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3) 30%, rgba(139, 92, 246, 0.4) 50%, rgba(59, 130, 246, 0.3) 70%, transparent);
+  opacity: 0.8;
 }
 
-/* Subtle Hover Transitions */
-.interactive-hover {
-  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms ease, box-shadow 180ms ease;
+/* Shimmer Highlight Sweep */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
-.interactive-hover:hover {
+.animate-shimmer {
+  animation: shimmer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Kinetic Hover Lift */
+.hover-lift {
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1), border-color 240ms ease, box-shadow 240ms ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
   border-color: var(--c-border-hover);
   box-shadow: var(--shadow-card);
-}
-
-/* Readable Paragraph Measure */
-.prose-readable {
-  max-width: 65ch;
-  line-height: 1.65;
 }

@@ -1,5 +1,6 @@
 import { SectionHeader } from "@/components/ui/section-header";
 import { Chip } from "@/components/ui/chip";
+import { Spotlight } from "@/components/ui/spotlight";
 import { Smartphone, Globe, Database, Terminal } from "lucide-react";
 
 interface TechGroup {
@@ -33,7 +34,7 @@ const TECH_GROUPS: TechGroup[] = [
 
 export function Tech() {
   return (
-    <section id="tech" className="py-24 sm:py-32 border-t border-border">
+    <section id="tech" className="py-24 sm:py-32 border-t border-border/80">
       <div className="max-w-[1160px] mx-auto px-4 sm:px-6">
         <SectionHeader
           label="Architecture & Toolchain"
@@ -45,12 +46,14 @@ export function Tech() {
           {TECH_GROUPS.map((group) => {
             const Icon = group.icon;
             return (
-              <div
+              <Spotlight
                 key={group.category}
-                className="rounded-xl border border-border bg-card p-6 shadow-xs hover:border-border-hover transition-colors flex flex-col justify-between gap-5"
+                className="rounded-2xl border border-border bg-card/85 dark:bg-card/75 backdrop-blur-xl p-6 shadow-xs hover:border-primary/50 transition-all duration-300 flex flex-col justify-between gap-5 group"
               >
-                <div className="flex items-center gap-2.5 pb-3 border-b border-border">
-                  <Icon className="w-4 h-4 text-muted-fg" />
+                <div className="flex items-center gap-3 pb-3 border-b border-border/80">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <Icon className="w-4 h-4" />
+                  </div>
                   <h3 className="text-sm font-semibold text-fg tracking-tight">
                     {group.category}
                   </h3>
@@ -63,7 +66,7 @@ export function Tech() {
                     </Chip>
                   ))}
                 </div>
-              </div>
+              </Spotlight>
             );
           })}
         </div>

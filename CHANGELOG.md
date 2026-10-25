@@ -2,6 +2,17 @@
 
 All notable architectural and design improvements to Sarthak's portfolio are documented here.
 
+## [3.7.0] - 2026-10-25
+
+### Kinetic Motion & High-Impact Visual Craft
+- **Restored Organic Trailing Custom Cursor**: Precision inner dot paired with a fluid spring-interpolated trailing halo (`useSpring`) that smoothly expands over interactive targets with soft blur.
+- **500ms Non-Blocking Monogram Preloader**: Lightning-fast initial entrance reveal with SVG monogram and upward curtain wipe, bypassing on repeat sessions.
+- **Cinematic Hero Entrance & Kinetic Type**: Masked stagger text reveal with blur-to-focus and spring-physics rotating platform keyword pill ("Android", "iOS", "Linux", "Web").
+- **3D Spatial Hardware Device**: Real-time cursor perspective tilt tracking with spring physics (`rotateX`, `rotateY`), floating platform pills, specular glass sheens, and luminous atmospheric backlighting.
+- **Cursor Spotlight Illumination**: Interactive radial spotlight cursor effects across Featured Work cards, Architecture Stack cards, and Philosophy cards.
+- **Laser-Drawn Scroll Timeline**: Dynamic glowing laser beam tracing the 4 engineering phases in "How I Build".
+- **Interactive Project Playgrounds**: Live audio visualizer equalizer bars in Softify, real-time C LD_PRELOAD dock transformation in macOS Tahoe, and 3D physics dice tumbling in Ludo.
+
 ## [3.6.0] - 2026-10-25
 
 ### Swiss Minimalism & Anti-Pattern Elimination (ui-ux-pro-max)

@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "motion/react";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Spotlight } from "@/components/ui/spotlight";
 
 const ABOUT_PARAGRAPH =
   "I am an independent software developer focused on systems architecture, client-side intelligence, and cross-platform native execution. Rather than building ephemeral web prototypes or unvalidated concepts, I engineer resilient tools, games, and applications that run offline, respect user privacy, and compile into verifiable binaries.";
@@ -31,7 +32,7 @@ function Word({
   progress: MotionValue<number>;
   range: [number, number];
 }) {
-  const opacity = useTransform(progress, range, [0.25, 1]);
+  const opacity = useTransform(progress, range, [0.2, 1]);
   return (
     <span aria-hidden="true" className="inline">
       <motion.span style={{ opacity }} className="text-fg transition-opacity">
@@ -52,7 +53,7 @@ export function About() {
   const words = ABOUT_PARAGRAPH.split(" ");
 
   return (
-    <section id="about" className="py-24 sm:py-32 border-t border-border">
+    <section id="about" className="py-24 sm:py-32 border-t border-border/80">
       <div className="max-w-[1120px] mx-auto px-4 sm:px-6">
         <SectionHeader
           label="About"
@@ -82,23 +83,23 @@ export function About() {
             </p>
           </div>
 
-          {/* Right Column: 3 Values */}
+          {/* Right Column: 3 Values with Spotlight */}
           <div className="lg:col-span-5 flex flex-col gap-4">
             {VALUES.map((val) => (
-              <div
+              <Spotlight
                 key={val.title}
-                className="rounded-xl border border-border bg-card p-5 shadow-xs hover:border-border-hover transition-colors flex flex-col gap-2"
+                className="rounded-2xl border border-border bg-card/85 dark:bg-card/75 backdrop-blur-xl p-5 shadow-xs hover:border-primary/50 transition-all duration-300 flex flex-col gap-2 group"
               >
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                  <span className="text-sm font-semibold text-fg">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2 h-2 rounded-full bg-primary group-hover:scale-125 transition-transform" />
+                  <span className="text-sm font-bold text-fg">
                     {val.title}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-fg leading-relaxed pl-3.5">
+                <p className="text-xs sm:text-sm text-muted-fg leading-relaxed pl-4.5">
                   {val.desc}
                 </p>
-              </div>
+              </Spotlight>
             ))}
           </div>
         </div>
