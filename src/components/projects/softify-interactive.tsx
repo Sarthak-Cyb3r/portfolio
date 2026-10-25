@@ -28,7 +28,7 @@ export function SoftifyInteractive() {
             type="button"
             onClick={() => setIsPlaying(!isPlaying)}
             aria-label={isPlaying ? "Pause track" : "Play track"}
-            className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-md shadow-primary/40"
+            className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center hover:opacity-90 active:scale-98 transition-all cursor-pointer shadow-xs"
           >
             {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
           </button>
@@ -37,7 +37,7 @@ export function SoftifyInteractive() {
               {activeTrack}
             </div>
             <div className="text-[10px] text-emerald-400 font-mono flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>{isPlaying ? "Decoding Audio Stream" : "Ready · Zero Telemetry"}</span>
             </div>
           </div>

@@ -31,7 +31,7 @@ function Word({
   progress: MotionValue<number>;
   range: [number, number];
 }) {
-  const opacity = useTransform(progress, range, [0.2, 1]);
+  const opacity = useTransform(progress, range, [0.25, 1]);
   return (
     <span aria-hidden="true" className="inline">
       <motion.span style={{ opacity }} className="text-fg transition-opacity">
@@ -60,12 +60,12 @@ export function About() {
           description="A quiet commitment to verifiable code, local-first performance, and craft."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start mt-12">
           {/* Left Column: Scroll-scrubbed word opacity reveal */}
           <div ref={containerRef} className="lg:col-span-7">
             <p
               aria-label={ABOUT_PARAGRAPH}
-              className="text-xl sm:text-2xl font-medium leading-[1.6] text-muted-fg/40 select-none"
+              className="text-xl sm:text-2xl font-medium leading-[1.65] text-muted-fg/40 select-none"
             >
               {words.map((word, i) => {
                 const start = i / words.length;
@@ -82,24 +82,22 @@ export function About() {
             </p>
           </div>
 
-          {/* Right Column: 3 One-Line Values with Double-Bezel */}
+          {/* Right Column: 3 Values */}
           <div className="lg:col-span-5 flex flex-col gap-4">
             {VALUES.map((val) => (
               <div
                 key={val.title}
-                className="p-1 rounded-[1.5rem] bg-white/[0.03] border border-border/80 ring-1 ring-white/5 transition-all duration-300 hover:border-primary/40 group"
+                className="rounded-xl border border-border bg-card p-5 shadow-xs hover:border-border-hover transition-colors flex flex-col gap-2"
               >
-                <div className="p-5 rounded-[calc(1.5rem-0.25rem)] bg-card/90 dark:bg-card/75 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)] flex flex-col gap-2">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2 h-2 rounded-full bg-primary group-hover:scale-125 transition-transform" />
-                    <span className="text-sm font-bold text-fg">
-                      {val.title}
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-muted-fg leading-relaxed pl-4.5">
-                    {val.desc}
-                  </p>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span className="text-sm font-semibold text-fg">
+                    {val.title}
+                  </span>
                 </div>
+                <p className="text-xs sm:text-sm text-muted-fg leading-relaxed pl-3.5">
+                  {val.desc}
+                </p>
               </div>
             ))}
           </div>

@@ -56,7 +56,7 @@ export function LudoInteractive() {
           <span className="text-xs font-semibold text-white">Zero-Build Multiplayer Engine</span>
         </div>
         <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
           Live Listeners
         </span>
       </div>

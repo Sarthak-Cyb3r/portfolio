@@ -1,23 +1,61 @@
+import Link from "next/link";
+import { GITHUB_URL, EMAIL } from "@/data/site";
+
 export function Footer() {
   return (
-    <footer className="relative border-t border-border/80 bg-bg pt-16 pb-12 overflow-hidden">
-      {/* Subtle Background Glow */}
-      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none" />
+    <footer className="border-t border-border bg-card/40 py-12">
+      <div className="max-w-[1160px] mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-border">
+          <div>
+            <div className="text-sm font-semibold text-fg">Sarthak</div>
+            <p className="text-xs text-muted-fg mt-1">
+              Software Developer &amp; Systems Builder · Age 16
+            </p>
+          </div>
 
-      <div className="relative z-10 max-w-[1160px] mx-auto px-4 sm:px-6 flex flex-col items-center">
-        {/* Giant Monolithic Wordmark */}
-        <div
-          aria-hidden="true"
-          className="text-[13vw] font-black tracking-tighter leading-none select-none text-transparent bg-clip-text bg-gradient-to-b from-fg/15 to-fg/5 uppercase font-sans mb-8 pointer-events-none"
-        >
-          SARTHAK
+          <div className="flex flex-wrap items-center gap-6 text-xs text-muted-fg font-medium">
+            <Link href="/#work" className="hover:text-fg transition-colors">
+              Work
+            </Link>
+            <Link href="/projects/softify" className="hover:text-fg transition-colors">
+              Softify
+            </Link>
+            <Link href="/projects/macos-tahoe" className="hover:text-fg transition-colors">
+              macOS Tahoe
+            </Link>
+            <Link href="/projects/ludo-vercel" className="hover:text-fg transition-colors">
+              Ludo
+            </Link>
+            <Link href="/#terminal" className="hover:text-fg transition-colors">
+              Terminal
+            </Link>
+            <Link href="/#about" className="hover:text-fg transition-colors">
+              About
+            </Link>
+            <Link href="/#contact" className="hover:text-fg transition-colors">
+              Contact
+            </Link>
+          </div>
         </div>
 
-        {/* Single clean credit line */}
-        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono text-muted-fg text-center">
-          <span>© 2026 Sarthak</span>
-          <span>·</span>
-          <span>Engineered with Next.js, Motion &amp; GSAP</span>
+        <div className="pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-muted-fg">
+          <div>© 2026 Sarthak · Engineered with Next.js &amp; TypeScript</div>
+          <div className="flex items-center gap-4">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="hover:text-fg transition-colors underline underline-offset-2"
+            >
+              GitHub
+            </a>
+            <a
+              href={`mailto:${EMAIL}`}
+              className="hover:text-fg transition-colors underline underline-offset-2"
+            >
+              Email
+            </a>
+          </div>
         </div>
       </div>
     </footer>

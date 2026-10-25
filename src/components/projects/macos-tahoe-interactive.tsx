@@ -79,7 +79,7 @@ export function MacOSTahoeInteractive() {
             <div className="relative flex flex-col items-center">
               {/* Elementary OS Glow rectangle (shown when not patched) */}
               {!isPatched && (
-                <div className="absolute inset-0 -m-2 bg-sky-500/30 rounded-xl blur-xs border border-sky-400/50 animate-pulse pointer-events-none" />
+                <div className="absolute inset-0 -m-2 bg-sky-500/20 rounded-xl blur-xs border border-sky-400/40 pointer-events-none" />
               )}
               {/* App Icon */}
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-slate-800 to-slate-700 border border-white/20 shadow-md flex items-center justify-center relative z-10">

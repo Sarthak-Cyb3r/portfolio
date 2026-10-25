@@ -2,6 +2,15 @@
 
 All notable architectural and design improvements to Sarthak's portfolio are documented here.
 
+## [3.6.0] - 2026-10-25
+
+### Swiss Minimalism & Anti-Pattern Elimination (ui-ux-pro-max)
+- **Elimination of Generic AI Tropes**: Removed noisy background dot grids (`bg-dot-pattern`), moving rainbow text shimmer animations (`text-gradient-shimmer`), spinning laser borders (`BorderBeam`), simulated CRT scanlines, and bulbous multi-nested card enclosures.
+- **Instant First Contentful Paint (FCP)**: Replaced the blocking 1.6-second splash screen preloader with immediate page rendering and restored the native OS hardware cursor with zero input latency.
+- **Refined Typography & Editorial Hierarchy**: Replaced rotating keyword roulette in the hero with a confident, balanced headline (`"I build and ship real apps: Android, iOS, Linux and web."`). Standardized on high-contrast Swiss typography with strict WCAG AAA legibility.
+- **Machined Hardware Showcase**: Redesigned the 3D hero device to remove floating cartoon badges and particle dust, replacing them with a crisp, realistic mobile frame and desktop IDE window with subtle spring-physics perspective tilt.
+- **Professional Footer & Navigation**: Replaced the 13vw "SARTHAK" watermark with a clean architectural footer including role metadata, clean sitemap navigation, GitHub/Email links, and a single verified copyright line.
+
 ## [3.5.0] - 2026-10-25
 
 ### Complete Agency-Tier Portfolio Redesign & Hardening

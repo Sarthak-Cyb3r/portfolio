@@ -1,6 +1,6 @@
 "use client";
 
-import { GitCommit, ShieldCheck, Activity } from "lucide-react";
+import { GitCommit, ShieldCheck, Activity, Layers } from "lucide-react";
 import { Stat } from "@/components/ui/stat";
 import { VERIFIED_TEST_STATS } from "@/data/site";
 import type { CommitData } from "@/lib/github";
@@ -14,23 +14,19 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
     <section
       id="stats"
       aria-labelledby="proof-heading"
-      className="relative py-16 sm:py-20 border-y border-border/80 bg-card/60 backdrop-blur-md"
+      className="relative py-12 sm:py-16 border-y border-border bg-muted/30"
     >
-      {/* Top and Bottom Glowing Hairlines */}
-      <div className="absolute top-0 inset-x-0 glowing-divider" />
-      <div className="absolute bottom-0 inset-x-0 glowing-divider" />
-
       <div className="max-w-[1160px] mx-auto px-4 sm:px-6">
         <h2 id="proof-heading" className="sr-only">
           Verified Engineering Metrics
         </h2>
 
         {/* 4 Real Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 pb-10 border-b border-border/70">
-          <div className="relative">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">Live</span>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-8 border-b border-border">
+          <div>
+            <div className="flex items-center gap-1.5 mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span className="text-[11px] font-mono text-muted-fg uppercase tracking-wider">Platforms</span>
             </div>
             <Stat
               value={4}
@@ -40,9 +36,9 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
           </div>
 
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">Tests passing</span>
+            <div className="flex items-center gap-1.5 mb-2">
+              <ShieldCheck className="w-3.5 h-3.5 text-muted-fg" />
+              <span className="text-[11px] font-mono text-muted-fg uppercase tracking-wider">Tests passing</span>
             </div>
             <Stat
               value={VERIFIED_TEST_STATS.totalPassing}
@@ -52,9 +48,9 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
           </div>
 
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Activity className="w-3.5 h-3.5 text-secondary" />
-              <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">Codebases</span>
+            <div className="flex items-center gap-1.5 mb-2">
+              <Activity className="w-3.5 h-3.5 text-muted-fg" />
+              <span className="text-[11px] font-mono text-muted-fg uppercase tracking-wider">Codebases</span>
             </div>
             <Stat
               value={3}
@@ -64,38 +60,31 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
           </div>
 
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-2 h-2 rounded-full bg-sky-500" />
-              <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">Releases</span>
+            <div className="flex items-center gap-1.5 mb-2">
+              <Layers className="w-3.5 h-3.5 text-muted-fg" />
+              <span className="text-[11px] font-mono text-muted-fg uppercase tracking-wider">Releases</span>
             </div>
             <Stat
               value={30}
               label="GitHub releases"
-              sublabel="Softify v3.0.1 latest · Multi-platform"
+              sublabel="Softify v3.0.1 latest"
             />
           </div>
         </div>
 
-        {/* Live GitHub Commit Activity Strip (rendered only when real commit data is fetched) */}
-        <div className="pt-6 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-muted-fg">
+        {/* Commit status bar */}
+        <div className="pt-5 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-muted-fg">
           {latestCommit ? (
-            <div className="flex items-center gap-3">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-              </span>
-              <GitCommit className="w-4 h-4 text-fg" />
+            <div className="flex items-center gap-2">
+              <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <GitCommit className="w-3.5 h-3.5 text-fg" />
               <span>
-                Last commit{" "}
-                <strong className="text-fg font-semibold">
-                  {latestCommit.relativeTime}
-                </strong>{" "}
-                to{" "}
+                Last commit <strong className="text-fg font-medium">{latestCommit.relativeTime}</strong> to{" "}
                 <a
                   href={latestCommit.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-primary font-medium underline underline-offset-2 hover:text-primary/80"
+                  className="text-fg underline underline-offset-2 hover:text-accent transition-colors"
                 >
                   {latestCommit.repo}
                 </a>
@@ -104,22 +93,6 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
           ) : (
             <div />
           )}
-
-          {/* GitHub Activity Visual Indicators */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-muted-fg mr-1 hidden sm:inline">Recent Activity:</span>
-            {[2, 4, 1, 5, 3, 6, 2, 8, 4, 7, 5, 3].map((val, idx) => (
-              <div
-                key={idx}
-                className="w-2.5 h-2.5 rounded-xs transition-transform hover:scale-125"
-                style={{
-                  backgroundColor:
-                    val > 5 ? "var(--c-primary)" : val > 2 ? "rgba(37, 99, 235, 0.45)" : "var(--c-muted)",
-                }}
-                title={`${val} commits`}
-              />
-            ))}
-          </div>
 
           <div className="flex items-center gap-1.5 text-muted-fg">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />

@@ -33,7 +33,7 @@ const TECH_GROUPS: TechGroup[] = [
 
 export function Tech() {
   return (
-    <section id="tech" className="py-24 sm:py-32 border-t border-border/80 bg-dot-pattern/50">
+    <section id="tech" className="py-24 sm:py-32 border-t border-border">
       <div className="max-w-[1160px] mx-auto px-4 sm:px-6">
         <SectionHeader
           label="Architecture & Toolchain"
@@ -47,25 +47,21 @@ export function Tech() {
             return (
               <div
                 key={group.category}
-                className="p-1 rounded-[1.75rem] bg-white/[0.03] border border-border/80 ring-1 ring-white/5 transition-all duration-300 hover:border-primary/40 group"
+                className="rounded-xl border border-border bg-card p-6 shadow-xs hover:border-border-hover transition-colors flex flex-col justify-between gap-5"
               >
-                <div className="h-full p-6 rounded-[calc(1.75rem-0.25rem)] bg-card/90 dark:bg-card/75 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)] flex flex-col justify-between gap-5">
-                  <div className="flex items-center gap-3 pb-3 border-b border-border/70">
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <h3 className="text-sm font-semibold text-fg tracking-tight">
-                      {group.category}
-                    </h3>
-                  </div>
+                <div className="flex items-center gap-2.5 pb-3 border-b border-border">
+                  <Icon className="w-4 h-4 text-muted-fg" />
+                  <h3 className="text-sm font-semibold text-fg tracking-tight">
+                    {group.category}
+                  </h3>
+                </div>
 
-                  <div className="flex flex-wrap gap-2">
-                    {group.items.map((item) => (
-                      <Chip key={item} variant="outline" size="md">
-                        {item}
-                      </Chip>
-                    ))}
-                  </div>
+                <div className="flex flex-wrap gap-2">
+                  {group.items.map((item) => (
+                    <Chip key={item} variant="outline" size="md">
+                      {item}
+                    </Chip>
+                  ))}
                 </div>
               </div>
             );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from "react";
-import { Terminal as TerminalIcon, Sparkles } from "lucide-react";
+import { Terminal as TerminalIcon } from "lucide-react";
 import { useInView } from "motion/react";
 import { projects } from "@/data/projects";
 import { site, EMAIL, GITHUB_URL } from "@/data/site";
@@ -235,7 +235,7 @@ export function TerminalConsole() {
   };
 
   return (
-    <section id="terminal" className="py-24 sm:py-32 border-t border-border/80 bg-dot-pattern/40">
+    <section id="terminal" className="py-24 sm:py-32 border-t border-border">
       <div className="max-w-[1160px] mx-auto px-4 sm:px-6">
         <SectionHeader
           label="Terminal"
@@ -245,28 +245,21 @@ export function TerminalConsole() {
 
         <div
           ref={containerRef}
-          className="relative rounded-2xl border border-slate-800 bg-slate-950/95 text-slate-200 shadow-2xl overflow-hidden font-mono"
+          className="relative rounded-xl border border-border bg-slate-950 text-slate-200 shadow-xl overflow-hidden font-mono"
         >
-          {/* Subtle Scanline Overlay */}
-          <div
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] opacity-40 z-10"
-            aria-hidden
-          />
-
-          {/* macOS-style Header Bar */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-slate-900/80 text-xs text-slate-400">
+          {/* Header Bar */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-slate-900/60 text-xs text-slate-400">
             <div className="flex items-center gap-2">
-              {/* macOS window action dots */}
+              {/* window action dots */}
               <div className="flex items-center gap-1.5 mr-2">
-                <span className="w-3 h-3 rounded-full bg-rose-500/90 shadow-xs" />
-                <span className="w-3 h-3 rounded-full bg-amber-500/90 shadow-xs" />
-                <span className="w-3 h-3 rounded-full bg-emerald-500/90 shadow-xs" />
+                <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
+                <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
+                <span className="w-2.5 h-2.5 rounded-full bg-slate-700" />
               </div>
-              <TerminalIcon className="w-3.5 h-3.5 text-primary" />
+              <TerminalIcon className="w-3.5 h-3.5 text-slate-400" />
               <span className="text-[11px] text-slate-300">sarthak@portfolio — zsh</span>
             </div>
-            <div className="flex items-center gap-2 text-[10px] text-slate-500">
-              <Sparkles className="w-3 h-3 text-primary" />
+            <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
               <span>UTF-8</span>
             </div>
           </div>
