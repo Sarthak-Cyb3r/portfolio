@@ -22,7 +22,7 @@ const PAGES = [
   { name: "Projects Directory", path: ".next/server/app/projects.html" },
   { name: "Softify Case Study", path: ".next/server/app/projects/softify.html" },
   { name: "Ludo Case Study", path: ".next/server/app/projects/ludo-vercel.html" },
-  { name: "StudyStack Case Study", path: ".next/server/app/projects/studystack.html" },
+  { name: "macOS Tahoe Case Study", path: ".next/server/app/projects/macos-tahoe.html" },
   { name: "404 Not Found", path: ".next/server/app/_not-found.html" },
 ];
 
@@ -112,8 +112,7 @@ if (jsonLdMatch) {
 }
 
 console.log("\n7. Checking Verified Test Statistics & Platform Counts...");
-assert(homeHtml.includes("625"), "Homepage proof strip displays 625 verified passing tests");
-assert(homeHtml.includes("455 StudyStack"), "Proof strip references 455 StudyStack tests");
+assert(homeHtml.includes("170"), "Homepage proof strip displays 170 verified passing tests");
 assert(homeHtml.includes("170 Softify"), "Proof strip references 170 Softify tests");
 
 console.log("\n-------------------------------------------------");

@@ -2,6 +2,14 @@
 
 All notable architectural and design improvements to Sarthak's portfolio are documented here.
 
+## [3.4.0] - 2026-10-10
+
+### GitHub Sync & Project Suite Overhaul
+- **Softify v3.0.1 Synchronization**: Synced latest release tag `v3.0.1`, updated Android APK (28.8 MB) and Linux x64 `.tar.gz` (14.8 MB) download artifacts with SHA256 hashes, and added release notes highlighting Skia `BackdropFilter` readback stall elimination, multi-layer paint isolation (`RepaintBoundary`), and direct studio master search.
+- **macOS Tahoe 26 on Linux Mint Integration**: Discovered and showcased live open-source project (`macos-tahoe-linux-mint`). Built interactive C runtime hook (`libplank-noglow.so` `0xc3` ret memory patch) and Clutter GLSL window curve preview (`MacOSTahoeInteractive`), dynamic system architecture diagram, and replaced Scene 4 in `CinematicStage` and Card 3 in `FeaturedWork`.
+- **Complete Removal of StudyStack & Accounty**: Purged all occurrences of legacy mock projects (`studystack` and `Accounty`) across project data, scene rail, traveling device mockups, terminal console commands, JSON-LD schema, and verification scripts.
+- **Accurate Metric Verification**: Aligned test suite metrics to 170 verified passing tests from the Softify repository and updated total GitHub release count to 30 releases.
+
 ## [3.3.0] - 2026-10-10
 
 ### Refinements & Accessibility Hardening

@@ -32,11 +32,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Sarthak — Softify, Ludo & StudyStack",
+    default: "Sarthak — Softify, macOS Tahoe & Ludo",
     template: "%s — Sarthak",
   },
   description:
-    "Software developer building native Android, iOS, Linux, and web applications. Softify, Ludo, and StudyStack are live, tested, and downloadable.",
+    "Software developer building native Android, iOS, Linux, and web applications. Softify, macOS Tahoe, and Ludo are live, open source, and tested.",
   keywords: [
     "Sarthak",
     "software engineer",
@@ -48,7 +48,8 @@ export const metadata: Metadata = {
     "Linux",
     "Android",
     "Ludo",
-    "StudyStack",
+    "macOS Tahoe",
+    "Linux Mint",
   ],
   authors: [{ name: "Sarthak", url: GITHUB_URL }],
   creator: "Sarthak",
@@ -59,16 +60,16 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Sarthak — Portfolio",
-    title: "Sarthak — Softify, Ludo & StudyStack",
+    title: "Sarthak — Softify, macOS Tahoe & Ludo",
     description:
-      "Software developer building native Android, iOS, Linux, and web applications. Softify, Ludo, and StudyStack are live, tested, and downloadable.",
+      "Software developer building native Android, iOS, Linux, and web applications. Softify, macOS Tahoe, and Ludo are live, open source, and tested.",
     images: [{ url: `${SITE_URL}/og.png`, width: 1200, height: 630, alt: "Sarthak — Portfolio" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sarthak — Softify, Ludo & StudyStack",
+    title: "Sarthak — Softify, macOS Tahoe & Ludo",
     description:
-      "Software developer building native Android, iOS, Linux, and web applications. Softify, Ludo, and StudyStack are live, tested, and downloadable.",
+      "Software developer building native Android, iOS, Linux, and web applications. Softify, macOS Tahoe, and Ludo are live, open source, and tested.",
     images: [`${SITE_URL}/og.png`],
   },
   robots: { index: true, follow: true },
@@ -111,9 +112,9 @@ const jsonLd = {
     },
     {
       "@type": "SoftwareApplication",
-      "name": "StudyStack",
-      "operatingSystem": "Web",
-      "applicationCategory": "ProductivityApplication",
+      "name": "macOS Tahoe 26 on Linux Mint",
+      "operatingSystem": "Linux Mint Cinnamon",
+      "applicationCategory": "DesktopEnvironment",
       "offers": { "@type": "Offer", "price": "0" },
     },
   ],

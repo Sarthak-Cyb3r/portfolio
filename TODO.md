@@ -11,8 +11,7 @@ The following items can only be provided or verified by Sarthak:
 
 ## 3. Product Media & Assets
 - [ ] **Hero Video Demo (Optional)**: A short 10–15s silent loop recording of Softify in action on Android/iOS (currently displaying the crisp device-framed screenshot [`/projects/softify/01_homepage.png`](file:///home/sarthak/Desktop/Projects/portfolio/public/projects/softify/01_homepage.png)).
-- [ ] **StudyStack Live Host**: If StudyStack is deployed to a live VPS/Docker instance in the future, add the live production URL to [`src/data/projects.ts`](file:///home/sarthak/Desktop/Projects/portfolio/src/data/projects.ts).
-- [ ] **Accounty Public Repo & Assets**: Once Accounty's repository and user interface designs are published, add them to [`src/data/projects.ts`](file:///home/sarthak/Desktop/Projects/portfolio/src/data/projects.ts).
+- [ ] **macOS Tahoe Screen Capture**: High-fps screen recording of the liquid glass dock glide and GLSL window animations on Cinnamon.
 
 ## 4. Distribution & Releases
 - [ ] **iOS TestFlight Link**: If you enroll in the Apple Developer Program and publish Softify or Ludo to TestFlight, replace the sideload instructions with the official public TestFlight invite URL.

@@ -14,7 +14,7 @@ export const SCENES_META: SceneMeta[] = [
   { id: "stats", label: "Metrics", hash: "#stats" },
   { id: "work", label: "Work", hash: "#work" },
   { id: "ludo", label: "Ludo", hash: "#ludo" },
-  { id: "studystack", label: "StudyStack", hash: "#studystack" },
+  { id: "macos-tahoe", label: "macOS Tahoe", hash: "#macos-tahoe" },
   { id: "tech", label: "Toolchain", hash: "#tech" },
   { id: "how-i-build", label: "Process", hash: "#how-i-build" },
   { id: "terminal", label: "Terminal", hash: "#terminal" },

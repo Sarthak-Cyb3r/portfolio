@@ -45,7 +45,7 @@ export function Hero() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
                 </span>
-                <span>Softify v2.0.5 is out</span>
+                <span>Softify v3.0.1 is out</span>
                 <span className="text-muted-fg group-hover:text-primary group-hover:translate-x-0.5 transition-all">
                   →
                 </span>
@@ -91,7 +91,7 @@ export function Hero() {
               transition={{ duration: 0.6, ease, delay: 0.35 }}
               className="mt-6 text-[17px] sm:text-lg leading-[1.6] text-muted-fg max-w-[62ch]"
             >
-              Solo builder, age 16. Softify, Ludo and StudyStack are live, downloadable and tested.
+              Solo builder, age 16. Softify, macOS Tahoe and Ludo are live, open source and tested.
             </motion.p>
 
             {/* 2 CTAs */}

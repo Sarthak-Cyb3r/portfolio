@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-/** "/projects/studystack/dashboard.png" -> "dashboard" */
+/** "/projects/macos-tahoe/preview.png" -> "preview" */
 const humanize = (src: string) =>
   (src.split("/").pop() ?? "").replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
 

@@ -5,9 +5,8 @@ export const GITHUB_URL = `https://github.com/${GITHUB_USERNAME}`;
 
 /** Verified automated test counts from repository test suites */
 export const VERIFIED_TEST_STATS = {
-  studyStackPassing: 455,
   softifyPassing: 170,
-  totalPassing: 625,
+  totalPassing: 170,
 } as const;
 
 export const site = {
@@ -16,7 +15,7 @@ export const site = {
   role: "Software Developer & Systems Builder",
   headline: "I build and ship real apps: Android, iOS, Linux and web.",
   subline:
-    "Solo builder, age 16. Softify, Ludo and StudyStack are live, downloadable and tested.",
+    "Solo builder, age 16. Softify, macOS Tahoe and Ludo are live, open source and tested.",
   age: 16,
   githubUrl: GITHUB_URL,
   githubApiRepos: `https://api.github.com/users/${GITHUB_USERNAME}`,

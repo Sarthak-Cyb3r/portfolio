@@ -110,10 +110,6 @@ export function TerminalConsole() {
                 <p className="text-slate-400">{p.outcome}</p>
               </div>
             ))}
-            <div className="flex flex-col gap-0.5 pt-1 border-t border-white/10">
-              <span className="font-semibold text-white">Accounty [In Progress]</span>
-              <p className="text-slate-400">Personal finance tracking app (in active prototyping).</p>
-            </div>
           </div>
         );
         break;

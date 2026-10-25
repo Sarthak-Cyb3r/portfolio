@@ -9,12 +9,12 @@ import { DeviceFrame } from "@/components/ui/device-frame";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SoftifyInteractive } from "@/components/projects/softify-interactive";
 import { LudoInteractive } from "@/components/projects/ludo-interactive";
-import { StudyStackInteractive } from "@/components/projects/studystack-interactive";
+import { MacOSTahoeInteractive } from "@/components/projects/macos-tahoe-interactive";
 
 export function FeaturedWork() {
   const softify = projects.find((p) => p.slug === "softify")!;
   const ludo = projects.find((p) => p.slug === "ludo-vercel" || p.slug === "ludo")!;
-  const studystack = projects.find((p) => p.slug === "studystack")!;
+  const macosTahoe = projects.find((p) => p.slug === "macos-tahoe")!;
 
   return (
     <section id="work" className="py-24 sm:py-32 border-t border-border/80 bg-dot-pattern/40">
@@ -135,48 +135,48 @@ export function FeaturedWork() {
             </Spotlight>
           </div>
 
-          {/* Card 3: StudyStack (6-col Bento Card) */}
+          {/* Card 3: macOS Tahoe 26 on Linux Mint (6-col Bento Card) */}
           <div className="lg:col-span-6">
             <Spotlight className="h-full rounded-2xl border border-border bg-card/85 dark:bg-card/70 backdrop-blur-xl p-6 sm:p-8 shadow-sm hover:border-primary/40 transition-all duration-300 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2.5">
                     <h3 className="text-2xl font-bold tracking-tight text-fg">
-                      {studystack.name}
+                      macOS Tahoe 26
                     </h3>
                     <Chip variant="success" size="sm">
-                      {studystack.statusLabel}
+                      {macosTahoe.statusLabel}
                     </Chip>
                   </div>
-                  <span className="text-xs font-mono text-muted-fg">455 Tests</span>
+                  <span className="text-xs font-mono text-muted-fg">C Hook & GLSL</span>
                 </div>
 
                 <p className="text-[15px] leading-[1.6] text-muted-fg mb-4">
-                  {studystack.outcome}
+                  {macosTahoe.outcome}
                 </p>
 
                 <div className="flex flex-wrap gap-1.5 mb-6">
-                  {studystack.highlightTech.map((tech) => (
+                  {macosTahoe.highlightTech.map((tech) => (
                     <Chip key={tech} variant="outline" size="sm">
                       {tech}
                     </Chip>
                   ))}
                 </div>
 
-                {/* Interactive Flashcard & Focus Timer Preview */}
+                {/* Interactive C Hook & GLSL Curve Preview */}
                 <div className="mb-6">
-                  <StudyStackInteractive />
+                  <MacOSTahoeInteractive />
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border/80">
-                {studystack.liveUrl && (
-                  <Button href={studystack.liveUrl} external variant="primary" size="sm" shimmer>
-                    <span>Open Live App</span>
+                {macosTahoe.repoUrl && (
+                  <Button href={macosTahoe.repoUrl} external variant="primary" size="sm" shimmer>
+                    <span>View Repository</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </Button>
                 )}
-                <Button href={`/projects/${studystack.slug}`} variant="secondary" size="sm">
+                <Button href={`/projects/${macosTahoe.slug}`} variant="secondary" size="sm">
                   <span>Case study</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
@@ -185,39 +185,41 @@ export function FeaturedWork() {
           </div>
         </div>
 
-        {/* Honest "In progress" row below (Accounty) */}
-        <div className="mt-16 sm:mt-20">
-          <div className="text-xs font-semibold uppercase tracking-wider text-muted-fg mb-4">
-            Under Active Development
-          </div>
-          <div className="divide-y divide-border rounded-2xl border border-border bg-card/80 backdrop-blur-md p-1 shadow-sm">
-            {inProgressProjects.map((item) => (
-              <div
-                key={item.name}
-                className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-              >
-                <div>
-                  <div className="flex items-center gap-3">
-                    <h4 className="text-base font-semibold text-fg">{item.name}</h4>
-                    <Chip variant="default" size="sm">
-                      {item.status}
-                    </Chip>
+        {/* In progress projects (rendered only if any active) */}
+        {inProgressProjects.length > 0 && (
+          <div className="mt-16 sm:mt-20">
+            <div className="text-xs font-semibold uppercase tracking-wider text-muted-fg mb-4">
+              Under Active Development
+            </div>
+            <div className="divide-y divide-border rounded-2xl border border-border bg-card/80 backdrop-blur-md p-1 shadow-sm">
+              {inProgressProjects.map((item) => (
+                <div
+                  key={item.name}
+                  className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                >
+                  <div>
+                    <div className="flex items-center gap-3">
+                      <h4 className="text-base font-semibold text-fg">{item.name}</h4>
+                      <Chip variant="default" size="sm">
+                        {item.status}
+                      </Chip>
+                    </div>
+                    <p className="text-sm text-muted-fg mt-1 max-w-[55ch]">
+                      {item.oneLiner}
+                    </p>
                   </div>
-                  <p className="text-sm text-muted-fg mt-1 max-w-[55ch]">
-                    {item.oneLiner}
-                  </p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {item.stack.map((stk) => (
+                      <Chip key={stk} variant="outline" size="sm">
+                        {stk}
+                      </Chip>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
-                  {item.stack.map((stk) => (
-                    <Chip key={stk} variant="outline" size="sm">
-                      {stk}
-                    </Chip>
-                  ))}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

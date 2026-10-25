@@ -47,7 +47,7 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
             <Stat
               value={VERIFIED_TEST_STATS.totalPassing}
               label="Automated tests passing"
-              sublabel={`${VERIFIED_TEST_STATS.studyStackPassing} StudyStack · ${VERIFIED_TEST_STATS.softifyPassing} Softify`}
+              sublabel="170 Softify unit & integration tests"
             />
           </div>
 
@@ -69,9 +69,9 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
               <span className="text-xs font-mono text-muted-fg uppercase tracking-wider">Releases</span>
             </div>
             <Stat
-              value={9}
+              value={30}
               label="GitHub releases"
-              sublabel="Softify v2.0.5 latest · Multi-platform"
+              sublabel="Softify v3.0.1 latest · Multi-platform"
             />
           </div>
         </div>
@@ -123,7 +123,7 @@ export function ProofStrip({ latestCommit }: ProofStripProps) {
 
           <div className="flex items-center gap-1.5 text-muted-fg">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Verified in StudyStack & Softify repository test suites</span>
+            <span>Verified in Softify repository test suite</span>
           </div>
         </div>
       </div>

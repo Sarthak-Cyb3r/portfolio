@@ -27,9 +27,9 @@ Direct dependencies as defined in `package.json`:
 
 ## Flagship Projects Featured
 
-1. **Softify (v2.0.5)**: Cross-platform music streaming and audio engine. Built with Flutter, Drift/SQLite FTS5, and on-device ranking. Shipped on Android APK (71.2 MB), iOS IPA (11.4 MB sideload), Linux x64 `.tar.gz` (14.0 MB), and Web. 170 automated tests passing.
-2. **Ludo**: Lightweight real-time multiplayer board game for 2–6 players with zero build step. Vanilla JavaScript, HTML5 Canvas, and Firestore real-time listeners. Shipped on Web, Android APK (4.5 MB), and Linux `.deb` (95 MB).
-3. **StudyStack**: Unified JEE preparation analytics tracker and deterministic spaced-repetition revision engine. 455 automated tests passing.
+1. **Softify (v3.0.1)**: Cross-platform music streaming and audio engine. Built with Flutter, Drift/SQLite FTS5, and on-device ranking. Desktop rendering overhaul with Skia readback stall elimination and multi-layer paint isolation. Shipped on Android APK (28.8 MB), iOS IPA (11.4 MB sideload), Linux x64 `.tar.gz` (14.8 MB), and Web. 170 automated tests passing.
+2. **macOS Tahoe 26 on Linux Mint**: Pixel-perfect macOS Tahoe 26 ("Liquid Glass") desktop transformation suite for Linux Mint Cinnamon. Engineered dark frosted dock with Plank active glow eliminated via an LD_PRELOAD C hook (`libplank-noglow.so` patching entry byte to `0xc3` ret), Clutter GLSL hardware-accelerated window curve shaders, and automated installer and rollback scripts.
+3. **Ludo**: Lightweight real-time multiplayer board game for 2–6 players with zero build step. Vanilla JavaScript, HTML5 Canvas, and Firestore real-time listeners. Shipped on Web, Android APK (4.5 MB), and Linux `.deb` (95 MB).
 
 ## Scenes & Interactions Overview
 
@@ -107,8 +107,8 @@ npm run start
 
 All statistics and download sizes are verified directly against source repositories and compiler release artifacts:
 
-- **Total automated tests passing**: 625 (455 in StudyStack, 170 in Softify)
-- **Platforms shipped**: Android, iOS (sideload), Linux, Web
+- **Total automated tests passing**: 170 (170 in Softify)
+- **Platforms shipped**: Android, iOS (sideload), Linux Mint / Ubuntu, Web
 - **Telemetry**: Zero tracking and 100% client-side privacy architecture
 
 ## License

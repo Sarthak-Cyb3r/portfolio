@@ -5,17 +5,17 @@ import Image from "next/image";
 
 interface TravelingDeviceProps {
   velocity?: number;
-  activeScreen?: "softify" | "ludo" | "studystack";
+  activeScreen?: "softify" | "ludo" | "macos-tahoe";
 }
 
 export const TravelingDevice = forwardRef<HTMLDivElement, TravelingDeviceProps>(
   function TravelingDevice({ velocity = 0, activeScreen = "softify" }, ref) {
     const isLudo = activeScreen === "ludo";
-    const isStudy = activeScreen === "studystack";
+    const isTahoe = activeScreen === "macos-tahoe";
     const screenSrc = isLudo
       ? "/projects/ludo/demo-board.png"
-      : isStudy
-      ? "/projects/studystack/dashboard.png"
+      : isTahoe
+      ? "/projects/macos-tahoe/preview.png"
       : "/projects/softify/01_homepage.png";
 
     // Modulate equalizer activity with velocity
@@ -75,7 +75,7 @@ export const TravelingDevice = forwardRef<HTMLDivElement, TravelingDeviceProps>(
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
                 <span className="text-[11px] font-semibold text-white tracking-tight">
-                  {isLudo ? "Ludo Real-Time" : isStudy ? "StudyStack" : "Softify v2.0.5"}
+                  {isLudo ? "Ludo Real-Time" : isTahoe ? "macOS Tahoe 26" : "Softify v3.0.1"}
                 </span>
               </div>
               <div className="flex items-end gap-1 h-3.5">

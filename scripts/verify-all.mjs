@@ -34,7 +34,7 @@ async function testSuite() {
   await assert(sitemapRes.status() === 200, "sitemap.xml returns 200");
   const sitemapText = await sitemapRes.text();
   await assert(sitemapText.includes("/projects/ludo-vercel"), "sitemap has ludo-vercel");
-  await assert(sitemapText.includes("/projects/studystack"), "sitemap has studystack");
+  await assert(sitemapText.includes("/projects/macos-tahoe"), "sitemap has macos-tahoe");
 
   // 2. Verify Landing Page (/)
   console.log("\n--- Checking Landing Page (/) ---");
@@ -155,9 +155,9 @@ async function testSuite() {
   const winDisabled = await page.locator("button:has-text('Windows build in development')").count();
   await assert(winDisabled === 1, "Windows shows disabled 'Windows build in development' button");
 
-  // 5. Verify /projects/studystack (In-Development Project)
-  console.log("\n--- Checking /projects/studystack (In-Development Project) ---");
-  await page.goto(`${BASE_URL}/projects/studystack`);
+  // 5. Verify /projects/macos-tahoe
+  console.log("\n--- Checking /projects/macos-tahoe ---");
+  await page.goto(`${BASE_URL}/projects/macos-tahoe`);
   const studyBadge = await page.locator("span:has-text('Under development')").first().textContent();
   await assert(studyBadge.includes("Under development"), "Status badge shows Under development");
 

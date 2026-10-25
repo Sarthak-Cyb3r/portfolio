@@ -110,7 +110,7 @@ export const projects: Project[] = [
     status: "completed",
     statusLabel: "Live",
     progressNote:
-      "v2.0.5 released with YouTube audio tab, studio DSP equalizer, and on-device search across Android, iOS (sideload), Linux desktop, and Web. 170 passing tests.",
+      "v3.0.1 released with desktop performance & smooth rendering overhaul, Skia readback stall elimination, and studio search isolation. 170 passing tests.",
     testsPassing: 170,
     testSuiteCount: 1,
     platforms: ["Android", "iOS (Sideload)", "Linux", "Web"],
@@ -161,11 +161,11 @@ export const projects: Project[] = [
     ],
     downloads: {
       apk: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.5/Softify-v2.0.5-Android-Universal.apk",
-        sizeBytes: 71193497,
-        version: "v2.0.5",
-        fileName: "Softify-v2.0.5-Android-Universal.apk",
-        sha256: "38674d92d0caa5721e32b2bbc700ee2e1b26f82942f18b21b30ae80cf84405df",
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v3.0.1/Softify-v3.0.1-Android.apk",
+        sizeBytes: 28843549,
+        version: "v3.0.1",
+        fileName: "Softify-v3.0.1-Android.apk",
+        sha256: "36931b569da5099b32974824ebb50a4afcd89dc484192d05ccf29a5ddceb2034",
         installGuide: [
           "Download the APK onto your Android device (Android 8.0+).",
           "Open your device file manager and tap the downloaded file.",
@@ -186,9 +186,9 @@ export const projects: Project[] = [
         ],
       },
       tar: {
-        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v2.0.5/Softify-Linux-x64.tar.gz",
-        sizeBytes: 14043394,
-        version: "v2.0.5",
+        file: "https://github.com/Sarthak-Cyb3r/softify/releases/download/v3.0.1/Softify-Linux-x64.tar.gz",
+        sizeBytes: 14819671,
+        version: "v3.0.1",
         fileName: "Softify-Linux-x64.tar.gz",
         installGuide: [
           "Extract archive: tar -xzf Softify-Linux-x64.tar.gz",
@@ -198,6 +198,31 @@ export const projects: Project[] = [
       },
     },
     releaseNotes: [
+      {
+        version: "3.0.1",
+        tag: "v3.0.1",
+        date: "October 2026",
+        title: "v3.0.1 — Desktop Performance & Smooth Rendering Overhaul",
+        summary:
+          "Eliminated Skia GPU readback stalls, isolated multi-layer RepaintBoundary rendering, and purified studio catalog search.",
+        changes: [
+          {
+            title: "Desktop GPU Lag & Compositor Stall Elimination",
+            badge: "Performance",
+            fix: "Replaced synchronous Skia BackdropFilter glReadPixels readback with hardware-accelerated Specular Translucent fills.",
+          },
+          {
+            title: "Multi-Layer Paint Isolation (RepaintBoundary)",
+            badge: "Architecture",
+            fix: "Isolated player scrubber ticks, sidebar, and viewport into independent render layers to prevent full-window repaints.",
+          },
+          {
+            title: "Studio Search Isolation",
+            badge: "Search",
+            fix: "Main catalog search queries direct studio masters from Spotify, JioSaavn, iTunes, and Deezer without fallback scraping.",
+          },
+        ],
+      },
       {
         version: "2.0.5",
         tag: "v2.0.5",
@@ -369,92 +394,95 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "studystack",
-    name: "StudyStack",
-    tagline: "Academic planning engine with deadline auto-prioritization and revision tracking",
-    outcome: "Student task manager with 455 passing tests and ratio-interval scoring",
+    slug: "macos-tahoe",
+    name: "macOS Tahoe 26 on Linux Mint",
+    tagline: "Liquid Glass desktop transformation with C runtime hook & hardware GLSL window curves",
+    outcome: "Pixel-perfect macOS Tahoe 26 clone on Linux Mint Cinnamon with LD_PRELOAD C hook",
     description:
-      "StudyStack answers one fundamental question for students: what should I study right now? It consolidates timetables, homework deadlines, derived backlog lists, and revision intervals into a unified dashboard backed by a ratio-interval urgency scoring engine.",
+      "Transform Linux Mint (Cinnamon Edition) into a pixel-perfect replica of macOS Tahoe 26 ('Liquid Glass'). Features an engineered dark frosted dock with Plank active-glow eliminated via an LD_PRELOAD C hook (patching glow to 0xc3 ret), Clutter GLSL hardware-accelerated window corner shaders, authentic 30px frosted Apple menubar, Plymouth Apple boot splash, and Spotlight search.",
     problem:
-      "Students fragment their schedule across disjoint calendars, todo apps, and notes without an objective way to prioritize urgent tasks against heavy workloads.",
+      "Desktop Linux customization themes often suffer from clunky dock rendering (permanent elementary OS active glow boxes), unaccelerated jagged window corners, and fragile manual setups that cannot cleanly rollback.",
     solution:
-      "A deterministic ratio-interval scoring algorithm ranking tasks based on remaining workload, deadline proximity, and assignment weight, backed by an Express and SQLite backend.",
+      "An engineered desktop environment combining a lightweight C runtime hook (libplank-noglow.so), Clutter GLSL window curve shaders, systemd auto-recovery services, and automated installation and rollback scripts.",
     features: [
-      "Prioritized dashboard showing deterministic next-action items",
-      "Weekly timetable matrix mapping day-of-week class schedules",
-      "Derived backlog view grouping uncompleted tasks by subject",
-      "Spaced revision planner tracking chapter progress and study cadence",
-      "RFC 5545 iCalendar and CSV schedule export",
-      "scrypt password hashing with session revocation",
-      "455 verified automated tests across 21 test suites",
+      "Liquid Glass Shell: 30px frosted dark menubar with authentic Apple vector mark and dynamic application title",
+      "Engineered macOS Clone Dock: Dark frosted glass with 22px rounded corners and native running dots",
+      "C Runtime Hook: libplank-noglow.so loaded via LD_PRELOAD atomically patches glow entry byte to 0xc3 (ret)",
+      "Hardware-Accelerated Window Curves: 14px rounded corners and shadows rendered via Clutter GLSL shaders",
+      "Bento Desktop Widgets: Live Clock/Calendar, real-time CPU/RAM/SSD telemetry, and Weather cards",
+      "Spotlight Search: Ulauncher styled with custom translucent macOS Tahoe bento palette (Super + Space)",
+      "Native Mac Shortcuts: Super + Space for Spotlight, Super + Q to quit active windows, Super + Tab switcher",
+      "Apple Boot Screen: Plymouth boot splash with high-DPI Apple mark and macOS progress bar",
+      "Automated install.sh and safe rollback.sh restoring system baseline cleanly",
     ],
     stack: [
-      "Node.js",
-      "Express",
-      "SQLite (better-sqlite3)",
-      "EJS",
-      "Vanilla CSS",
+      "C",
+      "Shell",
+      "GLSL (Clutter)",
+      "Linux Mint Cinnamon",
+      "Plank",
+      "systemd",
+      "GTK 3/4",
+      "Ulauncher",
     ],
-    highlightTech: ["Node.js", "SQLite", "Express"],
-    status: "in-development",
-    statusLabel: "In Progress",
+    highlightTech: ["C (LD_PRELOAD)", "GLSL Shaders", "Linux Shell"],
+    status: "completed",
+    statusLabel: "Open Source",
     progressNote:
-      "Phase 2 complete with 455/455 tests passing across 21 test suites. Production Docker deployment pending.",
-    testsPassing: 455,
-    testSuiteCount: 21,
-    platforms: ["Web", "Self-Hosted"],
-    cover: "/projects/studystack/dashboard.png",
-    repoUrl: "https://github.com/Sarthak-Cyb3r/studystack",
+      "Complete with automated install and rollback scripts, C runtime hook, GLSL corner shaders, and systemd service.",
+    platforms: ["Linux Mint (Cinnamon)", "Ubuntu / Debian"],
+    cover: "/projects/macos-tahoe/preview.png",
+    repoUrl: "https://github.com/Sarthak-Cyb3r/macos-tahoe-linux-mint",
     screenshots: [
-      "/projects/studystack/dashboard.png",
-      "/projects/studystack/subjects.png",
-      "/projects/studystack/backlog.png",
-      "/projects/studystack/revision.png",
-      "/projects/studystack/tasks.png",
-      "/projects/studystack/timetable.png",
+      "/projects/macos-tahoe/preview.png",
     ],
     architectureOverview:
-      "Express controller pipeline with SQLite prepared statements via better-sqlite3. A mathematical prioritization module computes score = (workload_hours / hours_until_deadline) * weight_factor.",
+      "Architecture spans user-space C hooks dynamically preloaded into Plank, Mutter/Clutter GLSL fragment shaders clipping window surfaces, Cinnamon desktop applet configs, and systemd user units guaranteeing process persistence.",
     keyDecisions: [
       {
-        title: "Node.js & better-sqlite3 Runtime",
+        title: "Atomic C Runtime Patching over Recompiling Plank",
         rationale:
-          "Selected synchronous SQLite bindings in Node.js to achieve sub-millisecond query execution without external database container overhead.",
+          "Rather than maintaining a custom fork of Plank that breaks on apt upgrade, an LD_PRELOAD shared library (libplank-noglow.so) patches plank_dock_theme_draw_active_glow with a single 0xc3 (ret) byte in memory at process startup.",
       },
       {
-        title: "Derived View for Backlog",
+        title: "Clutter GLSL Shaders for Window Curves",
         rationale:
-          "Rather than persisting redundant backlog tables, backlog views are queried dynamically from active task deadlines, preventing data synchronization anomalies.",
+          "Standard GTK CSS curves leave window corner artifacts. Hardware-accelerated Clutter shaders (RoundedCorners@klangman) clip window draw surfaces at the compositor layer with zero tearing.",
       },
       {
-        title: "Strict Test-Driven Hardening",
+        title: "Systemd User Service Auto-Recovery",
         rationale:
-          "Authored 455 regression tests covering session handling, boundary dates, leap years, and rate limits to guarantee reliability.",
+          "Managing the custom dock and telemetry widgets under systemd --user ensures crash-safe auto-restart and clean lifecycle control across login sessions.",
       },
     ],
     challenges: [
-      "Handling timezone offsets and daylight saving transitions across student timetable recurrence rules.",
-      "Maintaining high contrast accessibility across both light and dark themes without heavy CSS frameworks.",
+      "Fixing Plank division-by-zero clamping when ActiveTime=0 by engineering an in-memory function interceptor in C.",
+      "Eliminating librsvg rendering timeouts on high-resolution displays by pre-caching 128x128 PNG icon buffers.",
     ],
     downloads: {},
     releaseNotes: [
       {
-        version: "0.2.0",
-        tag: "v0.2.0",
-        date: "September 2026",
-        title: "Phase 2 Security & Scheduling Hardening",
+        version: "1.0.0",
+        tag: "v1.0.0",
+        date: "October 2026",
+        title: "v1.0.0 — macOS Tahoe 26 Release",
         summary:
-          "Shipped single-use token password resets, rate limiting, calendar exports, and 455 passing tests.",
+          "Complete pixel-perfect transformation suite with C LD_PRELOAD runtime hook, GLSL shaders, automated installer and rollback.",
         changes: [
           {
-            title: "Ratio-Interval Scoring Engine",
-            badge: "Algorithm",
-            fix: "Computed ranking sorting pending tasks by deadline urgency and remaining hours.",
+            title: "C LD_PRELOAD Runtime Hook (libplank-noglow.so)",
+            badge: "C / Runtime",
+            fix: "Atomically patches Plank active-glow function with 0xc3 ret instruction, removing ugly background glow boxes.",
           },
           {
-            title: "Security & Session Gate",
-            badge: "Security",
-            fix: "Implemented scrypt auth, timing-safe token comparisons, and bruteforce rate limiting.",
+            title: "Clutter GLSL Hardware Window Corners",
+            badge: "GLSL / Compositor",
+            fix: "Compositor-level 14px rounded window clipping and soft drop-shadow rendering.",
+          },
+          {
+            title: "Automated Installer & Safe Rollback",
+            badge: "Automation",
+            fix: "One-command install.sh and rollback.sh script suite with baseline gsettings backup.",
           },
         ],
       },
@@ -462,14 +490,12 @@ export const projects: Project[] = [
   },
 ];
 
-export const inProgressProjects = [
-  {
-    name: "Accounty",
-    oneLiner: "Personal finance and monthly expense tracking app (in active design and prototyping).",
-    status: "In Progress",
-    stack: ["TypeScript", "Next.js", "SQLite"],
-  },
-];
+export const inProgressProjects: Array<{
+  name: string;
+  oneLiner: string;
+  status: string;
+  stack: string[];
+}> = [];
 
 export const getProject = (slug: string): Project | undefined =>
   projects.find((project) => project.slug === slug);

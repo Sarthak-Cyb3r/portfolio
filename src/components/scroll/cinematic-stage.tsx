@@ -61,8 +61,8 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
   const [diceVal, setDiceVal] = useState(6);
   const [diceRolling, setDiceRolling] = useState(false);
 
-  // Interactive StudyStack flashcard flip
-  const [cardFlipped, setCardFlipped] = useState(false);
+  // Interactive macOS Tahoe runtime hook inspection
+  const [cHookPatched, setCHookPatched] = useState(false);
 
   const stageRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
@@ -396,7 +396,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
       );
     }
 
-    // Transition 3 -> 4: Ludo to StudyStack (Stack Fan-Out)
+    // Transition 3 -> 4: Ludo to macOS Tahoe (Stack Fan-Out)
     master.addLabel("s3");
     master.to(sceneElements[3], {
       opacity: 0,
@@ -425,7 +425,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
       },
       "<30%"
     );
-    // Device travels: Ludo -> StudyStack (upper right anchor)
+    // Device travels: Ludo -> macOS Tahoe (upper right anchor)
     if (deviceRef.current) {
       master.to(
         deviceRef.current,
@@ -442,7 +442,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
       );
     }
 
-    // Transition 4 -> 5: StudyStack to Tech (SVG path drawing / DrawSVG conduit)
+    // Transition 4 -> 5: macOS Tahoe to Tech (SVG path drawing / DrawSVG conduit)
     master.addLabel("s4");
     master.to(sceneElements[4], {
       opacity: 0,
@@ -627,7 +627,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
 
   const softify = projects.find((p) => p.slug === "softify")!;
   const ludo = projects.find((p) => p.slug === "ludo-vercel" || p.slug === "ludo")!;
-  const studystack = projects.find((p) => p.slug === "studystack")!;
+  const macosTahoe = projects.find((p) => p.slug === "macos-tahoe")!;
 
   // --------------------------------------------------------------------------
   // CLASSIC VIEW RENDER (Accessible / Reduced Motion / Toggleable Fallback)
@@ -708,7 +708,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
             ref={deviceRef}
             velocity={velocity}
             activeScreen={
-              currentScene === 3 ? "ludo" : currentScene === 4 ? "studystack" : "softify"
+              currentScene === 3 ? "ludo" : currentScene === 4 ? "macos-tahoe" : "softify"
             }
           />
         </div>
@@ -733,7 +733,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
               >
                 <BorderBeam size={60} duration={8} delay={1} />
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-fg font-medium">Softify v2.0.5 is out</span>
+                <span className="text-fg font-medium">Softify v3.0.1 is out</span>
                 <span className="text-muted-fg group-hover:translate-x-0.5 transition-transform">
                   →
                 </span>
@@ -766,7 +766,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-fg leading-relaxed mb-8 max-w-[55ch]">
-              Solo builder, age 16. Softify, Ludo and StudyStack are live, downloadable and
+              Solo builder, age 16. Softify, macOS Tahoe and Ludo are live, open source and
               tested across native platforms.
             </p>
 
@@ -826,7 +826,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
                 <Stat
                   value={VERIFIED_TEST_STATS.totalPassing}
                   label="Automated tests passing"
-                  sublabel={`${VERIFIED_TEST_STATS.studyStackPassing} StudyStack · ${VERIFIED_TEST_STATS.softifyPassing} Softify`}
+                  sublabel="170 Softify unit & integration tests"
                 />
               </div>
               <div className="p-5 rounded-2xl bg-card/90 dark:bg-card/75 border border-border shadow-sm">
@@ -834,9 +834,9 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
               </div>
               <div className="p-5 rounded-2xl bg-card/90 dark:bg-card/75 border border-border shadow-sm">
                 <Stat
-                  value={9}
+                  value={30}
                   label="GitHub releases"
-                  sublabel="Softify v2.0.5 latest · Multi-platform"
+                  sublabel="Softify v3.0.1 latest · Multi-platform"
                 />
               </div>
             </div>
@@ -883,7 +883,7 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
                 Flagship Case Study 01
               </span>
               <Chip variant="success" size="sm">
-                v2.0.5 Live
+                v3.0.1 Live
               </Chip>
             </div>
 
@@ -997,65 +997,73 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
         </div>
 
         {/* ================================================================== */}
-        {/* SCENE 4: STUDYSTACK (Stack Fan-Out)                               */}
+        {/* SCENE 4: MACOS TAHOE (Stack Fan-Out)                               */}
         {/* ================================================================== */}
         <div
           ref={(el) => {
             scenesRef.current[4] = el;
           }}
-          id="studystack"
+          id="macos-tahoe"
           inert={currentScene !== 4 ? true : undefined}
           className="absolute inset-0 flex flex-col justify-center max-w-[1160px] mx-auto px-6 sm:px-10 z-20"
         >
           <div className="max-w-[620px]">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-xs font-mono uppercase tracking-wider text-primary font-bold">
-                Flagship Case Study 03
+                Flagship Project 03
               </span>
               <Chip variant="default" size="sm">
-                455 Tests Passing
+                Open Source
               </Chip>
             </div>
 
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-fg mb-4">
-              Deterministic revision scheduling.
+              Liquid Glass with C runtime hooks.
             </h2>
 
             <p className="text-base sm:text-lg text-muted-fg leading-relaxed mb-6">
-              A comprehensive JEE prep analytics engine. Features automated spaced-repetition
-              intervals (SM-2), test diagnostic breakdowns, and 455 passing unit and integration
-              tests.
+              Pixel-perfect macOS Tahoe 26 on Linux Mint Cinnamon. Features an engineered dark
+              frosted dock with Plank active glow patched to 0xc3 ret via an LD_PRELOAD C hook,
+              Clutter GLSL hardware window curves, and automated install and rollback.
             </p>
 
-            {/* Interactive Flashcard with Flip Animation */}
+            {/* Interactive C Hook / GLSL Inspector */}
             <div
-              onClick={() => setCardFlipped(!cardFlipped)}
-              className="p-5 rounded-2xl bg-card/90 dark:bg-card/75 border border-border shadow-sm mb-8 max-w-[420px] cursor-pointer hover:border-primary/50 transition-colors"
+              onClick={() => setCHookPatched(!cHookPatched)}
+              className="p-5 rounded-2xl bg-card/90 dark:bg-card/75 border border-border shadow-sm mb-8 max-w-[460px] cursor-pointer hover:border-primary/50 transition-colors"
             >
               <div className="flex items-center justify-between pb-2 mb-2 border-b border-border/70 text-xs font-mono text-muted-fg">
-                <span>SM-2 Memory Decay Model</span>
-                <span className="text-primary">Click to flip</span>
+                <span>{cHookPatched ? "libplank-noglow.c (LD_PRELOAD)" : "Clutter GLSL Shaders"}</span>
+                <span className="text-primary font-medium">Click to inspect</span>
               </div>
-              <div className="text-sm font-semibold text-fg">
-                {cardFlipped ? (
-                  <span className="text-primary font-mono">
-                    I(n) = I(n-1) × EF, where EF′ = EF + (0.1 - (5 - q) × (0.08 + (5 - q) × 0.02))
-                  </span>
+              <div className="text-xs font-mono text-fg bg-black/40 p-3 rounded-lg overflow-x-auto border border-white/5">
+                {cHookPatched ? (
+                  <div className="space-y-1">
+                    <span className="text-emerald-400">{"// Atomically patch function entry byte"}</span>
+                    <p className="text-muted-fg">
+                      *(unsigned char *)fn = <span className="text-primary font-bold">0xc3</span>; // x86_64 &apos;ret&apos;
+                    </p>
+                    <span className="text-muted-fg">mprotect(page, sz, PROT_READ | PROT_EXEC);</span>
+                  </div>
                 ) : (
-                  <span>
-                    How does StudyStack schedule optimal review intervals before memory decay?
-                  </span>
+                  <div className="space-y-1">
+                    <span className="text-cyan-400">{"// Hardware-accelerated window curves"}</span>
+                    <p className="text-muted-fg">
+                      Clutter.ShaderEffect(&apos;RoundedCorners@klangman&apos;)
+                    </p>
+                    <span className="text-muted-fg">radius: 14px · smooth anti-aliased bevel</span>
+                  </div>
                 )}
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-4">
-              <Button href="/projects/studystack" variant="primary" size="md">
+              <Button href="/projects/macos-tahoe" variant="primary" size="md">
                 <span>View Case Study</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button href={studystack.liveUrl} external variant="secondary" size="md">
-                <span>Open StudyStack</span>
+              <Button href={macosTahoe.repoUrl} external variant="secondary" size="md">
+                <span>GitHub Repository</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Button>
             </div>

@@ -157,7 +157,7 @@ export function ArchitectureDiagram({ slug }: { slug: string }) {
     );
   }
 
-  // StudyStack
+  // macOS Tahoe 26 on Linux Mint (or fallback)
   return (
     <div className="w-full overflow-x-auto p-6 sm:p-8 bg-card/85 dark:bg-card/70 backdrop-blur-xl border border-border rounded-2xl shadow-sm">
       <svg
@@ -167,58 +167,64 @@ export function ArchitectureDiagram({ slug }: { slug: string }) {
         className="w-full min-w-[640px] h-auto text-fg font-sans"
       >
         <defs>
-          <linearGradient id="beam-studystack" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="beam-tahoe" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#2563EB" stopOpacity="0.2" />
             <stop offset="50%" stopColor="#7C3AED" stopOpacity="1" />
-            <stop offset="100%" stopColor="#EC4899" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#06B6D4" stopOpacity="0.3" />
           </linearGradient>
         </defs>
 
-        {/* Presentation Layer */}
-        <rect x="30" y="40" width="190" height="160" rx="12" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
-        <text x="125" y="68" textAnchor="middle" className="text-xs font-bold fill-fg">Presentation</text>
-        <rect x="45" y="88" width="160" height="34" rx="8" className="fill-card stroke-border" />
-        <text x="125" y="110" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">EJS Dynamic Views</text>
-        <rect x="45" y="132" width="160" height="34" rx="8" className="fill-card stroke-border" />
-        <text x="125" y="154" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">Vanilla CSS Grid</text>
+        {/* C Runtime Hook (LD_PRELOAD) */}
+        <rect x="25" y="35" width="210" height="170" rx="12" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+        <text x="130" y="62" textAnchor="middle" className="text-xs font-bold fill-fg">C Runtime Interceptor</text>
+        <rect x="40" y="80" width="180" height="34" rx="8" className="fill-card stroke-border" />
+        <text x="130" y="102" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">libplank-noglow.so</text>
+        <rect x="40" y="122" width="180" height="34" rx="8" className="fill-card stroke-border" />
+        <text x="130" y="144" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">*(uchar*)fn = 0xc3 (ret)</text>
+        <rect x="40" y="164" width="180" height="26" rx="6" className="fill-primary/10 stroke-primary/30" />
+        <text x="130" y="181" textAnchor="middle" className="text-[10px] fill-primary font-mono font-semibold">Active Glow Bypassed</text>
 
-        {/* Route dispatch */}
-        <path d="M220 120 H320" className="stroke-border" strokeWidth="2" />
+        {/* Conduit 1 */}
+        <path d="M235 120 H315" className="stroke-border" strokeWidth="2" />
         <motion.path
-          d="M220 120 H320"
-          stroke="url(#beam-studystack)"
+          d="M235 120 H315"
+          stroke="url(#beam-tahoe)"
           strokeWidth="3"
-          strokeDasharray="25 75"
-          animate={{ strokeDashoffset: [100, 0] }}
+          strokeDasharray="25 60"
+          animate={{ strokeDashoffset: [85, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
         />
 
-        {/* Core Algorithm */}
-        <rect x="320" y="40" width="220" height="160" rx="12" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
-        <text x="430" y="68" textAnchor="middle" className="text-xs font-bold fill-fg">Scoring Engine</text>
-        <rect x="335" y="88" width="190" height="34" rx="8" className="fill-card stroke-border" />
-        <text x="430" y="110" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">Ratio-Interval Prioritizer</text>
-        <rect x="335" y="132" width="190" height="34" rx="8" className="fill-card stroke-border" />
-        <text x="430" y="154" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">Derived Backlog View</text>
+        {/* Compositor & GLSL Shaders */}
+        <rect x="315" y="35" width="220" height="170" rx="12" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+        <text x="425" y="62" textAnchor="middle" className="text-xs font-bold fill-fg">Compositor & Shaders</text>
+        <rect x="330" y="80" width="190" height="34" rx="8" className="fill-card stroke-border" />
+        <text x="425" y="102" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">Clutter GLSL Curves</text>
+        <rect x="330" y="122" width="190" height="34" rx="8" className="fill-card stroke-border" />
+        <text x="425" y="144" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">14px Anti-Aliased Bevel</text>
+        <rect x="330" y="164" width="190" height="26" rx="6" className="fill-primary/10 stroke-primary/30" />
+        <text x="425" y="181" textAnchor="middle" className="text-[10px] fill-cyan-400 font-mono font-semibold">Zero-Tearing Clipping</text>
 
-        {/* DB Connection */}
-        <path d="M540 120 H630" className="stroke-border" strokeWidth="2" />
+        {/* Conduit 2 */}
+        <path d="M535 120 H615" className="stroke-border" strokeWidth="2" />
         <motion.path
-          d="M540 120 H630"
-          stroke="url(#beam-studystack)"
+          d="M535 120 H615"
+          stroke="url(#beam-tahoe)"
           strokeWidth="3"
-          strokeDasharray="25 65"
-          animate={{ strokeDashoffset: [90, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "linear", delay: 0.5 }}
+          strokeDasharray="25 60"
+          animate={{ strokeDashoffset: [85, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "linear", delay: 0.4 }}
         />
 
-        {/* SQLite */}
-        <rect x="630" y="40" width="140" height="160" rx="12" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
-        <text x="700" y="68" textAnchor="middle" className="text-xs font-bold fill-fg">Database</text>
-        <rect x="640" y="90" width="120" height="34" rx="8" className="fill-card stroke-border" />
-        <text x="700" y="112" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">better-sqlite3</text>
-        <rect x="640" y="136" width="120" height="26" rx="6" className="fill-primary/10 stroke-primary/30" />
-        <text x="700" y="153" textAnchor="middle" className="text-[10px] fill-primary font-mono font-semibold">Prepared Stmts</text>
+        {/* Desktop Services */}
+        <rect x="615" y="35" width="160" height="170" rx="12" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+        <text x="695" y="62" textAnchor="middle" className="text-xs font-bold fill-fg">System & UI</text>
+        <rect x="625" y="80" width="140" height="34" rx="8" className="fill-card stroke-border" />
+        <text x="695" y="102" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">systemd --user</text>
+        <rect x="625" y="122" width="140" height="34" rx="8" className="fill-card stroke-border" />
+        <text x="695" y="144" textAnchor="middle" className="text-[11px] fill-muted-fg font-medium">30px Frosted Menubar</text>
+        <rect x="625" y="164" width="140" height="26" rx="6" className="fill-emerald-400/10 stroke-emerald-400/30" />
+        <text x="695" y="181" textAnchor="middle" className="text-[10px] fill-emerald-400 font-mono font-semibold">Auto-Recovery</text>
       </svg>
     </div>
   );
