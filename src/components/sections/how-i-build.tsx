@@ -65,26 +65,28 @@ export function HowIBuild() {
                     </div>
                   </div>
 
-                  {/* Card Content Column */}
+                  {/* Card Content Column with Double-Bezel */}
                   <div className="w-full sm:w-1/2 pl-12 sm:pl-0 sm:px-8">
-                    <Spotlight className="rounded-2xl border border-border bg-card/85 dark:bg-card/70 backdrop-blur-xl p-6 sm:p-7 shadow-sm hover:border-primary/40 transition-all duration-300">
-                      <div className="flex items-center gap-2.5 mb-2">
-                        <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                          <IconComponent className="w-4 h-4" />
+                    <div className="p-1 rounded-[1.75rem] bg-white/[0.03] border border-border/80 ring-1 ring-white/5 transition-all duration-300 hover:border-primary/40 group">
+                      <Spotlight className="rounded-[calc(1.75rem-0.25rem)] bg-card/90 dark:bg-card/75 backdrop-blur-xl p-6 sm:p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+                        <div className="flex items-center gap-2.5 mb-2">
+                          <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:scale-105 transition-transform">
+                            <IconComponent className="w-4 h-4" />
+                          </div>
+                          <span className="text-xs font-mono text-muted-fg uppercase tracking-widest font-semibold">
+                            Phase {step.step}
+                          </span>
                         </div>
-                        <span className="text-xs font-mono text-muted-fg uppercase tracking-widest font-semibold">
-                          Phase {step.step}
-                        </span>
-                      </div>
 
-                      <h3 className="text-lg font-bold text-fg tracking-tight mb-2">
-                        {step.title}
-                      </h3>
+                        <h3 className="text-lg font-bold text-fg tracking-tight mb-2">
+                          {step.title}
+                        </h3>
 
-                      <p className="text-sm leading-relaxed text-muted-fg">
-                        {step.body}
-                      </p>
-                    </Spotlight>
+                        <p className="text-sm leading-relaxed text-muted-fg">
+                          {step.body}
+                        </p>
+                      </Spotlight>
+                    </div>
                   </div>
                 </div>
               );

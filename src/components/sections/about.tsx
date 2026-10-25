@@ -82,22 +82,24 @@ export function About() {
             </p>
           </div>
 
-          {/* Right Column: 3 One-Line Values */}
+          {/* Right Column: 3 One-Line Values with Double-Bezel */}
           <div className="lg:col-span-5 flex flex-col gap-4">
             {VALUES.map((val) => (
               <div
                 key={val.title}
-                className="p-5.5 rounded-2xl bg-card/85 dark:bg-card/70 backdrop-blur-xl border border-border shadow-xs hover:border-primary/40 transition-all duration-200 flex flex-col gap-2"
+                className="p-1 rounded-[1.5rem] bg-white/[0.03] border border-border/80 ring-1 ring-white/5 transition-all duration-300 hover:border-primary/40 group"
               >
-                <div className="flex items-center gap-2.5">
-                  <span className="w-2 h-2 rounded-full bg-primary" />
-                  <span className="text-sm font-bold text-fg">
-                    {val.title}
-                  </span>
+                <div className="p-5 rounded-[calc(1.5rem-0.25rem)] bg-card/90 dark:bg-card/75 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)] flex flex-col gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-2 h-2 rounded-full bg-primary group-hover:scale-125 transition-transform" />
+                    <span className="text-sm font-bold text-fg">
+                      {val.title}
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-muted-fg leading-relaxed pl-4.5">
+                    {val.desc}
+                  </p>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-fg leading-relaxed pl-4.5">
-                  {val.desc}
-                </p>
               </div>
             ))}
           </div>

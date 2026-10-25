@@ -163,7 +163,11 @@ export function TerminalConsole() {
         const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
         const next = currentTheme === "dark" ? "light" : "dark";
         document.documentElement.setAttribute("data-theme", next);
-        localStorage.setItem("sarthak-theme", next);
+        try {
+          localStorage.setItem("sarthak-theme", next);
+        } catch {
+          /* ignore */
+        }
         out = <p className="text-xs text-slate-400 font-mono">Switched theme to {next} mode.</p>;
         break;
       }

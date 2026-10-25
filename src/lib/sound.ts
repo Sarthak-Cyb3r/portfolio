@@ -9,9 +9,13 @@ class SoundManager {
 
   constructor() {
     if (typeof window !== "undefined") {
-      const stored = localStorage.getItem(SOUND_PREF_KEY);
-      // Default to true for rich SaaS feedback, but user can toggle anytime
-      this.enabled = stored !== null ? stored === "true" : true;
+      try {
+        const stored = localStorage.getItem(SOUND_PREF_KEY);
+        // Default to true for rich SaaS feedback, but user can toggle anytime
+        this.enabled = stored !== null ? stored === "true" : true;
+      } catch {
+        this.enabled = true;
+      }
     }
   }
 
@@ -34,7 +38,11 @@ class SoundManager {
   public setEnabled(val: boolean) {
     this.enabled = val;
     if (typeof window !== "undefined") {
-      localStorage.setItem(SOUND_PREF_KEY, String(val));
+      try {
+        localStorage.setItem(SOUND_PREF_KEY, String(val));
+      } catch {
+        /* ignore storage failure */
+      }
     }
   }
 

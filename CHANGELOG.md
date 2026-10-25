@@ -2,6 +2,19 @@
 
 All notable architectural and design improvements to Sarthak's portfolio are documented here.
 
+## [3.5.0] - 2026-10-25
+
+### Complete Agency-Tier Portfolio Redesign & Hardening
+- **Resilient Fluid Document Layout**: Replaced the fragile pinned 100svh scroll-jacking engine with a fluid, natural document scroll. Permanently eliminated client hydration exceptions and mobile scroll traps while dramatically increasing page performance.
+- **Agency Design System & Double-Bezel Architecture**: Built nested double-bezel enclosures (outer shell with hairline border and inner core with inset specular highlight) across ProofStrip, FeaturedWork, Tech, HowIBuild, Terminal, and About sections.
+- **Interactive Flagship Bento Suite**:
+  - *Softify (v3.0.1)*: Embedded live WebAudio playback, 5-band studio EQ, SQLite FTS5 instant search simulation, and verified APK (28.8 MB) / Linux tar.gz (14.8 MB) downloads.
+  - *macOS Tahoe 26 on Linux Mint*: Embedded live C runtime hook inspector (`libplank-noglow.so` `0xc3` RET patch) and Clutter GLSL hardware window curve demo.
+  - *Ludo*: Embedded interactive 3D physics dice tumble playground with multi-turn sequencing and live Firestore listener indicator.
+- **Elevated Hero & Button-in-Button CTAs**: Added kinetic rotating keyword pill ("Android", "iOS", "Linux", "Web") with vertical roll reveal, button-in-button nested circular arrow CTAs, and 3D interactive device tilt showcase with real specular highlights.
+- **Monolithic Wordmark & Single Footer**: Giant typographic "SARTHAK" base wordmark with subtle metallic gradient and single verified credit line.
+- **Quality Gates & Zero-Error Validation**: 0 build errors, 0 ESLint warnings, 0 TypeScript errors, 31/31 verification suite tests passing, and headless browser validation at 1440px and 390px with zero console errors.
+
 ## [3.4.0] - 2026-10-10
 
 ### GitHub Sync & Project Suite Overhaul

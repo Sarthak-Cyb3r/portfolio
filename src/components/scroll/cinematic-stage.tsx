@@ -120,26 +120,40 @@ export function CinematicStage({ latestCommit }: CinematicStageProps) {
   };
 
   const copyEmailAddress = () => {
-    navigator.clipboard.writeText(EMAIL);
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        navigator.clipboard.writeText(EMAIL).catch(() => {});
+      }
+    } catch {
+      /* ignore clipboard permissions failure */
+    }
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
   // Check prefers-reduced-motion on mount
   useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const saved = localStorage.getItem("sarthak-view-mode");
-    if (prefersReduced || saved === "classic") {
-      queueMicrotask(() => {
-        setViewMode("classic");
-      });
+    try {
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const saved = localStorage.getItem("sarthak-view-mode");
+      if (prefersReduced || saved === "classic") {
+        queueMicrotask(() => {
+          setViewMode("classic");
+        });
+      }
+    } catch {
+      /* ignore storage failure */
     }
   }, []);
 
   const toggleViewMode = () => {
     const nextMode = viewMode === "cinematic" ? "classic" : "cinematic";
     setViewMode(nextMode);
-    localStorage.setItem("sarthak-view-mode", nextMode);
+    try {
+      localStorage.setItem("sarthak-view-mode", nextMode);
+    } catch {
+      /* ignore storage failure */
+    }
   };
 
   const navigateToScene = useCallback((sceneIdx: number) => {

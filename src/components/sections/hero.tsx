@@ -1,20 +1,29 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Terminal } from "lucide-react";
 import { GithubIcon } from "@/components/ui/icons";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { GITHUB_URL } from "@/data/site";
-import { Button } from "@/components/ui/button";
 import { HeroDevice3D } from "@/components/sections/hero-device-3d";
 import { Spotlight } from "@/components/ui/spotlight";
 import { BorderBeam } from "@/components/ui/border-beam";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const KEYWORDS = ["Android", "iOS", "Linux", "Web"] as const;
 
 export function Hero() {
-  const line1 = "I build and ship real apps:";
-  const line2 = "Android, iOS, Linux and web.";
+  const [keywordIndex, setKeywordIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setKeywordIndex((prev) => (prev + 1) % KEYWORDS.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
+
+  const activeKeyword = KEYWORDS[keywordIndex];
 
   return (
     <section
@@ -53,7 +62,7 @@ export function Hero() {
               </Link>
             </motion.div>
 
-            {/* H1 Masked line-by-line reveal */}
+            {/* H1 Masked reveal with kinetic rotating platform keyword */}
             <h1
               id="hero-heading"
               aria-label="I build and ship real apps: Android, iOS, Linux and web."
@@ -68,18 +77,27 @@ export function Hero() {
                     transition={{ duration: 0.8, ease, delay: 0.1 }}
                     className="block"
                   >
-                    {line1}
+                    I build and ship real apps:
                   </motion.span>
                 </span>
                 <span className="block overflow-hidden pb-1">
-                  <motion.span
-                    initial={{ y: "100%", filter: "blur(6px)" }}
-                    animate={{ y: 0, filter: "blur(0px)" }}
-                    transition={{ duration: 0.8, ease, delay: 0.2 }}
-                    className="block text-gradient-shimmer"
-                  >
-                    {line2}
-                  </motion.span>
+                  <span className="inline-flex items-center flex-wrap gap-2 sm:gap-3">
+                    <span className="relative inline-flex items-center h-[1.15em] overflow-hidden px-2.5 py-0.5 rounded-xl bg-primary/10 border border-primary/20 align-middle">
+                      <AnimatePresence mode="wait">
+                        <motion.span
+                          key={activeKeyword}
+                          initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
+                          animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                          exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
+                          transition={{ duration: 0.38, ease }}
+                          className="text-primary font-bold inline-block"
+                        >
+                          {activeKeyword}
+                        </motion.span>
+                      </AnimatePresence>
+                    </span>
+                    <span className="text-gradient-shimmer">and beyond.</span>
+                  </span>
                 </span>
               </span>
             </h1>
@@ -91,31 +109,44 @@ export function Hero() {
               transition={{ duration: 0.6, ease, delay: 0.35 }}
               className="mt-6 text-[17px] sm:text-lg leading-[1.6] text-muted-fg max-w-[62ch]"
             >
-              Solo builder, age 16. Softify, macOS Tahoe and Ludo are live, open source and tested.
+              Solo builder, age 16. Low-level C hooks, Flutter audio engines with SQLite FTS5, and zero-build multiplayer games. Tested, open source, and offline-first.
             </motion.p>
 
-            {/* 2 CTAs */}
+            {/* CTAs with Button-in-Button Pattern */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease, delay: 0.45 }}
               className="mt-8 flex flex-wrap items-center gap-4"
             >
-              <div className="relative group">
-                <Button href="#work" variant="primary" size="lg" shimmer>
-                  <span>View work</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </div>
-              <Button
-                href={GITHUB_URL}
-                external
-                variant="secondary"
-                size="lg"
+              <Link
+                href="#work"
+                className="group relative inline-flex items-center gap-3 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:bg-primary/90 transition-all duration-300"
               >
-                <GithubIcon className="w-4 h-4" />
+                <span>Explore Flagship Work</span>
+                <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5 group-hover:scale-105">
+                  <ArrowRight className="w-3.5 h-3.5 text-white" />
+                </span>
+              </Link>
+
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="group inline-flex items-center gap-2.5 rounded-full border border-border bg-card/80 dark:bg-card/60 backdrop-blur-md px-5 py-3 text-sm font-medium text-fg hover:border-primary/40 hover:bg-card transition-all duration-200"
+              >
+                <GithubIcon className="w-4 h-4 text-muted-fg group-hover:text-fg transition-colors" />
                 <span>GitHub</span>
-              </Button>
+                <ArrowUpRight className="w-3.5 h-3.5 text-muted-fg group-hover:text-fg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              </a>
+
+              <Link
+                href="#terminal"
+                className="inline-flex items-center gap-2 text-xs font-mono text-muted-fg hover:text-primary transition-colors ml-2 py-2"
+              >
+                <Terminal className="w-3.5 h-3.5 text-primary" />
+                <span>$ launch-shell</span>
+              </Link>
             </motion.div>
 
             {/* Quiet row: Shipped platforms */}
@@ -126,7 +157,7 @@ export function Hero() {
               className="mt-12 pt-8 border-t border-border/80 w-full flex items-center gap-3 text-xs font-medium text-muted-fg tracking-wide"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Shipped on Android · iOS · Linux · Web</span>
+              <span>Shipped native across Android · iOS · Linux · Web</span>
             </motion.div>
           </div>
 

@@ -47,23 +47,25 @@ export function Tech() {
             return (
               <div
                 key={group.category}
-                className="p-6 rounded-2xl bg-card/85 dark:bg-card/70 backdrop-blur-xl border border-border shadow-xs hover:border-primary/40 transition-all duration-200 flex flex-col justify-between gap-5"
+                className="p-1 rounded-[1.75rem] bg-white/[0.03] border border-border/80 ring-1 ring-white/5 transition-all duration-300 hover:border-primary/40 group"
               >
-                <div className="flex items-center gap-3 pb-3 border-b border-border/70">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <Icon className="w-4 h-4" />
+                <div className="h-full p-6 rounded-[calc(1.75rem-0.25rem)] bg-card/90 dark:bg-card/75 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)] flex flex-col justify-between gap-5">
+                  <div className="flex items-center gap-3 pb-3 border-b border-border/70">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <h3 className="text-sm font-semibold text-fg tracking-tight">
+                      {group.category}
+                    </h3>
                   </div>
-                  <h3 className="text-sm font-semibold text-fg tracking-tight">
-                    {group.category}
-                  </h3>
-                </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {group.items.map((item) => (
-                    <Chip key={item} variant="outline" size="md">
-                      {item}
-                    </Chip>
-                  ))}
+                  <div className="flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <Chip key={item} variant="outline" size="md">
+                        {item}
+                      </Chip>
+                    ))}
+                  </div>
                 </div>
               </div>
             );
